@@ -15,4 +15,10 @@ public class Transacao {
         ENTITY_MANAGER.persist(object);
         ENTITY_MANAGER.getTransaction().commit();
     }
+
+    public static void realizarTransacaoRemocao(Object object) {
+        Transacao.ENTITY_MANAGER.getTransaction().begin();
+        Transacao.ENTITY_MANAGER.remove(object);
+        Transacao.ENTITY_MANAGER.getTransaction().commit();
+    }
 }

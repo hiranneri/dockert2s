@@ -28,6 +28,7 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 
     @Override
     public void deletar(Movimentacao movimentacao) {
+        Transacao.realizarTransacaoRemocao(movimentacao);
 
     }
 

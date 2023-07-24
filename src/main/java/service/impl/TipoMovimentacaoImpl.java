@@ -2,7 +2,6 @@ package service.impl;
 
 import model.TipoMovimentacao;
 import model.TipoMovimentacaoEnum;
-import repository.QueryTyper;
 import service.TipoMovimentacaoService;
 
 import javax.persistence.EntityManager;
