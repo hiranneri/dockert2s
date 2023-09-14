@@ -1,0 +1,30 @@
+version: '3.5'
+x-database-variables: &database-variables
+  SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/dockert2s?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+  SPRING_DATASOURCE_USERNAME: root
+  SPRING_DATASOURCE_PASSWORD: secret
+  SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+
+services:
+  banco:
+    image: mysql
+    command: --innodb-use-native-aio=0
+    container_name: mysql
+    restart: always
+    ports:
+      - "3306:3306"
+    tty: true
+    volumes:
+      - "mysql_volume:/var/lib/mysql"
+    environment:
+      - MYSQL_DATABASE=springboot
+      - MYSQL_ROOT_PASSWORD=secret
+    networks:
+      - network
+
+networks:
+  network:
+    driver: bridge
+
+volumes:
+  mysql_volume:
