@@ -9,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "conteineres")
 @Data
@@ -40,8 +41,8 @@ public class Conteiner {
     @JoinColumn(name = "cliente_id")
     private Cliente cliente;
 
-    @OneToOne(mappedBy = "conteiner", fetch = FetchType.LAZY)
-    private Movimentacao movimentacao;
+    @OneToMany(mappedBy = "conteiner", fetch = FetchType.LAZY)
+    private List<Movimentacao> movimentacao;
 
     @Enumerated(EnumType.STRING)
     private Status status;

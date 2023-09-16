@@ -1,7 +1,7 @@
 package br.com.docker.t2s.service;
 
 import br.com.docker.t2s.model.TiposMovimentacao;
-import br.com.docker.t2s.model.enums.MovimentacaoEnum;
+import br.com.docker.t2s.model.enums.NomeTipoMovimentacao;
 import br.com.docker.t2s.repository.TiposMovimentacaoRepository;
 import br.com.docker.t2s.service.abstracao.TipoMovimentacaoService;
 import lombok.RequiredArgsConstructor;
@@ -53,12 +53,12 @@ public class TipoMovimentacaoImpl implements TipoMovimentacaoService {
     }
 
     @Override
-    public TiposMovimentacao buscar(MovimentacaoEnum movimentacaoEnum) {
+    public TiposMovimentacao buscar(NomeTipoMovimentacao nomeTipoMovimentacao) {
         EntityManager em = Transacao.ENTITY_MANAGER;
         String queryString = "SELECT t FROM tipomovimentacoes t WHERE nome = :nome";
 
         Query query = em.createQuery(queryString);
-        query.setParameter("nome", movimentacaoEnum);
+        query.setParameter("nome", nomeTipoMovimentacao);
 
         em.getTransaction().begin();
         List<TiposMovimentacao> tipos = query.getResultList();
@@ -69,6 +69,9 @@ public class TipoMovimentacaoImpl implements TipoMovimentacaoService {
 
     }
 
+    /**
+     * Método que realiza a parametrização do sistema cadastrando os tipos de movimentação
+     */
     @EventListener(ApplicationReadyEvent.class)
     @Transactional
     public void cadastrarTipoMovimentacao() {
@@ -89,14 +92,14 @@ public class TipoMovimentacaoImpl implements TipoMovimentacaoService {
     List<TiposMovimentacao> gerarListaTiposMovimentacoes() {
         List<TiposMovimentacao> tiposMovimentacoes = new ArrayList<>();
 
-        tiposMovimentacoes.add(TiposMovimentacao.builder().nome(MovimentacaoEnum.EMBARQUE).build());
-        tiposMovimentacoes.add(TiposMovimentacao.builder().nome(MovimentacaoEnum.DESCARGA).build());
-        tiposMovimentacoes.add(TiposMovimentacao.builder().nome(MovimentacaoEnum.GATE_IN).build());
-        tiposMovimentacoes.add(TiposMovimentacao.builder().nome(MovimentacaoEnum.GATE_OUT).build());
-        tiposMovimentacoes.add(TiposMovimentacao.builder().nome(MovimentacaoEnum.POSICIONAMENTO).build());
-        tiposMovimentacoes.add(TiposMovimentacao.builder().nome(MovimentacaoEnum.PILHA).build());
-        tiposMovimentacoes.add(TiposMovimentacao.builder().nome(MovimentacaoEnum.PESAGEM).build());
-        tiposMovimentacoes.add(TiposMovimentacao.builder().nome(MovimentacaoEnum.SCANNER).build());
+        tiposMovimentacoes.add(TiposMovimentacao.builder().nome(NomeTipoMovimentacao.EMBARQUE).build());
+        tiposMovimentacoes.add(TiposMovimentacao.builder().nome(NomeTipoMovimentacao.DESCARGA).build());
+        tiposMovimentacoes.add(TiposMovimentacao.builder().nome(NomeTipoMovimentacao.GATE_IN).build());
+        tiposMovimentacoes.add(TiposMovimentacao.builder().nome(NomeTipoMovimentacao.GATE_OUT).build());
+        tiposMovimentacoes.add(TiposMovimentacao.builder().nome(NomeTipoMovimentacao.POSICIONAMENTO).build());
+        tiposMovimentacoes.add(TiposMovimentacao.builder().nome(NomeTipoMovimentacao.PILHA).build());
+        tiposMovimentacoes.add(TiposMovimentacao.builder().nome(NomeTipoMovimentacao.PESAGEM).build());
+        tiposMovimentacoes.add(TiposMovimentacao.builder().nome(NomeTipoMovimentacao.SCANNER).build());
 
         return tiposMovimentacoes;
 

@@ -1,7 +1,7 @@
 package br.com.docker.t2s.repository;
 
 import br.com.docker.t2s.model.TiposMovimentacao;
-import br.com.docker.t2s.model.enums.MovimentacaoEnum;
+import br.com.docker.t2s.model.enums.NomeTipoMovimentacao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface TiposMovimentacaoRepository extends JpaRepository<TiposMovimentacao, Long> {
 
-    Optional<TiposMovimentacao> findByNome(MovimentacaoEnum movimentacaoEnum);
+    Optional<TiposMovimentacao> findByNome(NomeTipoMovimentacao nomeTipoMovimentacao);
 }

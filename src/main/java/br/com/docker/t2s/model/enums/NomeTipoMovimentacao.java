@@ -1,6 +1,6 @@
 package br.com.docker.t2s.model.enums;
 
-public enum MovimentacaoEnum {
+public enum NomeTipoMovimentacao {
     EMBARQUE,
     DESCARGA,
     GATE_IN,

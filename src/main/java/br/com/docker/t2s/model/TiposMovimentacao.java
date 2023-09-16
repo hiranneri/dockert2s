@@ -1,6 +1,6 @@
 package br.com.docker.t2s.model;
 
-import br.com.docker.t2s.model.enums.MovimentacaoEnum;
+import br.com.docker.t2s.model.enums.NomeTipoMovimentacao;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -22,9 +22,9 @@ public class TiposMovimentacao {
 
     @Column(nullable = false, unique = true)
     @Enumerated(EnumType.STRING)
-    private MovimentacaoEnum nome;
+    private NomeTipoMovimentacao nome;
 
     @OneToMany(mappedBy = "tiposMovimentacao", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<br.com.docker.t2s.model.Movimentacao> movimentacao;
+    private List<Movimentacao> movimentacao;
 
 }

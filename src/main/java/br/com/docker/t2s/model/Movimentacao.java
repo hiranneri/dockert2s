@@ -29,7 +29,7 @@ public class Movimentacao {
     @JoinColumn(name = "tiposmovimentacao_id")
     private TiposMovimentacao tiposMovimentacao;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "conteiner_id", nullable = false)
     private Conteiner conteiner;
 

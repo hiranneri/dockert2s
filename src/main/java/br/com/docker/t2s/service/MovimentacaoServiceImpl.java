@@ -7,7 +7,7 @@ import br.com.docker.t2s.exceptions.BadRequestException;
 import br.com.docker.t2s.model.Conteiner;
 import br.com.docker.t2s.model.Movimentacao;
 import br.com.docker.t2s.model.TiposMovimentacao;
-import br.com.docker.t2s.model.enums.MovimentacaoEnum;
+import br.com.docker.t2s.model.enums.NomeTipoMovimentacao;
 import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.repository.MovimentacaoRepository;
 import br.com.docker.t2s.repository.QueryTyper;
@@ -55,8 +55,8 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     }
 
     private TiposMovimentacao pesquisarTipoMovimentacao(String nomeTipo) {
-        MovimentacaoEnum movimentacaoEnum = MovimentacaoEnum.valueOf(nomeTipo);
-        return tiposMovimentacaoRepository.findByNome(movimentacaoEnum)
+        NomeTipoMovimentacao nomeTipoMovimentacao = NomeTipoMovimentacao.valueOf(nomeTipo);
+        return tiposMovimentacaoRepository.findByNome(nomeTipoMovimentacao)
                 .orElseThrow((
                         ()-> new BadRequestException("Tipo de Movimentação não foi localizada"))
                 );
@@ -93,10 +93,10 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     @Override
     public MovimentacaoResponseDTO editarMovimentacao(MovimentacaoRequestDTO movimentacaoRequestDTO) {
         pesquisarPorIdOuLancarExcecao(movimentacaoRequestDTO.getId());
-        MovimentacaoEnum movimentacaoEnum = MovimentacaoEnum.valueOf(movimentacaoRequestDTO.getTipoMovimentacao());
+        NomeTipoMovimentacao nomeTipoMovimentacao = NomeTipoMovimentacao.valueOf(movimentacaoRequestDTO.getTipoMovimentacao());
 
         Conteiner conteiner = conteinerService.buscarConteinerCompletoPeloNumero(movimentacaoRequestDTO.getNumeroConteiner());
-        TiposMovimentacao tiposMovimentacao = tiposMovimentacaoRepository.findByNome(movimentacaoEnum)
+        TiposMovimentacao tiposMovimentacao = tiposMovimentacaoRepository.findByNome(nomeTipoMovimentacao)
                 .orElseThrow(()-> new BadRequestException("Tipo de Movimentação não localizada"));
 
         Movimentacao movimentacao = new Movimentacao();
@@ -108,11 +108,6 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 
         return MovimentacaoMapper.INSTANCE.toMovimentacaoResponse(movimentacaoRepository.save(movimentacao));
     }
-
-    private Movimentacao toMovimentacao(MovimentacaoRequestDTO movimentacaoRequestDTO){
-        return null;
-    }
-
     @Override
     public MovimentacaoResponseDTO deletarMovimentacao(Long id) {
         Movimentacao movimentacaoLocalizada = pesquisarPorIdOuLancarExcecao(id);
