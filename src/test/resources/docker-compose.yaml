@@ -1,6 +1,6 @@
 version: '3.5'
 x-database-variables: &database-variables
-  SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/dockert2s?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+  SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3307/dockert2s-test?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
   SPRING_DATASOURCE_USERNAME: root
   SPRING_DATASOURCE_PASSWORD: secret
   SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
@@ -9,22 +9,22 @@ services:
   banco:
     image: mysql
     command: --innodb-use-native-aio=0
-    container_name: mysql
+    container_name: mysql_testes
     restart: always
     ports:
-      - "3306:3306"
+      - "3307:3306"
     tty: true
     volumes:
-      - "mysql_volume:/var/lib/mysql"
+      - "mysql_test_volume:/var/lib/mysql"
     environment:
-      - MYSQL_DATABASE=dockert2s
+      - MYSQL_DATABASE=dockert2s-test
       - MYSQL_ROOT_PASSWORD=secret
     networks:
-      - network
+      - network_tests
 
 networks:
-  network:
+  network_tests:
     driver: bridge
 
 volumes:
-  mysql_volume:
+  mysql_test_volume:

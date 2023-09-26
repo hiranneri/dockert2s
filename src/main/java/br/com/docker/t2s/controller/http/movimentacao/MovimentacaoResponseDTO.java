@@ -1,5 +1,6 @@
-package br.com.docker.t2s.controller.http;
+package br.com.docker.t2s.controller.http.movimentacao;
 
+import br.com.docker.t2s.model.enums.Status;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,4 +14,5 @@ public class MovimentacaoResponseDTO {
     String tipoMovimentacao;
     String dataHoraInicio;
     String dataHoraFim;
+    Status status;
 }

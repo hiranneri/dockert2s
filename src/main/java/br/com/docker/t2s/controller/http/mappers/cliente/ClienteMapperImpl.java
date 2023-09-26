@@ -1,21 +1,33 @@
 package br.com.docker.t2s.controller.http.mappers.cliente;
 
-import br.com.docker.t2s.controller.http.ClienteRequestDTO;
-import br.com.docker.t2s.controller.http.ClienteResponseDTO;
+import br.com.docker.t2s.controller.http.cliente.ClientePostRequestDTO;
+import br.com.docker.t2s.controller.http.cliente.ClientePutRequestDTO;
+import br.com.docker.t2s.controller.http.cliente.ClienteResponseDTO;
 import br.com.docker.t2s.model.Cliente;
 
 public class ClienteMapperImpl implements ClienteMapper{
     @Override
-    public Cliente toCliente(ClienteRequestDTO clienteRequestDTO) {
+    public Cliente toCliente(ClientePostRequestDTO clienteRequestDTO) {
         if ( clienteRequestDTO == null ) {
             return null;
         }
 
         return Cliente.builder()
-                .id(clienteRequestDTO.getId())
                 .nome(clienteRequestDTO.getNome())
                 .build();
 
+    }
+
+    @Override
+    public Cliente toCliente(ClientePutRequestDTO clientePutRequestDTO) {
+        if ( clientePutRequestDTO == null ) {
+            return null;
+        }
+
+        return Cliente.builder()
+                .id(clientePutRequestDTO.getId())
+                .nome(clientePutRequestDTO.getNome())
+                .build();
     }
 
     @Override

@@ -1,5 +1,6 @@
-package br.com.docker.t2s.controller.http;
+package br.com.docker.t2s.controller.http.conteiner;
 
+import br.com.docker.t2s.model.enums.Status;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,6 +13,7 @@ public class ConteinerResponseDTO {
     String tipo;
     String statusConteiner;
     String categoria;
+    Status status;
 
 
 }

@@ -1,7 +1,8 @@
 package br.com.docker.t2s.service;
 
-import br.com.docker.t2s.controller.http.ConteinerRequestDTO;
-import br.com.docker.t2s.controller.http.ConteinerResponseDTO;
+import br.com.docker.t2s.controller.http.conteiner.ConteinerPostRequestDTO;
+import br.com.docker.t2s.controller.http.conteiner.ConteinerPutRequestDTO;
+import br.com.docker.t2s.controller.http.conteiner.ConteinerResponseDTO;
 import br.com.docker.t2s.controller.http.mappers.conteiner.ConteinerMapper;
 import br.com.docker.t2s.exceptions.BadRequestException;
 import br.com.docker.t2s.model.Categoria;
@@ -31,7 +32,7 @@ public class ConteinerServiceImpl implements ConteinerService {
     private final CategoriaRepository categoriaRepository;
 
     @Override
-    public ConteinerResponseDTO criar(ConteinerRequestDTO conteinerRequestDTO) {
+    public ConteinerResponseDTO criar(ConteinerPostRequestDTO conteinerRequestDTO) {
         Conteiner conteiner = ConteinerMapper.INSTANCE.toConteiner(conteinerRequestDTO);
         Categoria categoria = pesquisarCategoria(conteinerRequestDTO.getCategoria());
         Cliente cliente = clienteService.buscarClienteCompleto(conteinerRequestDTO.getCliente());
@@ -51,7 +52,7 @@ public class ConteinerServiceImpl implements ConteinerService {
     }
 
     @Override
-    public ConteinerResponseDTO editar(ConteinerRequestDTO conteinerRequestDTO) {
+    public ConteinerResponseDTO editar(ConteinerPutRequestDTO conteinerRequestDTO) {
         Conteiner conteinerLocalizado = buscarPeloIDOuLancarExcecaoNaoEncontrado(conteinerRequestDTO.getId());
 
         Cliente clienteLocalizado = clienteService.buscarClienteCompleto(conteinerRequestDTO.getCliente());

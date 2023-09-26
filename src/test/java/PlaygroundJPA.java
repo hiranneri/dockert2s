@@ -1,11 +1,3 @@
-import model.*;
-import service.ConteinerService;
-import service.MovimentacaoService;
-import service.TipoMovimentacaoService;
-import service.impl.ConteinerServiceImpl;
-import service.impl.MovimentacaoServiceImpl;
-import service.impl.TipoMovimentacaoImpl;
-import utils.DataUtils;
 
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;

@@ -1,7 +1,8 @@
 package br.com.docker.t2s.service;
 
-import br.com.docker.t2s.controller.http.ClienteRequestDTO;
-import br.com.docker.t2s.controller.http.ClienteResponseDTO;
+import br.com.docker.t2s.controller.http.cliente.ClientePostRequestDTO;
+import br.com.docker.t2s.controller.http.cliente.ClientePutRequestDTO;
+import br.com.docker.t2s.controller.http.cliente.ClienteResponseDTO;
 import br.com.docker.t2s.controller.http.mappers.cliente.ClienteMapper;
 import br.com.docker.t2s.exceptions.BadRequestException;
 import br.com.docker.t2s.model.Cliente;
@@ -22,9 +23,10 @@ import java.util.List;
 public class ClienteServiceImpl implements ClienteService {
 
     private final ClienteRepository clienteRepository;
+
     @Override
-    public ClienteResponseDTO criar(ClienteRequestDTO clienteHTTPDTO) {
-        Cliente cliente = ClienteMapper.INSTANCE.toCliente(clienteHTTPDTO);
+    public ClienteResponseDTO criar(ClientePostRequestDTO clienteRequestDTO) {
+        Cliente cliente = ClienteMapper.INSTANCE.toCliente(clienteRequestDTO);
         return ClienteMapper.INSTANCE.toClienteResponse(clienteRepository.save(cliente));
     }
 
@@ -39,9 +41,9 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
-    public ClienteResponseDTO editar(ClienteRequestDTO clienteHttp) {
-        buscarPeloIDOuLancarExcecaoNaoEncontrado(clienteHttp.getId());
-        Cliente cliente = ClienteMapper.INSTANCE.toCliente(clienteHttp);
+    public ClienteResponseDTO editar(ClientePutRequestDTO clientePutRequestDTO) {
+        buscarPeloIDOuLancarExcecaoNaoEncontrado(clientePutRequestDTO.getId());
+        Cliente cliente = ClienteMapper.INSTANCE.toCliente(clientePutRequestDTO);
         return ClienteMapper.INSTANCE.toClienteResponse(clienteRepository.save(cliente));
 
     }
@@ -50,7 +52,7 @@ public class ClienteServiceImpl implements ClienteService {
      * Para termos relatórios mais concisos, os registros salvos serão apenas desativados
      *
      * @param id dados do cliente que se deseja desativar
-     * @return clienteHTTPDTO
+     * @return clienteResponseDTO
      */
     @Override
     public ClienteResponseDTO desativar(Long id) {

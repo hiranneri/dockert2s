@@ -1,7 +1,8 @@
 package br.com.docker.t2s.service;
 
-import br.com.docker.t2s.controller.http.MovimentacaoRequestDTO;
-import br.com.docker.t2s.controller.http.MovimentacaoResponseDTO;
+import br.com.docker.t2s.controller.http.movimentacao.MovimentacaoPostRequestDTO;
+import br.com.docker.t2s.controller.http.movimentacao.MovimentacaoPutRequestDTO;
+import br.com.docker.t2s.controller.http.movimentacao.MovimentacaoResponseDTO;
 import br.com.docker.t2s.controller.http.mappers.movimentacao.MovimentacaoMapper;
 import br.com.docker.t2s.exceptions.BadRequestException;
 import br.com.docker.t2s.model.Conteiner;
@@ -37,19 +38,18 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     private final TiposMovimentacaoRepository tiposMovimentacaoRepository;
 
     @Override
-    public MovimentacaoResponseDTO criar(MovimentacaoRequestDTO movimentacaoRequestDTO) {
-        Conteiner conteiner = conteinerService.buscarConteinerCompletoPeloNumero(movimentacaoRequestDTO.getNumeroConteiner());
-        TiposMovimentacao tipoMovimentacao = pesquisarTipoMovimentacao(movimentacaoRequestDTO.getTipoMovimentacao());
+    public MovimentacaoResponseDTO criar(MovimentacaoPostRequestDTO movimentacaoPostRequestDTO) {
+        Conteiner conteiner = conteinerService.buscarConteinerCompletoPeloNumero(movimentacaoPostRequestDTO.getNumeroConteiner());
+        TiposMovimentacao tipoMovimentacao = pesquisarTipoMovimentacao(movimentacaoPostRequestDTO.getTipoMovimentacao());
         Movimentacao movimentacao = Movimentacao.builder()
                 .conteiner(conteiner)
                 .tiposMovimentacao(tipoMovimentacao)
-                .dataHoraInicio(DataUtils.toLocalDateTime(movimentacaoRequestDTO.getDataHoraInicio()))
                 .build();
 
         Movimentacao movimentacaoSalva = movimentacaoRepository.save(movimentacao);
 
         MovimentacaoResponseDTO movimentacaoResponseDTO = MovimentacaoMapper.INSTANCE.toMovimentacaoResponse(movimentacaoSalva);
-        movimentacaoResponseDTO.setTipoMovimentacao(movimentacaoRequestDTO.getTipoMovimentacao());
+        movimentacaoResponseDTO.setTipoMovimentacao(movimentacaoPostRequestDTO.getTipoMovimentacao());
 
         return movimentacaoResponseDTO;
     }
@@ -91,17 +91,17 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     }
 
     @Override
-    public MovimentacaoResponseDTO editarMovimentacao(MovimentacaoRequestDTO movimentacaoRequestDTO) {
-        pesquisarPorIdOuLancarExcecao(movimentacaoRequestDTO.getId());
-        NomeTipoMovimentacao nomeTipoMovimentacao = NomeTipoMovimentacao.valueOf(movimentacaoRequestDTO.getTipoMovimentacao());
+    public MovimentacaoResponseDTO editarMovimentacao(MovimentacaoPutRequestDTO movimentacaoPostRequestDTO) {
+        pesquisarPorIdOuLancarExcecao(movimentacaoPostRequestDTO.getId());
+        NomeTipoMovimentacao nomeTipoMovimentacao = NomeTipoMovimentacao.valueOf(movimentacaoPostRequestDTO.getTipoMovimentacao());
 
-        Conteiner conteiner = conteinerService.buscarConteinerCompletoPeloNumero(movimentacaoRequestDTO.getNumeroConteiner());
+        Conteiner conteiner = conteinerService.buscarConteinerCompletoPeloNumero(movimentacaoPostRequestDTO.getNumeroConteiner());
         TiposMovimentacao tiposMovimentacao = tiposMovimentacaoRepository.findByNome(nomeTipoMovimentacao)
                 .orElseThrow(()-> new BadRequestException("Tipo de Movimentação não localizada"));
 
         Movimentacao movimentacao = new Movimentacao();
-        movimentacao.setId(movimentacaoRequestDTO.getId());
-        movimentacao.setDataHoraInicio(DataUtils.toLocalDateTime(movimentacaoRequestDTO.getDataHoraInicio()));
+        movimentacao.setId(movimentacaoPostRequestDTO.getId());
+        movimentacao.setDataHoraInicio(DataUtils.toLocalDateTime(movimentacaoPostRequestDTO.getDataHoraInicio()));
         movimentacao.setConteiner(conteiner);
         movimentacao.setTiposMovimentacao(tiposMovimentacao);
         movimentacao.setStatus(Status.ATIVO);
@@ -112,6 +112,15 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     public MovimentacaoResponseDTO deletarMovimentacao(Long id) {
         Movimentacao movimentacaoLocalizada = pesquisarPorIdOuLancarExcecao(id);
         movimentacaoLocalizada.setStatus(Status.INATIVO);
+        return MovimentacaoMapper.INSTANCE.toMovimentacaoResponse(movimentacaoRepository.save(movimentacaoLocalizada));
+    }
+
+    @Override
+    public MovimentacaoResponseDTO finalizar(MovimentacaoPostRequestDTO movimentacaoPostRequestDTO) {
+        String numeroConteiner = movimentacaoPostRequestDTO.getNumeroConteiner();
+        String tipoMovimentacao = movimentacaoPostRequestDTO.getTipoMovimentacao();
+        Movimentacao movimentacaoLocalizada = buscarPorNumeroConteinerTipoMovimentacao(numeroConteiner, tipoMovimentacao);
+        movimentacaoLocalizada.setDataHoraFim(LocalDateTime.now());
         return MovimentacaoMapper.INSTANCE.toMovimentacaoResponse(movimentacaoRepository.save(movimentacaoLocalizada));
     }
 
@@ -126,6 +135,22 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
         String queryString = "FROM movimentacoes m WHERE m.datahorainicio = :dataHoraInicio";
         Query query = entityManager.createQuery(queryString);
         query.setParameter("dataHoraInicio", dataHoraCriacao);
+
+        entityManager.getTransaction().begin();
+        Movimentacao movimentacao = QueryTyper.getPossibleSingleResult(query);
+        entityManager.getTransaction().commit();
+
+        return movimentacao;
+
+    }
+
+    // Analisar parametros informados para a busca
+    private Movimentacao buscarPorNumeroConteinerTipoMovimentacao(String numeroConteiner, String tipoMovimentacao)  {
+
+        EntityManager entityManager = Transacao.ENTITY_MANAGER;
+        String queryString = "FROM movimentacoes m WHERE m.datahorainicio = :dataHoraInicio";
+        Query query = entityManager.createQuery(queryString);
+        query.setParameter("dataHoraInicio", numeroConteiner);
 
         entityManager.getTransaction().begin();
         Movimentacao movimentacao = QueryTyper.getPossibleSingleResult(query);

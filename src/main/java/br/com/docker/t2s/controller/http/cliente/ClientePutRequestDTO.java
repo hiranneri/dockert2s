@@ -1,4 +1,4 @@
-package br.com.docker.t2s.controller.http;
+package br.com.docker.t2s.controller.http.cliente;
 
 import lombok.Builder;
 
@@ -6,16 +6,17 @@ import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
 @Builder
-public class ClienteRequestDTO {
+public class ClientePutRequestDTO {
 
+    @NotEmpty(message = "O campo nome é obrigatório")
     Long id;
     @NotEmpty(message = "O campo nome é obrigatório")
     String nome;
 
-    public ClienteRequestDTO() {
+    public ClientePutRequestDTO() {
     }
 
-    public ClienteRequestDTO(Long id, String nome) {
+    public ClientePutRequestDTO(Long id, String nome) {
         this.id = id;
         this.nome = nome;
     }
@@ -40,7 +41,7 @@ public class ClienteRequestDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ClienteRequestDTO that = (ClienteRequestDTO) o;
+        ClientePutRequestDTO that = (ClientePutRequestDTO) o;
         return Objects.equals(id, that.id) && Objects.equals(nome, that.nome);
     }
 

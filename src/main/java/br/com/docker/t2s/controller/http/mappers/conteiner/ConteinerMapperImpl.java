@@ -1,7 +1,7 @@
 package br.com.docker.t2s.controller.http.mappers.conteiner;
 
-import br.com.docker.t2s.controller.http.ConteinerRequestDTO;
-import br.com.docker.t2s.controller.http.ConteinerResponseDTO;
+import br.com.docker.t2s.controller.http.conteiner.ConteinerPostRequestDTO;
+import br.com.docker.t2s.controller.http.conteiner.ConteinerResponseDTO;
 import br.com.docker.t2s.model.Conteiner;
 import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.model.enums.StatusConteiner;
@@ -12,16 +12,16 @@ import lombok.extern.log4j.Log4j2;
 public class ConteinerMapperImpl implements ConteinerMapper {
 
     @Override
-    public Conteiner toConteiner(ConteinerRequestDTO conteinerRequestDTO) {
-        if ( conteinerRequestDTO == null ) {
+    public Conteiner toConteiner(ConteinerPostRequestDTO conteinerPostRequestDTO) {
+        if ( conteinerPostRequestDTO == null ) {
             return null;
         }
 
         return Conteiner.builder()
-                .id(conteinerRequestDTO.getId())
-                .tipo(TipoConteiner.fromRequest(conteinerRequestDTO.getTipo()))
-                .numero(conteinerRequestDTO.getNumero())
-                .statusConteiner(StatusConteiner.fromRequest(conteinerRequestDTO.getStatusConteiner()))
+                .id(conteinerPostRequestDTO.getId())
+                .tipo(TipoConteiner.fromRequest(conteinerPostRequestDTO.getTipo()))
+                .numero(conteinerPostRequestDTO.getNumero())
+                .statusConteiner(StatusConteiner.fromRequest(conteinerPostRequestDTO.getStatusConteiner()))
                 .status(Status.ATIVO)
                 .build();
     }
@@ -37,6 +37,7 @@ public class ConteinerMapperImpl implements ConteinerMapper {
                 .numeroConteiner(conteiner.getNumero())
                 .tipo(conteiner.getTipo().toString())
                 .statusConteiner(conteiner.getStatusConteiner().toString())
+                .status(Status.ATIVO)
                 .build();
     }
 

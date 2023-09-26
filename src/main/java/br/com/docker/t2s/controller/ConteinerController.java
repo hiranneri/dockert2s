@@ -1,7 +1,8 @@
 package br.com.docker.t2s.controller;
 
-import br.com.docker.t2s.controller.http.ConteinerRequestDTO;
-import br.com.docker.t2s.controller.http.ConteinerResponseDTO;
+import br.com.docker.t2s.controller.http.conteiner.ConteinerPostRequestDTO;
+import br.com.docker.t2s.controller.http.conteiner.ConteinerPutRequestDTO;
+import br.com.docker.t2s.controller.http.conteiner.ConteinerResponseDTO;
 import br.com.docker.t2s.service.abstracao.ConteinerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -23,7 +24,7 @@ public class ConteinerController {
 
     @Transactional(rollbackOn = Exception.class)
     @PostMapping
-    public ResponseEntity<ConteinerResponseDTO> criarConteiner(@RequestBody @Valid ConteinerRequestDTO conteiner){
+    public ResponseEntity<ConteinerResponseDTO> criarConteiner(@RequestBody @Valid ConteinerPostRequestDTO conteiner){
         return new ResponseEntity<>(conteinerService.criar(conteiner), HttpStatus.CREATED);
     }
 
@@ -52,10 +53,8 @@ public class ConteinerController {
     }
 
     @Transactional(rollbackOn = Exception.class)
-    @PutMapping("/{id}")
-    public ResponseEntity<ConteinerResponseDTO> editarConteiner(
-            @PathVariable Long id, @RequestBody @Valid ConteinerRequestDTO conteiner){
-        conteiner.setId(id);
+    @PutMapping()
+    public ResponseEntity<ConteinerResponseDTO> editarConteiner(@RequestBody @Valid ConteinerPutRequestDTO conteiner){
         return new ResponseEntity<>(conteinerService.editar(conteiner), HttpStatus.NO_CONTENT);
 
     }

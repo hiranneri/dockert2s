@@ -1,4 +1,4 @@
-package br.com.docker.t2s.controller.http;
+package br.com.docker.t2s.controller.http.cliente;
 
 import br.com.docker.t2s.model.enums.Status;
 import lombok.Builder;
