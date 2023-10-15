@@ -8,7 +8,7 @@ import br.com.docker.t2s.exceptions.BadRequestException;
 import br.com.docker.t2s.model.Conteiner;
 import br.com.docker.t2s.model.Movimentacao;
 import br.com.docker.t2s.model.TiposMovimentacao;
-import br.com.docker.t2s.model.enums.NomeTipoMovimentacao;
+import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
 import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.repository.MovimentacaoRepository;
 import br.com.docker.t2s.repository.QueryTyper;
@@ -55,8 +55,8 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     }
 
     private TiposMovimentacao pesquisarTipoMovimentacao(String nomeTipo) {
-        NomeTipoMovimentacao nomeTipoMovimentacao = NomeTipoMovimentacao.valueOf(nomeTipo);
-        return tiposMovimentacaoRepository.findByNome(nomeTipoMovimentacao)
+        NomeMovimentacao nomeMovimentacao = NomeMovimentacao.valueOf(nomeTipo);
+        return tiposMovimentacaoRepository.findByNome(nomeMovimentacao)
                 .orElseThrow((
                         ()-> new BadRequestException("Tipo de Movimentação não foi localizada"))
                 );
@@ -93,10 +93,10 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     @Override
     public MovimentacaoResponseDTO editarMovimentacao(MovimentacaoPutRequestDTO movimentacaoPostRequestDTO) {
         pesquisarPorIdOuLancarExcecao(movimentacaoPostRequestDTO.getId());
-        NomeTipoMovimentacao nomeTipoMovimentacao = NomeTipoMovimentacao.valueOf(movimentacaoPostRequestDTO.getTipoMovimentacao());
+        NomeMovimentacao nomeMovimentacao = NomeMovimentacao.valueOf(movimentacaoPostRequestDTO.getTipoMovimentacao());
 
         Conteiner conteiner = conteinerService.buscarConteinerCompletoPeloNumero(movimentacaoPostRequestDTO.getNumeroConteiner());
-        TiposMovimentacao tiposMovimentacao = tiposMovimentacaoRepository.findByNome(nomeTipoMovimentacao)
+        TiposMovimentacao tiposMovimentacao = tiposMovimentacaoRepository.findByNome(nomeMovimentacao)
                 .orElseThrow(()-> new BadRequestException("Tipo de Movimentação não localizada"));
 
         Movimentacao movimentacao = new Movimentacao();

@@ -1,7 +1,7 @@
 package br.com.docker.t2s.utils;
 
 import br.com.docker.t2s.model.TiposMovimentacao;
-import br.com.docker.t2s.model.enums.NomeTipoMovimentacao;
+import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
 
 import java.util.Optional;
 
@@ -10,6 +10,6 @@ public class TiposMovimentacaoCreator {
         return Optional.of(
                 TiposMovimentacao.builder()
                         .id(1L)
-                        .nome(NomeTipoMovimentacao.EMBARQUE).build());
+                        .nome(NomeMovimentacao.EMBARQUE).build());
     }
 }

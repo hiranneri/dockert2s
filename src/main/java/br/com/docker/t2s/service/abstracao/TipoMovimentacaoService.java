@@ -1,7 +1,7 @@
 package br.com.docker.t2s.service.abstracao;
 
 import br.com.docker.t2s.model.TiposMovimentacao;
-import br.com.docker.t2s.model.enums.NomeTipoMovimentacao;
+import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
 
 import java.util.List;
 
@@ -17,5 +17,5 @@ public interface TipoMovimentacaoService {
 
     TiposMovimentacao buscar(Long id);
 
-    TiposMovimentacao buscar(NomeTipoMovimentacao nomeTipoMovimentacao);
+    TiposMovimentacao buscar(NomeMovimentacao nomeMovimentacao);
 }

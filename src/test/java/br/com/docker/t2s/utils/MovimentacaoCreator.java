@@ -5,23 +5,11 @@ import br.com.docker.t2s.controller.http.movimentacao.MovimentacaoPutRequestDTO;
 import br.com.docker.t2s.controller.http.movimentacao.MovimentacaoResponseDTO;
 import br.com.docker.t2s.model.*;
 import br.com.docker.t2s.model.enums.*;
+import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
-/*String cliente;
-    String numeroConteiner;
-    String tipoMovimentacao;
-    String dataHoraInicio;
-    String dataHoraFim;*/
-
-/*String cliente;
-    String numeroConteiner;
-    String categoriaConteiner;
-    String tipoMovimentacao;
-    String dataHoraInicio;
-    String dataHoraFim;*/
 
 public class MovimentacaoCreator {
     public static MovimentacaoPostRequestDTO createMovimentacaoRequestValido() {
@@ -84,7 +72,7 @@ public class MovimentacaoCreator {
                 .id(1L)
                 .dataHoraInicio(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
-                .tiposMovimentacao(new TiposMovimentacao(1L, NomeTipoMovimentacao.EMBARQUE, new ArrayList<>()))
+                .tiposMovimentacao(new TiposMovimentacao(1L, NomeMovimentacao.EMBARQUE, new ArrayList<>()))
                 .conteiner(
                         new Conteiner(
                                 1L,"", TipoConteiner.TIPO_20, StatusConteiner.CHEIO,
@@ -99,7 +87,7 @@ public class MovimentacaoCreator {
                 .id(1L)
                 .dataHoraInicio(LocalDateTime.now().plusDays(1))
                 .updatedAt(LocalDateTime.now())
-                .tiposMovimentacao(new TiposMovimentacao(1L, NomeTipoMovimentacao.EMBARQUE, new ArrayList<>(
+                .tiposMovimentacao(new TiposMovimentacao(1L, NomeMovimentacao.EMBARQUE, new ArrayList<>(
                         List.of(MovimentacaoCreator.createMovimentacao())
                 )))
                 .conteiner(

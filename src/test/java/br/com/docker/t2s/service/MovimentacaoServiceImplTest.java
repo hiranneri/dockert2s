@@ -6,7 +6,7 @@ import br.com.docker.t2s.controller.http.movimentacao.MovimentacaoResponseDTO;
 import br.com.docker.t2s.controller.http.mappers.movimentacao.MovimentacaoMapper;
 import br.com.docker.t2s.exceptions.BadRequestException;
 import br.com.docker.t2s.model.Movimentacao;
-import br.com.docker.t2s.model.enums.NomeTipoMovimentacao;
+import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
 import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.repository.MovimentacaoRepository;
 import br.com.docker.t2s.repository.TiposMovimentacaoRepository;
@@ -67,7 +67,7 @@ class MovimentacaoServiceImplTest {
         BDDMockito.when(movimentacaoRepository.save(ArgumentMatchers.any(Movimentacao.class))).thenReturn(movimentacaoAtiva);
         BDDMockito.when(movimentacaoRepository.findByDataHoraInicio(ArgumentMatchers.any(LocalDateTime.class))).thenReturn(Optional.of(movimentacaoAtiva));
         BDDMockito.when(movimentacaoRepository.save(ArgumentMatchers.any(Movimentacao.class))).thenReturn(movimentacaoEditado);
-        BDDMockito.when(tiposMovimentacaoRepository.findByNome(ArgumentMatchers.any(NomeTipoMovimentacao.class)))
+        BDDMockito.when(tiposMovimentacaoRepository.findByNome(ArgumentMatchers.any(NomeMovimentacao.class)))
                 .thenReturn(TiposMovimentacaoCreator.createTiposMovimentacao());
         BDDMockito.when(movimentacaoRepository.findById(movimentacaoRequestEditado.getId()))
                 .thenReturn(Optional.of(MovimentacaoCreator.createMovimentacaoEditada()));
