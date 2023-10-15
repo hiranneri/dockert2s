@@ -1,4 +1,4 @@
-package br.com.docker.t2s.service.abstracao;
+package br.com.docker.t2s.service.interfaces;
 
 import br.com.docker.t2s.controller.http.cliente.ClientePostRequestDTO;
 import br.com.docker.t2s.controller.http.cliente.ClientePutRequestDTO;

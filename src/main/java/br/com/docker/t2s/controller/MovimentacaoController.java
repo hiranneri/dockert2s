@@ -3,7 +3,7 @@ package br.com.docker.t2s.controller;
 import br.com.docker.t2s.controller.http.movimentacao.MovimentacaoPostRequestDTO;
 import br.com.docker.t2s.controller.http.movimentacao.MovimentacaoPutRequestDTO;
 import br.com.docker.t2s.controller.http.movimentacao.MovimentacaoResponseDTO;
-import br.com.docker.t2s.service.abstracao.MovimentacaoService;
+import br.com.docker.t2s.service.interfaces.MovimentacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,7 +29,7 @@ public class MovimentacaoController {
     }
 
     @Transactional(rollbackOn = Exception.class)
-    @PostMapping
+    @PostMapping("/finalizar")
     public ResponseEntity<MovimentacaoResponseDTO> finalizarMovimentacao(@RequestBody @Valid MovimentacaoPostRequestDTO movimentacaoPostRequestDTO) {
         return new ResponseEntity<>(movimentacaoService.finalizar(movimentacaoPostRequestDTO), HttpStatus.CREATED);
     }

@@ -10,7 +10,7 @@ import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.model.enums.TipoCategoria;
 import br.com.docker.t2s.repository.CategoriaRepository;
 import br.com.docker.t2s.repository.ConteinerRepository;
-import br.com.docker.t2s.service.abstracao.ClienteService;
+import br.com.docker.t2s.service.interfaces.ClienteService;
 import br.com.docker.t2s.utils.CategoriaCreator;
 import br.com.docker.t2s.utils.ClienteCreator;
 import br.com.docker.t2s.utils.ConteinerCreator;

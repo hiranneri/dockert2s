@@ -3,7 +3,7 @@ package br.com.docker.t2s.service;
 import br.com.docker.t2s.model.TiposMovimentacao;
 import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
 import br.com.docker.t2s.repository.TiposMovimentacaoRepository;
-import br.com.docker.t2s.service.abstracao.TipoMovimentacaoService;
+import br.com.docker.t2s.service.interfaces.TipoMovimentacaoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.boot.context.event.ApplicationReadyEvent;

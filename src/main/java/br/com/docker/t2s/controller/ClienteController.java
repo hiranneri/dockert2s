@@ -3,12 +3,13 @@ package br.com.docker.t2s.controller;
 import br.com.docker.t2s.controller.http.cliente.ClientePostRequestDTO;
 import br.com.docker.t2s.controller.http.cliente.ClientePutRequestDTO;
 import br.com.docker.t2s.controller.http.cliente.ClienteResponseDTO;
-import br.com.docker.t2s.service.abstracao.ClienteService;
+import br.com.docker.t2s.service.interfaces.ClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
@@ -29,6 +30,7 @@ public class ClienteController {
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ClienteResponseDTO>> buscarClientes(){
         return ResponseEntity.ok(clienteService.buscarTodos());
     }

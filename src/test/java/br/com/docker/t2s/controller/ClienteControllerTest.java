@@ -4,7 +4,7 @@ import br.com.docker.t2s.controller.http.cliente.ClientePostRequestDTO;
 import br.com.docker.t2s.controller.http.cliente.ClientePutRequestDTO;
 import br.com.docker.t2s.controller.http.cliente.ClienteResponseDTO;
 import br.com.docker.t2s.model.enums.Status;
-import br.com.docker.t2s.service.abstracao.ClienteService;
+import br.com.docker.t2s.service.interfaces.ClienteService;
 import br.com.docker.t2s.utils.ClienteCreator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

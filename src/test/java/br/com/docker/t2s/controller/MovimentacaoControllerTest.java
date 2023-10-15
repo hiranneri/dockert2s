@@ -3,7 +3,7 @@ package br.com.docker.t2s.controller;
 import br.com.docker.t2s.controller.http.movimentacao.MovimentacaoPostRequestDTO;
 import br.com.docker.t2s.controller.http.movimentacao.MovimentacaoPutRequestDTO;
 import br.com.docker.t2s.controller.http.movimentacao.MovimentacaoResponseDTO;
-import br.com.docker.t2s.service.abstracao.MovimentacaoService;
+import br.com.docker.t2s.service.interfaces.MovimentacaoService;
 import br.com.docker.t2s.utils.MovimentacaoCreator;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.List;
-import java.util.Objects;
 
 @ExtendWith(SpringExtension.class)
 class MovimentacaoControllerTest {

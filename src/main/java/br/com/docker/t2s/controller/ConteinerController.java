@@ -3,7 +3,7 @@ package br.com.docker.t2s.controller;
 import br.com.docker.t2s.controller.http.conteiner.ConteinerPostRequestDTO;
 import br.com.docker.t2s.controller.http.conteiner.ConteinerPutRequestDTO;
 import br.com.docker.t2s.controller.http.conteiner.ConteinerResponseDTO;
-import br.com.docker.t2s.service.abstracao.ConteinerService;
+import br.com.docker.t2s.service.interfaces.ConteinerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

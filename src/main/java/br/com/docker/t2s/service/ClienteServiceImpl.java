@@ -8,7 +8,7 @@ import br.com.docker.t2s.exceptions.BadRequestException;
 import br.com.docker.t2s.model.Cliente;
 import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.repository.ClienteRepository;
-import br.com.docker.t2s.service.abstracao.ClienteService;
+import br.com.docker.t2s.service.interfaces.ClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
