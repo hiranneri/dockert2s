@@ -56,6 +56,13 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(detalhesExcecao, headers, status);
     }
 
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+
+        return handleExceptionInternal(ex, null, headers, status, request);
+    }
+
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(
