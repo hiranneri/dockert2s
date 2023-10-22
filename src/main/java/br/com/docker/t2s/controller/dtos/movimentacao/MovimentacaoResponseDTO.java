@@ -1,4 +1,4 @@
-package br.com.docker.t2s.controller.http.movimentacao;
+package br.com.docker.t2s.controller.dtos.movimentacao;
 
 import br.com.docker.t2s.model.enums.Status;
 import lombok.Builder;

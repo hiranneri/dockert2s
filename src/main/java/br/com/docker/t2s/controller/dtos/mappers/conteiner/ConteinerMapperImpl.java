@@ -1,7 +1,7 @@
-package br.com.docker.t2s.controller.http.mappers.conteiner;
+package br.com.docker.t2s.controller.dtos.mappers.conteiner;
 
-import br.com.docker.t2s.controller.http.conteiner.ConteinerPostRequestDTO;
-import br.com.docker.t2s.controller.http.conteiner.ConteinerResponseDTO;
+import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPostRequestDTO;
+import br.com.docker.t2s.controller.dtos.conteiner.ConteinerResponseDTO;
 import br.com.docker.t2s.model.Conteiner;
 import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.model.enums.StatusConteiner;

@@ -1,8 +1,8 @@
 package br.com.docker.t2s.controller;
 
-import br.com.docker.t2s.controller.http.cliente.ClientePostRequestDTO;
-import br.com.docker.t2s.controller.http.cliente.ClientePutRequestDTO;
-import br.com.docker.t2s.controller.http.cliente.ClienteResponseDTO;
+import br.com.docker.t2s.controller.dtos.cliente.ClientePostRequestDTO;
+import br.com.docker.t2s.controller.dtos.cliente.ClientePutRequestDTO;
+import br.com.docker.t2s.controller.dtos.cliente.ClienteResponseDTO;
 import br.com.docker.t2s.service.interfaces.ClienteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,12 +30,12 @@ public class ClienteController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ClienteResponseDTO>> buscarClientes(){
         return ResponseEntity.ok(clienteService.buscarTodos());
     }
 
     @GetMapping("/all")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Page<ClienteResponseDTO>> buscarClientes(Pageable pageable){
         return ResponseEntity.ok(clienteService.buscarTodos(pageable));
     }

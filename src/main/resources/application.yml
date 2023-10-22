@@ -26,3 +26,7 @@ logging:
     pathmatch:
       matching-strategy: ant_path_matcher
 
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:my-secret-t2s}

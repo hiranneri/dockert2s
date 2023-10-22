@@ -1,6 +1,6 @@
-package br.com.docker.t2s.controller.http.mappers.movimentacao;
+package br.com.docker.t2s.controller.dtos.mappers.movimentacao;
 
-import br.com.docker.t2s.controller.http.movimentacao.MovimentacaoResponseDTO;
+import br.com.docker.t2s.controller.dtos.movimentacao.MovimentacaoResponseDTO;
 import br.com.docker.t2s.model.Movimentacao;
 import br.com.docker.t2s.utils.DataUtils;
 

@@ -1,30 +1,45 @@
-version: '3.5'
+version: '2.4'
 x-database-variables: &database-variables
-  SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/dockert2s?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
+  SPRING_DATASOURCE_URL: jdbc:mysql://dockert2s-mysql:3306/dockert2s?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
   SPRING_DATASOURCE_USERNAME: root
   SPRING_DATASOURCE_PASSWORD: secret
   SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+  SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
 
 services:
   banco:
     image: mysql
     command: --innodb-use-native-aio=0
-    container_name: mysql
+    container_name: dockert2s-mysql
     restart: always
     ports:
       - "3306:3306"
     tty: true
     volumes:
-      - "mysql_volume:/var/lib/mysql"
+      - "dockert2s-mysql-volume:/var/lib/mysql"
     environment:
       - MYSQL_DATABASE=dockert2s
       - MYSQL_ROOT_PASSWORD=secret
     networks:
-      - network
+      - dockert2s-network
+    mem_limit: 512m
+
+  dockert2s:
+    image: registry.hub.docker.com/hiranneri0/dockert2s:1.0-SNAPSHOT
+    container_name: dockert2s
+    ports:
+      - "8080:8080"
+    environment:
+      <<: *database-variables
+    networks:
+      - dockert2s-network
+
+    mem_limit: 512m
+    depends_on: [banco]
 
 networks:
-  network:
+  dockert2s-network:
     driver: bridge
 
 volumes:
-  mysql_volume:
+  dockert2s-mysql-volume:

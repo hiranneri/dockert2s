@@ -1,9 +1,9 @@
 package br.com.docker.t2s.service;
 
-import br.com.docker.t2s.controller.http.movimentacao.MovimentacaoPostRequestDTO;
-import br.com.docker.t2s.controller.http.movimentacao.MovimentacaoPutRequestDTO;
-import br.com.docker.t2s.controller.http.movimentacao.MovimentacaoResponseDTO;
-import br.com.docker.t2s.controller.http.mappers.movimentacao.MovimentacaoMapper;
+import br.com.docker.t2s.controller.dtos.movimentacao.MovimentacaoPostRequestDTO;
+import br.com.docker.t2s.controller.dtos.movimentacao.MovimentacaoPutRequestDTO;
+import br.com.docker.t2s.controller.dtos.movimentacao.MovimentacaoResponseDTO;
+import br.com.docker.t2s.controller.dtos.mappers.movimentacao.MovimentacaoMapper;
 import br.com.docker.t2s.exceptions.BadRequestException;
 import br.com.docker.t2s.model.Movimentacao;
 import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;

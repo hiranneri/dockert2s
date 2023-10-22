@@ -1,8 +1,8 @@
 package br.com.docker.t2s.utils;
 
-import br.com.docker.t2s.controller.http.conteiner.ConteinerPostRequestDTO;
-import br.com.docker.t2s.controller.http.conteiner.ConteinerPutRequestDTO;
-import br.com.docker.t2s.controller.http.conteiner.ConteinerResponseDTO;
+import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPostRequestDTO;
+import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPutRequestDTO;
+import br.com.docker.t2s.controller.dtos.conteiner.ConteinerResponseDTO;
 import br.com.docker.t2s.model.Cliente;
 import br.com.docker.t2s.model.Conteiner;
 import br.com.docker.t2s.model.enums.Status;

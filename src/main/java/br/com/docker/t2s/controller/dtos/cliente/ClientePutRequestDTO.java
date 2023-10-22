@@ -1,4 +1,4 @@
-package br.com.docker.t2s.controller.http.cliente;
+package br.com.docker.t2s.controller.dtos.cliente;
 
 import lombok.Builder;
 

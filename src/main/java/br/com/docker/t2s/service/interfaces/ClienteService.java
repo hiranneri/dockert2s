@@ -1,8 +1,8 @@
 package br.com.docker.t2s.service.interfaces;
 
-import br.com.docker.t2s.controller.http.cliente.ClientePostRequestDTO;
-import br.com.docker.t2s.controller.http.cliente.ClientePutRequestDTO;
-import br.com.docker.t2s.controller.http.cliente.ClienteResponseDTO;
+import br.com.docker.t2s.controller.dtos.cliente.ClientePostRequestDTO;
+import br.com.docker.t2s.controller.dtos.cliente.ClientePutRequestDTO;
+import br.com.docker.t2s.controller.dtos.cliente.ClienteResponseDTO;
 import br.com.docker.t2s.model.Cliente;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

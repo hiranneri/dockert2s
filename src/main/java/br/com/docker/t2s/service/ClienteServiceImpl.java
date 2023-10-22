@@ -1,9 +1,9 @@
 package br.com.docker.t2s.service;
 
-import br.com.docker.t2s.controller.http.cliente.ClientePostRequestDTO;
-import br.com.docker.t2s.controller.http.cliente.ClientePutRequestDTO;
-import br.com.docker.t2s.controller.http.cliente.ClienteResponseDTO;
-import br.com.docker.t2s.controller.http.mappers.cliente.ClienteMapper;
+import br.com.docker.t2s.controller.dtos.cliente.ClientePostRequestDTO;
+import br.com.docker.t2s.controller.dtos.cliente.ClientePutRequestDTO;
+import br.com.docker.t2s.controller.dtos.cliente.ClienteResponseDTO;
+import br.com.docker.t2s.controller.dtos.mappers.cliente.ClienteMapper;
 import br.com.docker.t2s.exceptions.BadRequestException;
 import br.com.docker.t2s.model.Cliente;
 import br.com.docker.t2s.model.enums.Status;
