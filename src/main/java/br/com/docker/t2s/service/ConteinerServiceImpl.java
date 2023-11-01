@@ -4,7 +4,7 @@ import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPostRequestDTO;
 import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPutRequestDTO;
 import br.com.docker.t2s.controller.dtos.conteiner.ConteinerResponseDTO;
 import br.com.docker.t2s.controller.dtos.mappers.conteiner.ConteinerMapper;
-import br.com.docker.t2s.exceptions.BadRequestException;
+import br.com.docker.t2s.exceptions.responsehandler.BadRequestException;
 import br.com.docker.t2s.model.Categoria;
 import br.com.docker.t2s.model.Cliente;
 import br.com.docker.t2s.model.Conteiner;
@@ -36,9 +36,9 @@ public class ConteinerServiceImpl implements ConteinerService {
         Conteiner conteiner = ConteinerMapper.INSTANCE.toConteiner(conteinerRequestDTO);
         Categoria categoria = pesquisarCategoria(conteinerRequestDTO.getCategoria());
         Cliente cliente = clienteService.buscarClienteCompleto(conteinerRequestDTO.getCliente());
-
         conteiner.setCategoria(categoria);
         conteiner.setCliente(cliente);
+
         Conteiner conteinerSalvo = conteinerRepository.save(conteiner);
 
         ConteinerResponseDTO conteinerResponse = ConteinerMapper.INSTANCE.toConteinerResponse(conteinerSalvo);
@@ -48,7 +48,7 @@ public class ConteinerServiceImpl implements ConteinerService {
     }
 
     private Categoria pesquisarCategoria(String nome) {
-        return categoriaRepository.findByNome(TipoCategoria.valueOf(nome));
+        return categoriaRepository.findByNome(TipoCategoria.paraTipoCategoria(nome));
     }
 
     @Override

@@ -1,8 +1,10 @@
 package br.com.docker.t2s.model.enums;
 
+import br.com.docker.t2s.exceptions.responsehandler.BadRequestException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.text.Normalizer;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -12,9 +14,9 @@ import java.util.stream.Stream;
 public enum TipoCategoria {
 
     @JsonProperty("categoria")
-    IMPORTACAO("IMPORTACAO"),
+    IMPORTACAO("IMPORTAÇÃO"),
     @JsonProperty("categoria")
-    EXPORTACAO("EXPORTACAO");
+    EXPORTACAO("EXPORTAÇÃO");
 
     private static Map<String, TipoCategoria> TIPOS_MAPA = Stream.of(TipoCategoria.values())
             .collect(Collectors.toMap(categoria -> categoria.valor, Function.identity()));
@@ -26,10 +28,10 @@ public enum TipoCategoria {
     }
 
     @JsonCreator
-    public static TipoCategoria fromRequest(String status) {
+    public static TipoCategoria paraTipoCategoria(String tipoCategoriaInformado) throws BadRequestException{
         return Optional
-                .ofNullable(TIPOS_MAPA.get(status))
-                .orElseThrow(() -> new IllegalArgumentException(status));
+                .ofNullable(TIPOS_MAPA.get(tipoCategoriaInformado))
+                .orElseThrow(() -> new BadRequestException("Tipo de Categoria não localizado"));
     }
 
     @Override

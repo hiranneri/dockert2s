@@ -1,7 +1,8 @@
 package br.com.docker.t2s.exceptions;
 
-import br.com.docker.t2s.exceptions.requesthandler.DetalhesValidacaoException;
+import br.com.docker.t2s.exceptions.responsehandler.BadRequestException;
 import br.com.docker.t2s.exceptions.responsehandler.UnauthorizedException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -91,4 +92,16 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         );
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<DetalhesErroException> handleDataIntegrityViolationException(
+            DataIntegrityViolationException dataIntegrityViolationException) {
+        return new ResponseEntity<DetalhesErroException>(
+                DetalhesErroException.builder()
+                        .titulo("Bad Request")
+                        .dataHora(LocalDateTime.now())
+                        .status(HttpStatus.BAD_REQUEST.value())
+                        .mensagem("Já existe um registro com os dados enviados")
+                        .build(), HttpStatus.BAD_REQUEST
+        );
+    }
 }

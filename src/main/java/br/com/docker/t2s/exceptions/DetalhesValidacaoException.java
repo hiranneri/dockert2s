@@ -1,6 +1,5 @@
-package br.com.docker.t2s.exceptions.requesthandler;
+package br.com.docker.t2s.exceptions;
 
-import br.com.docker.t2s.exceptions.DetalhesErroException;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 

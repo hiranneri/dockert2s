@@ -4,7 +4,7 @@ import br.com.docker.t2s.controller.dtos.movimentacao.MovimentacaoPostRequestDTO
 import br.com.docker.t2s.controller.dtos.movimentacao.MovimentacaoPutRequestDTO;
 import br.com.docker.t2s.controller.dtos.movimentacao.MovimentacaoResponseDTO;
 import br.com.docker.t2s.controller.dtos.mappers.movimentacao.MovimentacaoMapper;
-import br.com.docker.t2s.exceptions.BadRequestException;
+import br.com.docker.t2s.exceptions.responsehandler.BadRequestException;
 import br.com.docker.t2s.model.Movimentacao;
 import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
 import br.com.docker.t2s.model.enums.Status;

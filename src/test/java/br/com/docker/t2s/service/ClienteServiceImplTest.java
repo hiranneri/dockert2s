@@ -3,7 +3,7 @@ package br.com.docker.t2s.service;
 import br.com.docker.t2s.controller.dtos.cliente.ClientePostRequestDTO;
 import br.com.docker.t2s.controller.dtos.cliente.ClientePutRequestDTO;
 import br.com.docker.t2s.controller.dtos.cliente.ClienteResponseDTO;
-import br.com.docker.t2s.exceptions.BadRequestException;
+import br.com.docker.t2s.exceptions.responsehandler.BadRequestException;
 import br.com.docker.t2s.model.Cliente;
 import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.repository.ClienteRepository;

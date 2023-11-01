@@ -4,6 +4,7 @@ import br.com.docker.t2s.exceptions.responsehandler.UnauthorizedException;
 import br.com.docker.t2s.model.UsuarioDockerT2S;
 import br.com.docker.t2s.repository.UserRepository;
 import br.com.docker.t2s.utils.TokenUtils;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletResponse;
  * Filtro de segurança para validação do token enviado em cada requisição
  */
 @Component
+@Log4j2
 public class SecurityFilter extends OncePerRequestFilter {
 
     @Autowired
@@ -50,6 +52,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             }
             filterChain.doFilter(request,response);
         } catch (Exception e) {
+            log.info("Erro "+ e.getMessage());
             resolver.resolveException(request, response, null, e);
         }
 
