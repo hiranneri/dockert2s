@@ -55,13 +55,14 @@ public class ClienteController {
     public ResponseEntity<ClienteResponseDTO> editarCliente(@PathVariable Long id,
                                                             @RequestBody @Valid ClientePutRequestDTO cliente){
         cliente.setId(id);
-        return new ResponseEntity<>(clienteService.editar(cliente), HttpStatus.NO_CONTENT);
+        return ResponseEntity.ok(clienteService.editar(cliente));
     }
 
     @Transactional(rollbackOn = Exception.class)
     @DeleteMapping("/{id}")
-    public ResponseEntity<ClienteResponseDTO> excluirCliente(@PathVariable Long id){
-        return new ResponseEntity<>(clienteService.desativar(id), HttpStatus.NO_CONTENT);
+    public ResponseEntity<Void> excluirCliente(@PathVariable Long id){
+        clienteService.desativar(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 

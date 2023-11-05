@@ -23,6 +23,7 @@ import java.util.List;
 public class ClienteServiceImpl implements ClienteService {
 
     private final ClienteRepository clienteRepository;
+    private final Status statusAtivo = Status.ATIVO;
 
     @Override
     public ClienteResponseDTO criar(ClientePostRequestDTO clienteRequestDTO) {
@@ -36,14 +37,16 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     public ClienteResponseDTO buscarPeloIDOuLancarExcecaoNaoEncontrado(Long id) {
-        return ClienteMapper.INSTANCE.toClienteResponse(clienteRepository.findById(id)
+        return ClienteMapper.INSTANCE.toClienteResponse(clienteRepository.findByIdAndStatus(id, statusAtivo)
                 .orElseThrow(() -> new BadRequestException("Cliente não encontrado")));
     }
 
     @Override
     public ClienteResponseDTO editar(ClientePutRequestDTO clientePutRequestDTO) {
         buscarPeloIDOuLancarExcecaoNaoEncontrado(clientePutRequestDTO.getId());
+
         Cliente cliente = ClienteMapper.INSTANCE.toCliente(clientePutRequestDTO);
+
         return ClienteMapper.INSTANCE.toClienteResponse(clienteRepository.save(cliente));
 
     }
@@ -57,21 +60,24 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public ClienteResponseDTO desativar(Long id) {
         ClienteResponseDTO clienteLocalizado = buscarPeloIDOuLancarExcecaoNaoEncontrado(id);
+
         Cliente cliente = ClienteMapper.INSTANCE.toCliente(clienteLocalizado);
         cliente.setId(id);
         cliente.setStatus(Status.INATIVO);
+
         clienteRepository.save(cliente);
-        return clienteLocalizado;
+
+        return ClienteMapper.INSTANCE.toClienteResponse(cliente);
     }
 
     @Override
     public ClienteResponseDTO buscarPeloNome(String nome) {
-        return ClienteMapper.INSTANCE.toClienteResponse(clienteRepository.findByNome(nome)
+        return ClienteMapper.INSTANCE.toClienteResponse(clienteRepository.findByNomeAndStatus(nome,statusAtivo)
                 .orElseThrow(() -> new BadRequestException("Cliente não encontrado")));
     }
 
     public Cliente buscarClienteCompleto(String nome) {
-        return clienteRepository.findByNome(nome).orElseThrow(() -> new BadRequestException("Cliente não encontrado"));
+        return clienteRepository.findByNomeAndStatus(nome, statusAtivo).orElseThrow(() -> new BadRequestException("Cliente não encontrado"));
     }
 
     @Override

@@ -4,6 +4,7 @@ import br.com.docker.t2s.controller.dtos.cliente.ClientePostRequestDTO;
 import br.com.docker.t2s.controller.dtos.cliente.ClientePutRequestDTO;
 import br.com.docker.t2s.controller.dtos.cliente.ClienteResponseDTO;
 import br.com.docker.t2s.model.Cliente;
+import br.com.docker.t2s.model.enums.Status;
 
 public class ClienteMapperImpl implements ClienteMapper{
     @Override
@@ -27,6 +28,7 @@ public class ClienteMapperImpl implements ClienteMapper{
         return Cliente.builder()
                 .id(clientePutRequestDTO.getId())
                 .nome(clientePutRequestDTO.getNome())
+                .status(Status.ATIVO)
                 .build();
     }
 
@@ -50,6 +52,7 @@ public class ClienteMapperImpl implements ClienteMapper{
 
         return Cliente.builder()
                 .nome(clienteResponseDTO.getNome())
+                .status(Status.ATIVO)
                 .build();
     }
 }

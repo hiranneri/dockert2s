@@ -4,6 +4,7 @@ import br.com.docker.t2s.controller.dtos.login.LoginPostRequest;
 import br.com.docker.t2s.controller.dtos.login.LoginPostResponse;
 import br.com.docker.t2s.controller.dtos.mappers.register.UsuarioMapper;
 import br.com.docker.t2s.controller.dtos.registerUsuario.RegisterPostRequest;
+import br.com.docker.t2s.controller.dtos.registerUsuario.RegisterPostResponse;
 import br.com.docker.t2s.model.UsuarioDockerT2S;
 import br.com.docker.t2s.repository.UserRepository;
 import br.com.docker.t2s.service.interfaces.AcessoService;
@@ -36,6 +37,7 @@ public class AcessoServiceImpl implements AcessoService {
                         login.getSenha());
 
         Authentication auth = this.authenticationManager.authenticate(loginESenha);
+        log.info("Usuário autenticado!");
 
         UsuarioDockerT2S usuario = (UsuarioDockerT2S) auth.getPrincipal();
         String token = tokenUtils.gerarToken(usuario);
@@ -48,11 +50,11 @@ public class AcessoServiceImpl implements AcessoService {
     }
 
     @Override
-    public UsuarioDockerT2S cadastrar(RegisterPostRequest registro) {
+    public RegisterPostResponse cadastrar(RegisterPostRequest registro) {
         registro.setPassword(new BCryptPasswordEncoder().encode(registro.getPassword()));
         UsuarioDockerT2S usuarioDockerT2S = UsuarioMapper.INSTANCE.toUsuario(registro);
-
-        return userRepository.save(usuarioDockerT2S);
+        UsuarioDockerT2S usuarioSalvo = userRepository.save(usuarioDockerT2S);
+        return UsuarioMapper.INSTANCE.toRegisterResponse(usuarioSalvo);
 
     }
 }

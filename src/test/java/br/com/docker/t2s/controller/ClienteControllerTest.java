@@ -117,7 +117,7 @@ class ClienteControllerTest {
         Assertions.assertNotNull(clienteAlterado);
         Assertions.assertNotNull(clienteResponseDTO);
         Assertions.assertEquals(clienteResponseDTO.getNome(), clienteASerEditadoRequest.getNome());
-        Assertions.assertEquals(HttpStatus.NO_CONTENT, clienteAlterado.getStatusCode());
+        Assertions.assertEquals(HttpStatus.OK, clienteAlterado.getStatusCode());
 
     }
 
@@ -125,7 +125,7 @@ class ClienteControllerTest {
     public void excluirCliente_DesativaUmCliente_QuandoSucedido(){
         ClientePutRequestDTO clienteASerDesativadoRequest = ClienteCreator.createClienteRequestValido();
 
-        ResponseEntity<ClienteResponseDTO> clienteDesativado = clienteController.excluirCliente(clienteASerDesativadoRequest.getId());
+        ResponseEntity<Void> clienteDesativado = clienteController.excluirCliente(clienteASerDesativadoRequest.getId());
 
         Assertions.assertNotNull(clienteDesativado);
         Assertions.assertEquals(HttpStatus.NO_CONTENT, clienteDesativado.getStatusCode());

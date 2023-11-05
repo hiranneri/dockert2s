@@ -21,6 +21,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.*;
 
+import static org.mockito.ArgumentMatchers.eq;
+
 @ExtendWith(SpringExtension.class)
 class ClienteServiceImplTest {
 
@@ -43,7 +45,8 @@ class ClienteServiceImplTest {
         BDDMockito.when(clienteRepository.findAll()).thenReturn(List.of(clienteAtivo));
 
         BDDMockito.when(clienteRepository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.of(clienteAtivo));
-        BDDMockito.when(clienteRepository.findByNome(ArgumentMatchers.anyString())).thenReturn(Optional.of(clienteAtivo));
+        BDDMockito.when(clienteRepository.findByNomeAndStatus(ArgumentMatchers.anyString(), eq(Status.ATIVO))).thenReturn(Optional.of(clienteAtivo));
+        BDDMockito.when(clienteRepository.findByIdAndStatus(ArgumentMatchers.anyLong(), eq(Status.ATIVO))).thenReturn(Optional.of(clienteAtivo));
 
         BDDMockito.when(clienteRepository.save(ArgumentMatchers.any(Cliente.class))).thenReturn(clienteDesativado); // desativar
     }
@@ -116,9 +119,12 @@ class ClienteServiceImplTest {
 
     @Test
     public void buscarPeloIDOuLancarExcecaoNaoEncontrado_RetornaUmaExcecao_QuandoClienteInvalido(){
-        BDDMockito.when(clienteRepository.findById(50L)).thenReturn(Optional.empty());
+        Long idInexistente = 50L;
+        BDDMockito.when(clienteRepository.findByIdAndStatus(ArgumentMatchers.anyLong(), eq(Status.ATIVO))).thenThrow(BadRequestException.class);
 
-        Assertions.assertThrows(BadRequestException.class,()-> clienteService.buscarPeloIDOuLancarExcecaoNaoEncontrado(50L));
+        Assertions.assertThrows(BadRequestException.class,()->
+                clienteService.buscarPeloIDOuLancarExcecaoNaoEncontrado(idInexistente)
+        );
 
     }
 
@@ -158,7 +164,7 @@ class ClienteServiceImplTest {
 
     @Test
     public void buscarPeloNome_RetornaUmaExcecao_QuandoNomeClienteInexistente(){
-        BDDMockito.when(clienteRepository.findByNome(ArgumentMatchers.anyString())).thenThrow(BadRequestException.class);
+        BDDMockito.when(clienteRepository.findByNomeAndStatus(ArgumentMatchers.anyString(),eq(Status.ATIVO))).thenThrow(BadRequestException.class);
 
         Assertions.assertThrows(BadRequestException.class,
                 ()->
@@ -169,7 +175,7 @@ class ClienteServiceImplTest {
 
     @Test
     public void buscarClienteCompleto_RetornaUmaExcecao_QuandoClienteInexistente(){
-        BDDMockito.when(clienteRepository.findByNome(ArgumentMatchers.anyString())).thenReturn(Optional.empty());
+        BDDMockito.when(clienteRepository.findByNomeAndStatus(ArgumentMatchers.anyString(),eq(Status.ATIVO))).thenReturn(Optional.empty());
 
         Assertions.assertThrows(BadRequestException.class,
                 ()-> clienteService.buscarClienteCompleto(

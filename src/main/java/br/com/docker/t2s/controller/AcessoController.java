@@ -3,6 +3,7 @@ package br.com.docker.t2s.controller;
 import br.com.docker.t2s.controller.dtos.login.LoginPostRequest;
 import br.com.docker.t2s.controller.dtos.login.LoginPostResponse;
 import br.com.docker.t2s.controller.dtos.registerUsuario.RegisterPostRequest;
+import br.com.docker.t2s.controller.dtos.registerUsuario.RegisterPostResponse;
 import br.com.docker.t2s.service.interfaces.AcessoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -29,7 +30,7 @@ public class AcessoController {
 
     @Transactional(rollbackOn = Exception.class)
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody @Valid RegisterPostRequest registro){        ;
-        return new ResponseEntity<>(acessoService.cadastrar(registro), HttpStatus.OK);
+    public ResponseEntity<RegisterPostResponse> register(@RequestBody @Valid RegisterPostRequest registro){
+        return new ResponseEntity<>(acessoService.cadastrar(registro), HttpStatus.CREATED);
     }
 }
