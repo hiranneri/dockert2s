@@ -52,4 +52,14 @@ public class Conteiner {
         this.status = Status.ATIVO;
     }
 
+    @Override
+    public String toString() {
+        return "Conteiner{" +
+                "id=" + id +
+                ", numero='" + numero + '\'' +
+                ", tipo=" + tipo +
+                ", cliente=" + cliente +
+                ", status=" + status +
+                '}';
+    }
 }

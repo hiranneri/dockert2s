@@ -53,7 +53,7 @@ class ConteinerControllerTest {
         ResponseEntity<ConteinerResponseDTO> conteinerResponseSalvo = conteinerController.criarConteiner(conteinerPostRequestDTO);
 
         Assertions.assertNotNull(conteinerResponseSalvo);
-        Assertions.assertEquals(conteinerPostRequestDTO.getCliente(), Objects.requireNonNull(conteinerResponseSalvo.getBody()).getCliente());
+        Assertions.assertEquals(conteinerPostRequestDTO.getNomeCliente(), Objects.requireNonNull(conteinerResponseSalvo.getBody()).getNomeCliente());
         Assertions.assertEquals(conteinerPostRequestDTO.getNumero(), Objects.requireNonNull(conteinerResponseSalvo.getBody().getNumeroConteiner()));
         Assertions.assertEquals(HttpStatus.CREATED, conteinerResponseSalvo.getStatusCode());
     }
@@ -72,9 +72,7 @@ class ConteinerControllerTest {
 
         Assertions.assertNotNull(conteinerLocalizado);
         Assertions.assertNotNull(conteinerLocalizado.getBody());
-        Assertions.assertNotNull(conteinerLocalizado.getBody().getCliente());
-        Assertions.assertEquals(Status.ATIVO,conteinerLocalizado.getBody().getStatus());
-
+        Assertions.assertNotNull(conteinerLocalizado.getBody().getNomeCliente());
         Assertions.assertEquals(HttpStatus.OK, conteinerLocalizado.getStatusCode());
     }
 
@@ -85,7 +83,6 @@ class ConteinerControllerTest {
 
         Assertions.assertNotNull(conteinerLocalizado);
         Assertions.assertEquals(numero, Objects.requireNonNull(conteinerLocalizado.getBody()).getNumeroConteiner());
-        Assertions.assertEquals(Status.ATIVO, Objects.requireNonNull(conteinerLocalizado.getBody()).getStatus());
         Assertions.assertEquals(HttpStatus.OK, conteinerLocalizado.getStatusCode());
     }
 
@@ -93,22 +90,21 @@ class ConteinerControllerTest {
     void editarConteiner() {
         ConteinerPutRequestDTO conteinerASerEditadoRequest = ConteinerCreator.createConteinerPutRequestValido();
 
-        ResponseEntity<ConteinerResponseDTO> conteinerAlterado = conteinerController.editarConteiner(conteinerASerEditadoRequest);
-        ConteinerResponseDTO ConteinerResponseDTO = conteinerAlterado.getBody();
+        ResponseEntity<ConteinerResponseDTO> conteinerAlterado = conteinerController.editarConteiner(1L,conteinerASerEditadoRequest);
+        ConteinerResponseDTO conteinerResponseDTO = conteinerAlterado.getBody();
 
         Assertions.assertNotNull(conteinerAlterado);
-        Assertions.assertNotNull(ConteinerResponseDTO);
-        Assertions.assertEquals(ConteinerResponseDTO.getNumeroConteiner(), conteinerASerEditadoRequest.getNumero());
-        Assertions.assertEquals(HttpStatus.NO_CONTENT, conteinerAlterado.getStatusCode());
+        Assertions.assertNotNull(conteinerResponseDTO);
+        Assertions.assertEquals(conteinerResponseDTO.getNumeroConteiner(), conteinerASerEditadoRequest.getNumero());
+        Assertions.assertEquals(HttpStatus.OK, conteinerAlterado.getStatusCode());
     }
 
     @Test
     void excluirConteiner() {
         ConteinerPostRequestDTO conteinerASerDesativadoRequest = ConteinerCreator.createConteinerPostRequestValido();
 
-        ResponseEntity<ConteinerResponseDTO> conteinerDesativado = conteinerController.excluirConteiner(conteinerASerDesativadoRequest.getId());
+        ResponseEntity<Void> conteinerDesativado = conteinerController.excluirConteiner(conteinerASerDesativadoRequest.getId());
 
-        Assertions.assertNotNull(conteinerDesativado);
         Assertions.assertEquals(HttpStatus.NO_CONTENT, conteinerDesativado.getStatusCode());
     }
 }

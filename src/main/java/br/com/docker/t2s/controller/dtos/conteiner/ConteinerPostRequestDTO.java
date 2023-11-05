@@ -14,12 +14,12 @@ public class ConteinerPostRequestDTO {
     Long id;
     @NotNull(message = "O campo numero deve ser informado")
     String numero;
-    @NotNull(message = "O campo cliente deve ser informado")
-    String cliente;
+    @NotNull(message = "O campo nomeCliente deve ser informado")
+    String nomeCliente;
     @NotNull(message = "O campo tipo deve ser informado")
     String tipo;
-    @NotNull(message = "O campo statusConteiner deve ser informado")
-    String statusConteiner;
+    @NotNull(message = "O campo status deve ser informado")
+    String status;
     @NotNull(message = "O campo categoria deve ser informado")
     String categoria;
 }

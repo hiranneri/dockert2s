@@ -1,5 +1,6 @@
 package br.com.docker.t2s.model.enums;
 
+import br.com.docker.t2s.exceptions.responsehandler.BadRequestException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -28,7 +29,7 @@ public enum TipoConteiner {
     public static TipoConteiner fromRequest(String tipo) {
         return Optional
                 .ofNullable(TIPOS_MAPA.get(tipo))
-                .orElseThrow(() -> new IllegalArgumentException(tipo));
+                .orElseThrow(() -> new BadRequestException("Não foi localizado o Tipo de Conteiner informado"));
     }
 
     @Override

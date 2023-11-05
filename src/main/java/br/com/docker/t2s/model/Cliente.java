@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name="clientes")
@@ -21,7 +22,7 @@ public class Cliente {
     private String nome;
 
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
-    private Set<Conteiner> conteiner;
+    private List<Conteiner> conteiner;
 
     @Enumerated(EnumType.STRING)
     private Status status;
@@ -40,5 +41,14 @@ public class Cliente {
     @PrePersist
     public void prePersist() {
         this.status = Status.ATIVO;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", status=" + status +
+                '}';
     }
 }

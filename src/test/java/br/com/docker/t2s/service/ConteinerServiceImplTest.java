@@ -67,7 +67,7 @@ class ConteinerServiceImplTest {
         BDDMockito.when(conteinerRepository.save(ArgumentMatchers.any(Conteiner.class))).thenReturn(conteinerAtivo);
         BDDMockito.when(conteinerRepository.findByNumero(ArgumentMatchers.anyString())).thenReturn(Optional.of(conteinerAtivo));
         BDDMockito.when(conteinerRepository.save(ArgumentMatchers.any(Conteiner.class))).thenReturn(conteinerEditado);
-        BDDMockito.when(categoriaRepository.findByNome(ArgumentMatchers.any(TipoCategoria.class))).thenReturn(CategoriaCreator.createCategoriaAtiva());
+        BDDMockito.when(categoriaRepository.findByNome(ArgumentMatchers.any(TipoCategoria.class))).thenReturn(Optional.of(CategoriaCreator.createCategoriaAtiva()));
 
         BDDMockito.when(conteinerRepository.save(ArgumentMatchers.any(Conteiner.class))).thenReturn(conteinerDesativado); // desativar
     }
@@ -80,7 +80,7 @@ class ConteinerServiceImplTest {
 
         Assertions.assertNotNull(conteinerResponseSalvo);
         Assertions.assertEquals(conteinerPostRequestDTO.getNumero(), Objects.requireNonNull(conteinerResponseSalvo).getNumeroConteiner());
-        Assertions.assertEquals(Status.ATIVO, Objects.requireNonNull(conteinerResponseSalvo.getStatus()));
+        Assertions.assertEquals(Status.ATIVO.toString(), Objects.requireNonNull(conteinerResponseSalvo.getStatus()));
 
     }
 
@@ -99,7 +99,7 @@ class ConteinerServiceImplTest {
         Assertions.assertNotNull(conteinerResponseDTO);
         Assertions.assertNotNull(conteinerResponseDTO);
         Assertions.assertNotNull(conteinerResponseDTO.getNumeroConteiner());
-        Assertions.assertEquals(Status.ATIVO,conteinerResponseDTO.getStatus());
+        Assertions.assertEquals(Status.ATIVO.toString(),conteinerResponseDTO.getStatus());
 
     }
 
@@ -110,7 +110,7 @@ class ConteinerServiceImplTest {
 
         Assertions.assertNotNull(conteinerLocalizado);
         Assertions.assertEquals(numero, Objects.requireNonNull(conteinerLocalizado.getNumeroConteiner()));
-        Assertions.assertEquals(Status.ATIVO, Objects.requireNonNull(conteinerLocalizado.getStatus()));
+        Assertions.assertEquals(Status.ATIVO.toString(), Objects.requireNonNull(conteinerLocalizado.getStatus()));
 
 
     }
@@ -149,7 +149,7 @@ class ConteinerServiceImplTest {
     }
 
     @Test
-    public void criar_RetornaUmaExcecaoConstraintViolationException_QuandoconteinerJaExiste(){
+    public void criar_RetornaUmaExcecaoConstraintViolationException_QuandoConteinerJaExiste(){
 
         BDDMockito.given(conteinerRepository.save(ArgumentMatchers.any(Conteiner.class))).willThrow(ConstraintViolationException.class);
 

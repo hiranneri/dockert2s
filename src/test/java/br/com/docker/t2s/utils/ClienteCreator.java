@@ -6,7 +6,7 @@ import br.com.docker.t2s.controller.dtos.cliente.ClienteResponseDTO;
 import br.com.docker.t2s.model.Cliente;
 import br.com.docker.t2s.model.enums.Status;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 
 public class ClienteCreator {
 
@@ -14,7 +14,7 @@ public class ClienteCreator {
         return Cliente.builder()
                 .id(1L)
                 .nome("TSC")
-                .conteiner(new HashSet<>())
+                .conteiner(new ArrayList<>())
                 .status(Status.ATIVO).build();
     }
 

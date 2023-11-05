@@ -9,12 +9,15 @@ import br.com.docker.t2s.model.Categoria;
 import br.com.docker.t2s.model.Cliente;
 import br.com.docker.t2s.model.Conteiner;
 import br.com.docker.t2s.model.enums.Status;
+import br.com.docker.t2s.model.enums.StatusConteiner;
 import br.com.docker.t2s.model.enums.TipoCategoria;
+import br.com.docker.t2s.model.enums.TipoConteiner;
 import br.com.docker.t2s.repository.CategoriaRepository;
 import br.com.docker.t2s.repository.ConteinerRepository;
 import br.com.docker.t2s.service.interfaces.ClienteService;
 import br.com.docker.t2s.service.interfaces.ConteinerService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -25,6 +28,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class ConteinerServiceImpl implements ConteinerService {
 
     private final ConteinerRepository conteinerRepository;
@@ -35,7 +39,8 @@ public class ConteinerServiceImpl implements ConteinerService {
     public ConteinerResponseDTO criar(ConteinerPostRequestDTO conteinerRequestDTO) {
         Conteiner conteiner = ConteinerMapper.INSTANCE.toConteiner(conteinerRequestDTO);
         Categoria categoria = pesquisarCategoria(conteinerRequestDTO.getCategoria());
-        Cliente cliente = clienteService.buscarClienteCompleto(conteinerRequestDTO.getCliente());
+        Cliente cliente = clienteService.buscarClienteCompleto(conteinerRequestDTO.getNomeCliente());
+
         conteiner.setCategoria(categoria);
         conteiner.setCliente(cliente);
 
@@ -48,20 +53,30 @@ public class ConteinerServiceImpl implements ConteinerService {
     }
 
     private Categoria pesquisarCategoria(String nome) {
-        return categoriaRepository.findByNome(TipoCategoria.paraTipoCategoria(nome));
+        TipoCategoria tipoCategoriaInformada = TipoCategoria.paraTipoCategoria(nome);
+        return categoriaRepository.findByNome(tipoCategoriaInformada)
+                .orElseThrow(()-> new BadRequestException("Categoria não localizada"));
     }
 
     @Override
-    public ConteinerResponseDTO editar(ConteinerPutRequestDTO conteinerRequestDTO) {
-        Conteiner conteinerLocalizado = buscarPeloIDOuLancarExcecaoNaoEncontrado(conteinerRequestDTO.getId());
+    public ConteinerResponseDTO editar(ConteinerPutRequestDTO conteinerInformado) {
 
-        Cliente clienteLocalizado = clienteService.buscarClienteCompleto(conteinerRequestDTO.getCliente());
-        Categoria categoriaLocalizada = pesquisarCategoria(conteinerRequestDTO.getCategoria());
+        Cliente clienteLocalizado = clienteService.buscarClienteCompleto(conteinerInformado.getNomeCliente());
+        Categoria categoriaLocalizada = pesquisarCategoria(conteinerInformado.getCategoria());
+        buscarPeloIDOuLancarExcecaoNaoEncontrado(conteinerInformado.getId());
 
-        conteinerLocalizado.setCliente(clienteLocalizado);
-        conteinerLocalizado.setCategoria(categoriaLocalizada);
+        Conteiner conteinerASerEditado = Conteiner.builder()
+                .id(conteinerInformado.getId())
+                .categoria(categoriaLocalizada)
+                .cliente(clienteLocalizado)
+                .numero(conteinerInformado.getNumero())
+                .tipo(TipoConteiner.fromRequest(conteinerInformado.getTipo()))
+                .statusConteiner(StatusConteiner.valueOf(conteinerInformado.getStatus()))
+                .status(Status.ATIVO)
+                .build();
 
-        return ConteinerMapper.INSTANCE.toConteinerResponse(conteinerRepository.save(conteinerLocalizado));
+
+        return ConteinerMapper.INSTANCE.toConteinerResponse(conteinerRepository.save(conteinerASerEditado));
     }
 
     private Conteiner buscarPeloIDOuLancarExcecaoNaoEncontrado(Long id){

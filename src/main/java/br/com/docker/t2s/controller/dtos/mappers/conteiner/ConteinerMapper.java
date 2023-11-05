@@ -10,5 +10,4 @@ public interface ConteinerMapper {
     ConteinerMapper INSTANCE = Mappers.getMapper(ConteinerMapper.class);
     Conteiner toConteiner(ConteinerPostRequestDTO conteinerPostRequestDTO);
     ConteinerResponseDTO toConteinerResponse(Conteiner conteiner);
-    Conteiner toConteiner(ConteinerResponseDTO conteinerResponseDTO);
 }

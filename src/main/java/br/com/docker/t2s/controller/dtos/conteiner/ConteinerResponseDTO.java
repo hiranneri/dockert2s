@@ -8,12 +8,11 @@ import lombok.Data;
 @Builder
 public class ConteinerResponseDTO {
 
-    String cliente;
     String numeroConteiner;
     String tipo;
     String statusConteiner;
     String categoria;
-    Status status;
-
+    String nomeCliente;
+    String status;
 
 }

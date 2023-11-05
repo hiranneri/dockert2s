@@ -21,7 +21,7 @@ public class ConteinerMapperImpl implements ConteinerMapper {
                 .id(conteinerPostRequestDTO.getId())
                 .tipo(TipoConteiner.fromRequest(conteinerPostRequestDTO.getTipo()))
                 .numero(conteinerPostRequestDTO.getNumero())
-                .statusConteiner(StatusConteiner.fromRequest(conteinerPostRequestDTO.getStatusConteiner()))
+                .statusConteiner(StatusConteiner.fromRequest(conteinerPostRequestDTO.getStatus()))
                 .status(Status.ATIVO)
                 .build();
     }
@@ -33,11 +33,12 @@ public class ConteinerMapperImpl implements ConteinerMapper {
         }
 
         return ConteinerResponseDTO.builder()
-                .cliente(conteiner.getCliente().getNome())
+                .nomeCliente(conteiner.getCliente().getNome())
                 .numeroConteiner(conteiner.getNumero())
                 .tipo(conteiner.getTipo().toString())
+                .categoria(conteiner.getCategoria().getNome().toString())
                 .statusConteiner(conteiner.getStatusConteiner().toString())
-                .status(Status.ATIVO)
+                .status(conteiner.getStatus().toString())
                 .build();
     }
 

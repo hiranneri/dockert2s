@@ -53,16 +53,18 @@ public class ConteinerController {
     }
 
     @Transactional(rollbackOn = Exception.class)
-    @PutMapping()
-    public ResponseEntity<ConteinerResponseDTO> editarConteiner(@RequestBody @Valid ConteinerPutRequestDTO conteiner){
-        return new ResponseEntity<>(conteinerService.editar(conteiner), HttpStatus.NO_CONTENT);
-
+    @PutMapping("/{id}")
+    public ResponseEntity<ConteinerResponseDTO> editarConteiner(@PathVariable Long id,
+                                                                @RequestBody @Valid ConteinerPutRequestDTO conteiner){
+        conteiner.setId(id);
+        return ResponseEntity.ok(conteinerService.editar(conteiner));
     }
 
     @Transactional(rollbackOn = Exception.class)
     @DeleteMapping("/{id}")
-    public ResponseEntity<ConteinerResponseDTO> excluirConteiner(@PathVariable Long id){
-        return new ResponseEntity<>(conteinerService.deletar(id), HttpStatus.NO_CONTENT);
+    public ResponseEntity<Void> excluirConteiner(@PathVariable Long id){
+        conteinerService.deletar(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 

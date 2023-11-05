@@ -9,15 +9,21 @@ import javax.validation.constraints.NotEmpty;
 @Builder
 public class ConteinerPutRequestDTO {
 
-    @NotEmpty(message = "O campo id é obrigatório")
-    private Long id;
+    private Long id; // opcional
 
     @NotEmpty(message = "O campo numero é obrigatório")
     private String numero;
 
-    @NotEmpty(message = "O campo cliente é obrigatório")
-    private String cliente;
+    @NotEmpty(message = "O campo tipo é obrigatório")
+    private String tipo;
+
+    @NotEmpty(message = "O campo status é obrigatório")
+    private String status;
 
     @NotEmpty(message = "O campo categoria é obrigatório")
     private String categoria;
+
+    @NotEmpty(message = "O campo nomeCliente é obrigatório")
+    private String nomeCliente;
+
 }
