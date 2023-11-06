@@ -68,7 +68,7 @@ class MovimentacaoControllerTest {
         MovimentacaoPutRequestDTO movimentacaoASerEditadoRequest = MovimentacaoCreator.createMovimentacaoPutRequestValido();
 
         ResponseEntity<MovimentacaoResponseDTO> movimentacaoAlterado = movimentacaoController
-                .editarMovimentacao(movimentacaoASerEditadoRequest);
+                .editarMovimentacao(1L,movimentacaoASerEditadoRequest);
 
         MovimentacaoResponseDTO movimentacaoResponseDTO = movimentacaoAlterado.getBody();
 
@@ -82,7 +82,7 @@ class MovimentacaoControllerTest {
     void excluirMovimentacao_NaoRetornaUmaMovimentacao_QuandoSucedido() {
         MovimentacaoPutRequestDTO movimentacaoASerDesativadoRequest = MovimentacaoCreator.createMovimentacaoPutRequestValido();
 
-        ResponseEntity<MovimentacaoResponseDTO> MovimentacaoDesativado = movimentacaoController
+        ResponseEntity<Void> MovimentacaoDesativado = movimentacaoController
                 .excluirMovimentacao(movimentacaoASerDesativadoRequest.getId());
 
         Assertions.assertNotNull(MovimentacaoDesativado);

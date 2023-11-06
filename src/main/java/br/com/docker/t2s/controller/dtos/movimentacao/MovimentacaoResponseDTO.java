@@ -10,7 +10,6 @@ public class MovimentacaoResponseDTO {
 
     String cliente;
     String numeroConteiner;
-    String categoriaConteiner;
     String tipoMovimentacao;
     String dataHoraInicio;
     String dataHoraFim;

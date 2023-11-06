@@ -26,10 +26,10 @@ public class Movimentacao {
     private LocalDateTime updatedAt;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "tiposmovimentacao_id")
-    private TiposMovimentacao tiposMovimentacao;
+    @JoinColumn(name = "tipomovimentacao_id")
+    private TipoMovimentacao tipoMovimentacao;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "conteiner_id", nullable = false)
     private Conteiner conteiner;
 
@@ -52,5 +52,18 @@ public class Movimentacao {
     }
 
     public Movimentacao() {
+    }
+
+    @Override
+    public String toString() {
+        return "Movimentacao{" +
+                "id=" + id +
+                ", dataHoraInicio=" + dataHoraInicio +
+                ", dataHoraFim=" + dataHoraFim +
+                ", updatedAt=" + updatedAt +
+                ", tipoMovimentacao=" + tipoMovimentacao +
+                ", conteiner=" + conteiner +
+                ", status=" + status +
+                '}';
     }
 }

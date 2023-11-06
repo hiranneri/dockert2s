@@ -1,21 +1,21 @@
 package br.com.docker.t2s.service.interfaces;
 
-import br.com.docker.t2s.model.TiposMovimentacao;
+import br.com.docker.t2s.model.TipoMovimentacao;
 import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
 
 import java.util.List;
 
 public interface TipoMovimentacaoService {
 
-    void criar(TiposMovimentacao movimentacao);
+    void criar(TipoMovimentacao movimentacao);
 
-    void criar(List<TiposMovimentacao> tiposMovimentacaoMovimentacoes);
+    void criar(List<TipoMovimentacao> tipoMovimentacaoMovimentacoes);
 
-    void editar(TiposMovimentacao movimentacao);
+    void editar(TipoMovimentacao movimentacao);
 
-    void deletar(TiposMovimentacao movimentacao);
+    void deletar(TipoMovimentacao movimentacao);
 
-    TiposMovimentacao buscar(Long id);
+    TipoMovimentacao buscar(Long id);
 
-    TiposMovimentacao buscar(NomeMovimentacao nomeMovimentacao);
+    TipoMovimentacao buscar(NomeMovimentacao nomeMovimentacao);
 }

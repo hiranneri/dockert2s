@@ -9,8 +9,7 @@ import javax.validation.constraints.NotEmpty;
 @Builder
 public class MovimentacaoPutRequestDTO {
 
-    @NotEmpty(message = "O campo id é obrigatório")
-    Long id;
+    Long id; // opcional
 
     @NotEmpty(message = "O campo cliente é obrigatório")
     String cliente;
@@ -20,9 +19,6 @@ public class MovimentacaoPutRequestDTO {
 
     @NotEmpty(message = "O campo tipoMovimentacao é obrigatório")
     String tipoMovimentacao;
-
-    @NotEmpty(message = "O campo dataHoraInicio é obrigatório")
-    String dataHoraInicio;
 
     @NotEmpty(message = "O campo categoria é obrigatório")
     String categoria;

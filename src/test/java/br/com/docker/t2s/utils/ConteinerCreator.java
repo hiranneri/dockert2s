@@ -44,7 +44,17 @@ public class ConteinerCreator {
     public static ConteinerPostRequestDTO createConteinerPostRequestValido() {
         return ConteinerPostRequestDTO.builder()
                 .nomeCliente("Emirates")
-                .numero("TEST123457")
+                .numero("TEST123458")
+                .tipo("20")
+                .categoria("EXPORTAÇÃO")
+                .status("CHEIO")
+                .build();
+    }
+
+    public static ConteinerPostRequestDTO createConteinerMovimentacaoValido() {
+        return ConteinerPostRequestDTO.builder()
+                .nomeCliente("TESTES")
+                .numero("TEST000000")
                 .tipo("20")
                 .categoria("EXPORTAÇÃO")
                 .status("CHEIO")
@@ -56,7 +66,7 @@ public class ConteinerCreator {
                 .id(1L)
                 .tipo("40")
                 .status("CHEIO")
-                .nomeCliente("Emirates")
+                .nomeCliente("TSC Movimentacao 1")
                 .numero("TEST999999")
                 .categoria("IMPORTAÇÃO").build();
     }

@@ -1,6 +1,6 @@
 package br.com.docker.t2s.repository;
 
-import br.com.docker.t2s.model.TiposMovimentacao;
+import br.com.docker.t2s.model.TipoMovimentacao;
 import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
 import br.com.docker.t2s.service.Transacao;
 
@@ -9,16 +9,16 @@ import javax.persistence.Query;
 
 public class RelatorioRepository {
 
-    public void deletar(TiposMovimentacao movimentacao) {
+    public void deletar(TipoMovimentacao movimentacao) {
 
     }
 
-    public TiposMovimentacao buscar(Long id) {
+    public TipoMovimentacao buscar(Long id) {
         Transacao.ENTITY_MANAGER.getTransaction().begin();
-        return Transacao.ENTITY_MANAGER.find(TiposMovimentacao.class, id);
+        return Transacao.ENTITY_MANAGER.find(TipoMovimentacao.class, id);
     }
 
-    public TiposMovimentacao buscar(NomeMovimentacao nomeMovimentacao) {
+    public TipoMovimentacao buscar(NomeMovimentacao nomeMovimentacao) {
         EntityManager em = Transacao.ENTITY_MANAGER;
         String queryString = "SELECT t FROM tipomovimentacoes t WHERE nome = :nome ORDER BY id asc";
 
@@ -26,10 +26,10 @@ public class RelatorioRepository {
         query.setParameter("nome", nomeMovimentacao);
 
         em.getTransaction().begin();
-        TiposMovimentacao tiposMovimentacao = QueryTyper.getPossibleSingleResult(query);
+        TipoMovimentacao tipoMovimentacao = QueryTyper.getPossibleSingleResult(query);
         em.getTransaction().commit();
 
-        return tiposMovimentacao;
+        return tipoMovimentacao;
 
     }
 }

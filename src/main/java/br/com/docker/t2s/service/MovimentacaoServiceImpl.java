@@ -1,21 +1,18 @@
 package br.com.docker.t2s.service;
 
-import br.com.docker.t2s.controller.dtos.movimentacao.MovimentacaoPostRequestDTO;
-import br.com.docker.t2s.controller.dtos.movimentacao.MovimentacaoPutRequestDTO;
-import br.com.docker.t2s.controller.dtos.movimentacao.MovimentacaoResponseDTO;
 import br.com.docker.t2s.controller.dtos.mappers.movimentacao.MovimentacaoMapper;
+import br.com.docker.t2s.controller.dtos.movimentacao.*;
 import br.com.docker.t2s.exceptions.responsehandler.BadRequestException;
 import br.com.docker.t2s.model.Conteiner;
 import br.com.docker.t2s.model.Movimentacao;
-import br.com.docker.t2s.model.TiposMovimentacao;
-import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
+import br.com.docker.t2s.model.TipoMovimentacao;
 import br.com.docker.t2s.model.enums.Status;
+import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
 import br.com.docker.t2s.repository.MovimentacaoRepository;
 import br.com.docker.t2s.repository.QueryTyper;
 import br.com.docker.t2s.repository.TiposMovimentacaoRepository;
 import br.com.docker.t2s.service.interfaces.ConteinerService;
 import br.com.docker.t2s.service.interfaces.MovimentacaoService;
-import br.com.docker.t2s.utils.DataUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -38,23 +35,25 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     private final TiposMovimentacaoRepository tiposMovimentacaoRepository;
 
     @Override
-    public MovimentacaoResponseDTO criar(MovimentacaoPostRequestDTO movimentacaoPostRequestDTO) {
-        Conteiner conteiner = conteinerService.buscarConteinerCompletoPeloNumero(movimentacaoPostRequestDTO.getNumeroConteiner());
-        TiposMovimentacao tipoMovimentacao = pesquisarTipoMovimentacao(movimentacaoPostRequestDTO.getTipoMovimentacao());
+    public MovimentacaoResponseDTO criar(MovimentacaoPostRequestDTO movimentacaoRequest) {
+        TipoMovimentacao tipoMovimentacao = pesquisarTipoMovimentacao(movimentacaoRequest.getTipoMovimentacao());
+        Conteiner conteiner = conteinerService.buscarConteinerCompletoPeloNumero(movimentacaoRequest.getNumeroConteiner());
+
+        if (movimentacaoRepository.existsByTipoMovimentacaoAndConteiner(tipoMovimentacao,conteiner)) {
+            throw new BadRequestException("Já existe uma movimentação com o mesmo TIPO_MOVIMENTACAO para o mesmo CONTEINER.");
+        }
+
         Movimentacao movimentacao = Movimentacao.builder()
                 .conteiner(conteiner)
-                .tiposMovimentacao(tipoMovimentacao)
+                .tipoMovimentacao(tipoMovimentacao)
                 .build();
 
         Movimentacao movimentacaoSalva = movimentacaoRepository.save(movimentacao);
 
-        MovimentacaoResponseDTO movimentacaoResponseDTO = MovimentacaoMapper.INSTANCE.toMovimentacaoResponse(movimentacaoSalva);
-        movimentacaoResponseDTO.setTipoMovimentacao(movimentacaoPostRequestDTO.getTipoMovimentacao());
-
-        return movimentacaoResponseDTO;
+        return MovimentacaoMapper.INSTANCE.toMovimentacaoResponse(movimentacaoSalva);
     }
 
-    private TiposMovimentacao pesquisarTipoMovimentacao(String nomeTipo) {
+    private TipoMovimentacao pesquisarTipoMovimentacao(String nomeTipo) {
         NomeMovimentacao nomeMovimentacao = NomeMovimentacao.valueOf(nomeTipo);
         return tiposMovimentacaoRepository.findByNome(nomeMovimentacao)
                 .orElseThrow((
@@ -92,18 +91,18 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 
     @Override
     public MovimentacaoResponseDTO editarMovimentacao(MovimentacaoPutRequestDTO movimentacaoPostRequestDTO) {
-        pesquisarPorIdOuLancarExcecao(movimentacaoPostRequestDTO.getId());
+        LocalDateTime dataHoraInicio = pesquisarPorIdOuLancarExcecao(movimentacaoPostRequestDTO.getId()).getDataHoraInicio();
         NomeMovimentacao nomeMovimentacao = NomeMovimentacao.valueOf(movimentacaoPostRequestDTO.getTipoMovimentacao());
 
         Conteiner conteiner = conteinerService.buscarConteinerCompletoPeloNumero(movimentacaoPostRequestDTO.getNumeroConteiner());
-        TiposMovimentacao tiposMovimentacao = tiposMovimentacaoRepository.findByNome(nomeMovimentacao)
+        TipoMovimentacao tipoMovimentacao = tiposMovimentacaoRepository.findByNome(nomeMovimentacao)
                 .orElseThrow(()-> new BadRequestException("Tipo de Movimentação não localizada"));
 
         Movimentacao movimentacao = new Movimentacao();
         movimentacao.setId(movimentacaoPostRequestDTO.getId());
-        movimentacao.setDataHoraInicio(DataUtils.toLocalDateTime(movimentacaoPostRequestDTO.getDataHoraInicio()));
+        movimentacao.setDataHoraInicio(dataHoraInicio);
         movimentacao.setConteiner(conteiner);
-        movimentacao.setTiposMovimentacao(tiposMovimentacao);
+        movimentacao.setTipoMovimentacao(tipoMovimentacao);
         movimentacao.setStatus(Status.ATIVO);
 
         return MovimentacaoMapper.INSTANCE.toMovimentacaoResponse(movimentacaoRepository.save(movimentacao));
@@ -116,12 +115,12 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     }
 
     @Override
-    public MovimentacaoResponseDTO finalizar(MovimentacaoPostRequestDTO movimentacaoPostRequestDTO) {
-        String numeroConteiner = movimentacaoPostRequestDTO.getNumeroConteiner();
-        String tipoMovimentacao = movimentacaoPostRequestDTO.getTipoMovimentacao();
-        Movimentacao movimentacaoLocalizada = buscarPorNumeroConteinerTipoMovimentacao(numeroConteiner, tipoMovimentacao);
+    public MovimentacaoPatchResponseDTO finalizar(MovimentacaoPatchRequestDTO movimentacao) {
+        String numeroConteiner = movimentacao.getNumeroConteiner();
+        String tipoMovimentacao = movimentacao.getTipoMovimentacao();
+        Movimentacao movimentacaoLocalizada = buscarMovimentacaoPorNumeroConteinerTipoMovimentacao(numeroConteiner, tipoMovimentacao);
         movimentacaoLocalizada.setDataHoraFim(LocalDateTime.now());
-        return MovimentacaoMapper.INSTANCE.toMovimentacaoResponse(movimentacaoRepository.save(movimentacaoLocalizada));
+        return MovimentacaoMapper.INSTANCE.toMovimentacaoPatchResponse(movimentacaoRepository.save(movimentacaoLocalizada));
     }
 
     private Movimentacao pesquisarPorIdOuLancarExcecao(Long id) {
@@ -145,7 +144,7 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     }
 
     // Analisar parametros informados para a busca
-    private Movimentacao buscarPorNumeroConteinerTipoMovimentacao(String numeroConteiner, String tipoMovimentacao)  {
+    private Movimentacao buscarMovimentacaoPorNumeroConteinerTipoMovimentacao(String numeroConteiner, String tipoMovimentacao)  {
 
         EntityManager entityManager = Transacao.ENTITY_MANAGER;
         String queryString = "FROM movimentacoes m WHERE m.datahorainicio = :dataHoraInicio";

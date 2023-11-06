@@ -33,7 +33,12 @@ public class ClienteCreator {
 
     public static ClientePostRequestDTO createClientePostRequestValido() {
         return ClientePostRequestDTO.builder()
-                .nome("TSC").build();
+                .nome("TSC Movimentacao 1").build();
+    }
+
+    public static ClientePostRequestDTO createClienteRequestValido2() {
+        return ClientePostRequestDTO.builder()
+                .nome("TESTES").build();
     }
 
     public static ClientePutRequestDTO createClienteRequestSemNome(){

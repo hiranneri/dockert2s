@@ -14,6 +14,7 @@ public class TestContainerConfig implements BeforeAllCallback, ApplicationContex
 
     @Container
     public static MySQLContainer<?> mySQLContainer = new MySQLContainer<>("mysql:latest")
+            .withDatabaseName("dockert2s-test")
             .withReuse(true);
 
     @Override

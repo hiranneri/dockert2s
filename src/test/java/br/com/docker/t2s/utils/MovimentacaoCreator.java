@@ -15,6 +15,15 @@ public class MovimentacaoCreator {
     public static MovimentacaoPostRequestDTO createMovimentacaoRequestValido() {
         return MovimentacaoPostRequestDTO.builder()
                 .cliente("TSC")
+                .numeroConteiner("TEST123458")
+                .tipoMovimentacao("DESCARGA")
+                .build();
+    }
+
+    public static MovimentacaoPostRequestDTO createMovimentacaoRequestValido2() {
+        return MovimentacaoPostRequestDTO.builder()
+                .cliente("TSC")
+                .numeroConteiner("TEST123458")
                 .tipoMovimentacao("DESCARGA")
                 .build();
     }
@@ -23,7 +32,6 @@ public class MovimentacaoCreator {
         return MovimentacaoResponseDTO.builder()
                 .cliente("TSC")
                 .numeroConteiner("TEST123456789")
-                .categoriaConteiner("EXPORTACAO")
                 .tipoMovimentacao("DESCARGA")
                 .dataHoraInicio("23/09/2023 09:00").build();
     }
@@ -32,7 +40,6 @@ public class MovimentacaoCreator {
         return MovimentacaoResponseDTO.builder()
                 .cliente("TSC")
                 .numeroConteiner("TEST123456789")
-                .categoriaConteiner("EXPORTACAO")
                 .tipoMovimentacao("GATE_IN")
                 .dataHoraInicio("23/09/2023 10:00")
                 .status(Status.ATIVO).build();
@@ -44,7 +51,6 @@ public class MovimentacaoCreator {
                 .numeroConteiner("TEST123456789")
                 .categoria("EXPORTACAO")
                 .tipoMovimentacao("GATE_IN")
-                .dataHoraInicio("23/09/2023 10:00")
                 .build();
     }
 
@@ -53,6 +59,17 @@ public class MovimentacaoCreator {
     public static MovimentacaoPutRequestDTO createMovimentacaoPutRequestValido() {
         return MovimentacaoPutRequestDTO.builder()
                 .cliente("TSC")
+                .numeroConteiner("TEST123458")
+                .categoria("IMPORTAÇÃO")
+                .tipoMovimentacao("GATE_IN")
+                .build();
+    }
+
+    public static MovimentacaoPutRequestDTO createMovimentacaoASerFinalizadaValida() {
+        return MovimentacaoPutRequestDTO.builder()
+                .cliente("TSC")
+                .numeroConteiner("TEST123458")
+                .categoria("IMPORTAÇÃO")
                 .tipoMovimentacao("GATE_IN")
                 .build();
     }
@@ -61,7 +78,6 @@ public class MovimentacaoCreator {
         return MovimentacaoResponseDTO.builder()
                 .cliente("TSC")
                 .numeroConteiner("TEST123456789")
-                .categoriaConteiner("EXPORTACAO")
                 .tipoMovimentacao("EMBARQUE")
                 .dataHoraInicio("23/09/2023 10:00")
                 .status(Status.INATIVO).build();
@@ -72,7 +88,7 @@ public class MovimentacaoCreator {
                 .id(1L)
                 .dataHoraInicio(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
-                .tiposMovimentacao(new TiposMovimentacao(1L, NomeMovimentacao.EMBARQUE, new ArrayList<>()))
+                .tipoMovimentacao(new TipoMovimentacao(1L, NomeMovimentacao.EMBARQUE, new ArrayList<>()))
                 .conteiner(
                         new Conteiner(
                                 1L,"", TipoConteiner.TIPO_20, StatusConteiner.CHEIO,
@@ -87,7 +103,7 @@ public class MovimentacaoCreator {
                 .id(1L)
                 .dataHoraInicio(LocalDateTime.now().plusDays(1))
                 .updatedAt(LocalDateTime.now())
-                .tiposMovimentacao(new TiposMovimentacao(1L, NomeMovimentacao.EMBARQUE, new ArrayList<>(
+                .tipoMovimentacao(new TipoMovimentacao(1L, NomeMovimentacao.EMBARQUE, new ArrayList<>(
                         List.of(MovimentacaoCreator.createMovimentacao())
                 )))
                 .conteiner(
@@ -110,14 +126,12 @@ public class MovimentacaoCreator {
         return MovimentacaoPutRequestDTO.builder()
                 .id(1L)
                 .cliente("TSC")
-                .dataHoraInicio("23/09/2023 09:00")
                 .build();
     }
 
     public static MovimentacaoPutRequestDTO createMovimentacaoSemID() {
         return MovimentacaoPutRequestDTO.builder()
                 .cliente("TSC")
-                .dataHoraInicio("23/09/2023 09:00")
                 .build();
     }
 

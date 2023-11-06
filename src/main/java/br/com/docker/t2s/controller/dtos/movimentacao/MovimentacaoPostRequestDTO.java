@@ -17,7 +17,4 @@ public class MovimentacaoPostRequestDTO {
 
     @NotEmpty(message = "O campo tipoMovimentacao é obrigatório")
     String tipoMovimentacao;
-
-    @NotEmpty(message = "O campo categoria é obrigatório")
-    String categoria;
 }

@@ -41,17 +41,4 @@ public class ConteinerMapperImpl implements ConteinerMapper {
                 .status(conteiner.getStatus().toString())
                 .build();
     }
-
-    @Override
-    public Conteiner toConteiner(ConteinerResponseDTO conteinerResponseDTO) {
-        if ( conteinerResponseDTO == null ) {
-            return null;
-        }
-
-        return Conteiner.builder()
-                .tipo(TipoConteiner.valueOf(conteinerResponseDTO.getTipo()))
-                .statusConteiner(StatusConteiner.valueOf(conteinerResponseDTO.getStatusConteiner()))
-                .status(Status.INATIVO)
-                .build();
-    }
 }

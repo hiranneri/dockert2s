@@ -1,8 +1,6 @@
 package br.com.docker.t2s.controller;
 
-import br.com.docker.t2s.controller.dtos.movimentacao.MovimentacaoPostRequestDTO;
-import br.com.docker.t2s.controller.dtos.movimentacao.MovimentacaoPutRequestDTO;
-import br.com.docker.t2s.controller.dtos.movimentacao.MovimentacaoResponseDTO;
+import br.com.docker.t2s.controller.dtos.movimentacao.*;
 import br.com.docker.t2s.service.interfaces.MovimentacaoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,15 +27,16 @@ public class MovimentacaoController {
     }
 
     @Transactional(rollbackOn = Exception.class)
-    @PostMapping("/finalizar")
-    public ResponseEntity<MovimentacaoResponseDTO> finalizarMovimentacao(@RequestBody @Valid MovimentacaoPostRequestDTO movimentacaoPostRequestDTO) {
-        return new ResponseEntity<>(movimentacaoService.finalizar(movimentacaoPostRequestDTO), HttpStatus.CREATED);
+    @PatchMapping("/finalizar/{id}")
+    public ResponseEntity<MovimentacaoPatchResponseDTO> finalizarMovimentacao(@PathVariable Long id,
+                                                                              @RequestBody @Valid MovimentacaoPatchRequestDTO movimentacao) {
+        movimentacao.setId(id);
+        return new ResponseEntity<>(movimentacaoService.finalizar(movimentacao), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<MovimentacaoResponseDTO>> buscarMovimentacoes(){
         return ResponseEntity.ok(movimentacaoService.buscarMovimentacoes());
-
     }
 
     @GetMapping("/all")
@@ -46,17 +45,18 @@ public class MovimentacaoController {
     }
 
     @Transactional(rollbackOn = Exception.class)
-    @PutMapping()
-    public ResponseEntity<MovimentacaoResponseDTO> editarMovimentacao(@RequestBody @Valid MovimentacaoPutRequestDTO movimentacaoPutRequestDTO){
-        return new ResponseEntity<>(movimentacaoService.editarMovimentacao(movimentacaoPutRequestDTO), HttpStatus.NO_CONTENT);
+    @PutMapping("/{id}")
+    public ResponseEntity<MovimentacaoResponseDTO> editarMovimentacao(@PathVariable Long id,
+            @RequestBody @Valid MovimentacaoPutRequestDTO movimentacaoPutRequestDTO){
+        movimentacaoPutRequestDTO.setId(id);
+        return ResponseEntity.ok(movimentacaoService.editarMovimentacao(movimentacaoPutRequestDTO));
     }
 
     @Transactional(rollbackOn = Exception.class)
     @DeleteMapping("/{id}")
-    public ResponseEntity<MovimentacaoResponseDTO> excluirMovimentacao(@PathVariable Long id){
-        return new ResponseEntity<>(movimentacaoService.deletarMovimentacao(id), HttpStatus.NO_CONTENT);
+    public ResponseEntity<Void> excluirMovimentacao(@PathVariable Long id){
+        movimentacaoService.deletarMovimentacao(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
-
 
 }

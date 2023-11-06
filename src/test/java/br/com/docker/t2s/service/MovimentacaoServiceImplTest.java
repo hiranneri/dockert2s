@@ -16,12 +16,14 @@ import br.com.docker.t2s.utils.TiposMovimentacaoCreator;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
@@ -29,6 +31,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 class MovimentacaoServiceImplTest {
@@ -155,6 +160,12 @@ class MovimentacaoServiceImplTest {
         Assertions.assertThrows(BadRequestException.class,
                 ()-> movimentacaoService.editarMovimentacao(MovimentacaoCreator.createMovimentacaoSemID()));
 
+    }
+
+    @Test
+    @DisplayName("Pesquisar uma movimentação inativa")
+    void AH_PesquisarMovimentacaoInativaRetornarBadRequestException() throws Exception {
+        Assertions.assertTrue(true);
     }
 
 

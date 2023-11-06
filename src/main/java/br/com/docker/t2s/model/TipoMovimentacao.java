@@ -14,7 +14,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class TiposMovimentacao {
+public class TipoMovimentacao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,7 +24,14 @@ public class TiposMovimentacao {
     @Enumerated(EnumType.STRING)
     private NomeMovimentacao nome;
 
-    @OneToMany(mappedBy = "tiposMovimentacao", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "tipoMovimentacao", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Movimentacao> movimentacao;
 
+    @Override
+    public String toString() {
+        return "TipoMovimentacao{" +
+                "id=" + id +
+                ", nome=" + nome +
+                '}';
+    }
 }
