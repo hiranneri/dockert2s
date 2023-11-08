@@ -23,7 +23,7 @@ public class MovimentacaoCreator {
     public static MovimentacaoPostRequestDTO createMovimentacaoRequestValido2() {
         return MovimentacaoPostRequestDTO.builder()
                 .cliente("TSC")
-                .numeroConteiner("TEST123458")
+                .numeroConteiner("TEST000000")
                 .tipoMovimentacao("DESCARGA")
                 .build();
     }
@@ -59,7 +59,7 @@ public class MovimentacaoCreator {
     public static MovimentacaoPutRequestDTO createMovimentacaoPutRequestValido() {
         return MovimentacaoPutRequestDTO.builder()
                 .cliente("TSC")
-                .numeroConteiner("TEST123458")
+                .numeroConteiner("TEST000000")
                 .categoria("IMPORTAÇÃO")
                 .tipoMovimentacao("GATE_IN")
                 .build();

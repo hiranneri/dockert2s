@@ -22,17 +22,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
+/**
+ * É executada a partir da AC_*IT.java
+ */
 @SpringBootTest
 @IntegrationTest
 @AutoConfigureMockMvc
 @Log4j2
 @ContextConfiguration(initializers = TestContainerConfig.class)
 @TestMethodOrder(MethodOrderer.MethodName.class)
-
-/**
- * É executada a partir da AC_*IT.java
- */
 public abstract class AB_AbstractTestIntegrationIT {
 
     @Autowired
@@ -40,14 +38,13 @@ public abstract class AB_AbstractTestIntegrationIT {
     protected static String tokenAcesso = "";
     protected static ObjectMapper objectMapper = new ObjectMapper();
 
-
     @Test
     @DisplayName("Log in to generate a token")
     public void AA_Login() throws Exception {
         // teste secret
         LoginPostRequest usuarioNovo = LoginPostRequest.builder()
-                .username("teste")
-                .senha("secret").build();
+                .username("admin")
+                .senha("teste").build();
 
         ResultActions result = mockMvc.perform(
                         post("/auth/login")
@@ -60,6 +57,5 @@ public abstract class AB_AbstractTestIntegrationIT {
         tokenAcesso = extrairDadoDesejadoResponseBody(responseBody,regexToken);
 
     }
-
 
 }

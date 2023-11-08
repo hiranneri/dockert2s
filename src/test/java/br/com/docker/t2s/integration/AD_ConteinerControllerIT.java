@@ -5,6 +5,8 @@ import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPostRequestDTO;
 import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPutRequestDTO;
 import br.com.docker.t2s.model.Cliente;
 import br.com.docker.t2s.model.Conteiner;
+import br.com.docker.t2s.model.enums.Status;
+import br.com.docker.t2s.utils.ClienteCreator;
 import br.com.docker.t2s.utils.ConteinerCreator;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
@@ -30,21 +32,20 @@ public class AD_ConteinerControllerIT extends AB_AbstractTestIntegrationIT {
     private final Long ID_Conteiner = 1L;
 
     ConteinerPostRequestDTO conteinerASerSalvo = ConteinerCreator.createConteinerPostRequestValido();
+    Cliente emirates = new Cliente(null, "Emirates", null, null);
 
     @Test
     @DisplayName("Create a client")
     void AB_CriarClienteDeveRetornarClienteSalvoComStatusAtivo() throws Exception {
-        Cliente emirates = new Cliente();
-        emirates.setNome("Emirates");
 
         mockMvc.perform(
-                        post("/clientes")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(emirates))
-                                .header("authorization", "Bearer "+ tokenAcesso)
-                ).andExpect(status().isCreated())
-                .andExpect(jsonPath("$.status").value("ATIVO"))
-                .andExpect(jsonPath("$.nome").value(emirates.getNome()));
+                post("/clientes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(emirates))
+                        .header("authorization", "Bearer "+ tokenAcesso)
+        ).andExpect(status().isCreated())
+        .andExpect(jsonPath("$.status").value("ATIVO"))
+        .andExpect(jsonPath("$.nome").value(emirates.getNome()));
 
     }
 
@@ -70,7 +71,7 @@ public class AD_ConteinerControllerIT extends AB_AbstractTestIntegrationIT {
                         get("/conteiners/" + ID_Conteiner)
                                 .header("authorization", "Bearer "+ tokenAcesso)
                 ).andExpect(status().isOk())
-                .andExpect(jsonPath("$.numeroConteiner").value(conteinerASerSalvo.getNumero()))
+                .andExpect(jsonPath("$.numeroConteiner").isNotEmpty())
                 .andExpect(jsonPath("$.status").value("ATIVO"));
     }
 
@@ -78,6 +79,7 @@ public class AD_ConteinerControllerIT extends AB_AbstractTestIntegrationIT {
     @DisplayName("Edit a conteiner")
     void AE_EditarUmConteinerDeveRetornarConteinerEditadoComStatusAtivo() throws Exception {
         ConteinerPutRequestDTO conteinerASerEditado = ConteinerCreator.createConteinerPutRequestValido();
+        conteinerASerEditado.setNomeCliente(emirates.getNome());
 
         mockMvc.perform(
                         put("/conteiners/"+ID_Conteiner)

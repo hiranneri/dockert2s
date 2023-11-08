@@ -1,5 +1,6 @@
 package br.com.docker.t2s.service;
 
+import br.com.docker.t2s.controller.dtos.registerUsuario.RegisterPostRequest;
 import br.com.docker.t2s.model.TipoMovimentacao;
 import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
 import br.com.docker.t2s.repository.TiposMovimentacaoRepository;
@@ -23,6 +24,7 @@ public class TipoMovimentacaoImpl implements TipoMovimentacaoService {
 
     private final TiposMovimentacaoRepository tiposMovimentacaoRepository;
     private final CategoriaService categoriaService;
+    private final AcessoServiceImpl acessoService;
 
     @Override
     public void criar(TipoMovimentacao movimentacao) {
@@ -87,6 +89,7 @@ public class TipoMovimentacaoImpl implements TipoMovimentacaoService {
         }
 
         categoriaService.cadastrarCategorias();
+        acessoService.cadastrar(gerarUsuarios());
     }
 
     List<TipoMovimentacao> gerarListaTiposMovimentacoes() {
@@ -102,6 +105,27 @@ public class TipoMovimentacaoImpl implements TipoMovimentacaoService {
         tiposMovimentacoes.add(TipoMovimentacao.builder().nome(NomeMovimentacao.SCANNER).build());
 
         return tiposMovimentacoes;
+
+    }
+
+    List<RegisterPostRequest> gerarUsuarios(){
+        List<RegisterPostRequest> usuarios = new ArrayList<>();
+        RegisterPostRequest usuarioAdmin = RegisterPostRequest.builder()
+                .username("admin")
+                .password("teste")
+                .name("admin")
+                .roles("ROLE_ADMIN").build();
+
+        RegisterPostRequest usuarioHiran = RegisterPostRequest.builder()
+                .username("hiran")
+                .password("teste")
+                .name("hiran")
+                .roles("ROLE_USER").build();
+
+        usuarios.add(usuarioAdmin);
+        usuarios.add(usuarioHiran);
+
+        return usuarios;
 
     }
 }

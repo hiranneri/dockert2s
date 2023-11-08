@@ -41,13 +41,13 @@ public class AE_MovimentacaoControllerIT extends AB_AbstractTestIntegrationIT {
     void AB_CriarClienteDeveRetornarClienteComStatusAtivo() throws Exception {
 
         mockMvc.perform(
-                        post("/clientes")
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(clienteASerSalvo))
-                                .header("authorization", "Bearer "+ tokenAcesso)
-                ).andExpect(status().isCreated())
-                .andExpect(jsonPath("$.nome").value(clienteASerSalvo.getNome()))
-                .andExpect(jsonPath("$.status").value("ATIVO"));
+                post("/clientes")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(clienteASerSalvo))
+                        .header("authorization", "Bearer "+ tokenAcesso)
+        ).andExpect(status().isCreated())
+        .andExpect(jsonPath("$.nome").value(clienteASerSalvo.getNome()))
+        .andExpect(jsonPath("$.status").value("ATIVO"));
 
     }
 

@@ -31,7 +31,7 @@ public class AC_ClienteControllerIT extends AB_AbstractTestIntegrationIT {
     void AB_CriarClienteDeveRetornarClienteSalvoComStatusAtivo() throws Exception {
 
         Cliente emirates = new Cliente();
-        emirates.setNome("Emirates");
+        emirates.setNome("MSC");
 
         mockMvc.perform(
                 post("/clientes")
