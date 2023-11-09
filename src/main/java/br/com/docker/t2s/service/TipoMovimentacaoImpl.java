@@ -84,12 +84,11 @@ public class TipoMovimentacaoImpl implements TipoMovimentacaoService {
         if(tiposMovimentacaoRepository.count() == 0){
             log.info("Iniciando cadastro no banco...");
             tiposMovimentacaoRepository.saveAll(tiposMovimentacoes);
+            categoriaService.cadastrarCategorias();
+            acessoService.cadastrar(gerarUsuarios());
         } else {
             log.info("Foi verificado que a tabela já está populada");
         }
-
-        categoriaService.cadastrarCategorias();
-        acessoService.cadastrar(gerarUsuarios());
     }
 
     List<TipoMovimentacao> gerarListaTiposMovimentacoes() {

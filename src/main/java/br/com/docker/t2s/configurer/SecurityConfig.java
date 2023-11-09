@@ -22,6 +22,15 @@ public class SecurityConfig {
 
     private final SecurityFilter securityFilter;
 
+    private static final String[] PATHS_SWAGGER = {
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/swagger-ui/**",
+            "/v2/api-docs",
+            "/webjars/**"
+    };
+
+
     /**
      * Configura a proteção para todas as requisições HTTP para o endpoint clientes
      * @throws Exception lança uma exceção caso não passe no tratamento de proteção
@@ -33,8 +42,8 @@ public class SecurityConfig {
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and().authorizeRequests(authorize -> authorize
-                    .antMatchers(HttpMethod.POST, "/auth/login").permitAll()
-                    .antMatchers(HttpMethod.POST, "/auth/register").permitAll()
+                    .antMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                    .antMatchers(HttpMethod.GET,PATHS_SWAGGER).permitAll()
                     .anyRequest().authenticated()
                 )
                 .addFilterAfter(securityFilter, UsernamePasswordAuthenticationFilter.class)

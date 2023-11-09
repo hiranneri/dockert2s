@@ -15,16 +15,16 @@ spring:
     hibernate:
       ddl-auto: update
 
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
 
 logging:
   level:
     org:
       hibernate:
         SQL: DEBUG
-
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
 
 api:
   security:

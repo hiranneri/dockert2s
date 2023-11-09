@@ -19,6 +19,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @Log4j2
@@ -55,6 +56,15 @@ public class AcessoServiceImpl implements AcessoService {
         UsuarioDockerT2S usuarioDockerT2S = UsuarioMapper.INSTANCE.toUsuario(registro);
         UsuarioDockerT2S usuarioSalvo = userRepository.save(usuarioDockerT2S);
         return UsuarioMapper.INSTANCE.toRegisterResponse(usuarioSalvo);
+
+    }
+    public void cadastrar(List<RegisterPostRequest> usuarios) {
+
+        for(RegisterPostRequest usuario: usuarios){
+            usuario.setPassword(new BCryptPasswordEncoder().encode(usuario.getPassword()));
+            UsuarioDockerT2S usuarioDockerT2S = UsuarioMapper.INSTANCE.toUsuario(usuario);
+            userRepository.save(usuarioDockerT2S);
+        }
 
     }
 }
