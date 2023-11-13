@@ -1,11 +1,15 @@
 package br.com.docker.t2s.model;
 
 import br.com.docker.t2s.model.enums.Status;
-import lombok.*;
+import br.com.docker.t2s.repository.dto.RelatorioMapper;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@RelatorioMapper
 @Entity(name = "movimentacoes")
 @Builder
 @Data

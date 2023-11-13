@@ -27,10 +27,8 @@ public class MovimentacaoController {
     }
 
     @Transactional(rollbackOn = Exception.class)
-    @PatchMapping("/finalizar/{id}")
-    public ResponseEntity<MovimentacaoPatchResponseDTO> finalizarMovimentacao(@PathVariable Long id,
-                                                                              @RequestBody @Valid MovimentacaoPatchRequestDTO movimentacao) {
-        movimentacao.setId(id);
+    @PatchMapping("/finalizar")
+    public ResponseEntity<MovimentacaoPatchResponseDTO> finalizarMovimentacao(@RequestBody @Valid MovimentacaoPatchRequestDTO movimentacao) {
         return new ResponseEntity<>(movimentacaoService.finalizar(movimentacao), HttpStatus.OK);
     }
 

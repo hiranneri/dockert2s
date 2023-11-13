@@ -1,12 +1,15 @@
 package br.com.docker.t2s.service.interfaces;
 
 import br.com.docker.t2s.controller.dtos.movimentacao.*;
+import br.com.docker.t2s.repository.dto.RelatorioAgrupadoComSumarioDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Service
 public interface MovimentacaoService {
 
     MovimentacaoResponseDTO criar(MovimentacaoPostRequestDTO movimentacao);
@@ -20,4 +23,6 @@ public interface MovimentacaoService {
     MovimentacaoResponseDTO deletarMovimentacao(Long id);
 
     MovimentacaoPatchResponseDTO finalizar(MovimentacaoPatchRequestDTO movimentacaoPatchRequestDTO);
+
+    RelatorioAgrupadoComSumarioDTO gerarRelatoriosMovimentacoesAgrupadas();
 }

@@ -9,8 +9,10 @@ import br.com.docker.t2s.model.TipoMovimentacao;
 import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
 import br.com.docker.t2s.repository.MovimentacaoRepository;
-import br.com.docker.t2s.repository.QueryTyper;
 import br.com.docker.t2s.repository.TiposMovimentacaoRepository;
+import br.com.docker.t2s.repository.dto.RelatorioAgrupadoComSumarioDTO;
+import br.com.docker.t2s.repository.dto.ResultadoRelatorioDTO;
+import br.com.docker.t2s.repository.dto.SumarioDTO;
 import br.com.docker.t2s.service.interfaces.ConteinerService;
 import br.com.docker.t2s.service.interfaces.MovimentacaoService;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +22,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,8 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
         TipoMovimentacao tipoMovimentacao = pesquisarTipoMovimentacao(movimentacaoRequest.getTipoMovimentacao());
         Conteiner conteiner = conteinerService.buscarConteinerCompletoPeloNumero(movimentacaoRequest.getNumeroConteiner());
 
-        if (movimentacaoRepository.existsByTipoMovimentacaoAndConteiner(tipoMovimentacao,conteiner)) {
+        boolean movimentacaoLocalizada = movimentacaoRepository.findByTipoMovimentacaoAndConteiner(tipoMovimentacao, conteiner).isPresent();
+        if(movimentacaoLocalizada) {
             throw new BadRequestException("Já existe uma movimentação com o mesmo TIPO_MOVIMENTACAO para o mesmo CONTEINER.");
         }
 
@@ -74,6 +75,13 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
             movimentacoesResponse.add(MovimentacaoMapper.INSTANCE.toMovimentacaoResponse(movimentacao));
         }
         return movimentacoesResponse;
+    }
+
+    @Override
+    public RelatorioAgrupadoComSumarioDTO gerarRelatoriosMovimentacoesAgrupadas() {
+        List<ResultadoRelatorioDTO> relatorioAgrupado = movimentacaoRepository.obterTotalAgrupadoPorClienteETipo();
+        List<SumarioDTO> sumariosDTO = movimentacaoRepository.obterTotalAgrupadoPorTipoMovimentacao();
+        return RelatorioAgrupadoComSumarioDTO.gerarRelatorio(relatorioAgrupado, sumariosDTO);
     }
 
     @Override
@@ -115,10 +123,11 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     }
 
     @Override
-    public MovimentacaoPatchResponseDTO finalizar(MovimentacaoPatchRequestDTO movimentacao) {
-        String numeroConteiner = movimentacao.getNumeroConteiner();
-        String tipoMovimentacao = movimentacao.getTipoMovimentacao();
-        Movimentacao movimentacaoLocalizada = buscarMovimentacaoPorNumeroConteinerTipoMovimentacao(numeroConteiner, tipoMovimentacao);
+    public MovimentacaoPatchResponseDTO finalizar(MovimentacaoPatchRequestDTO movimentacaoPatch) {
+        TipoMovimentacao tipoMovimentacao = pesquisarTipoMovimentacao(movimentacaoPatch.getTipoMovimentacao());
+        Conteiner conteiner = conteinerService.buscarConteinerCompletoPeloNumero(movimentacaoPatch.getNumeroConteiner());
+
+        Movimentacao movimentacaoLocalizada = buscarMovimentacaoPorTipoMovimentacaoConteiner(conteiner, tipoMovimentacao);
         movimentacaoLocalizada.setDataHoraFim(LocalDateTime.now());
         return MovimentacaoMapper.INSTANCE.toMovimentacaoPatchResponse(movimentacaoRepository.save(movimentacaoLocalizada));
     }
@@ -128,34 +137,9 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
                 .orElseThrow(() -> new BadRequestException("Movimentação não foi localizada"));
     }
 
-    private Movimentacao buscarPorDataCriacao(String dataHoraCriacao)  {
-
-        EntityManager entityManager = Transacao.ENTITY_MANAGER;
-        String queryString = "FROM movimentacoes m WHERE m.datahorainicio = :dataHoraInicio";
-        Query query = entityManager.createQuery(queryString);
-        query.setParameter("dataHoraInicio", dataHoraCriacao);
-
-        entityManager.getTransaction().begin();
-        Movimentacao movimentacao = QueryTyper.getPossibleSingleResult(query);
-        entityManager.getTransaction().commit();
-
-        return movimentacao;
-
-    }
-
-    // Analisar parametros informados para a busca
-    private Movimentacao buscarMovimentacaoPorNumeroConteinerTipoMovimentacao(String numeroConteiner, String tipoMovimentacao)  {
-
-        EntityManager entityManager = Transacao.ENTITY_MANAGER;
-        String queryString = "FROM movimentacoes m WHERE m.datahorainicio = :dataHoraInicio";
-        Query query = entityManager.createQuery(queryString);
-        query.setParameter("dataHoraInicio", numeroConteiner);
-
-        entityManager.getTransaction().begin();
-        Movimentacao movimentacao = QueryTyper.getPossibleSingleResult(query);
-        entityManager.getTransaction().commit();
-
-        return movimentacao;
+    private Movimentacao buscarMovimentacaoPorTipoMovimentacaoConteiner(Conteiner conteiner, TipoMovimentacao tipoMovimentacao)  {
+        return movimentacaoRepository.findByTipoMovimentacaoAndConteiner(tipoMovimentacao, conteiner)
+                .orElseThrow(()-> new BadRequestException("Movimentação não foi localizada"));
 
     }
 }
