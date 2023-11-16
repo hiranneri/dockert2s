@@ -42,7 +42,7 @@ public class MovimentacaoCreator {
                 .numeroConteiner("TEST123456789")
                 .tipoMovimentacao("GATE_IN")
                 .dataHoraInicio("23/09/2023 10:00")
-                .status(Status.ATIVO).build();
+                .build();
     }
     public static MovimentacaoPutRequestDTO createMovimentacaoRequestEditado() {
         return MovimentacaoPutRequestDTO.builder()
@@ -80,7 +80,7 @@ public class MovimentacaoCreator {
                 .numeroConteiner("TEST123456789")
                 .tipoMovimentacao("EMBARQUE")
                 .dataHoraInicio("23/09/2023 10:00")
-                .status(Status.INATIVO).build();
+                .build();
     }
 
     public static Movimentacao createMovimentacao() {

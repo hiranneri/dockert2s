@@ -91,7 +91,6 @@ class MovimentacaoServiceImplTest {
 
         Assertions.assertNotNull(movimentacaoResponseSalvo);
         Assertions.assertEquals(movimentacaoPostRequestDTO.getTipoMovimentacao(), Objects.requireNonNull(movimentacaoResponseSalvo).getTipoMovimentacao());
-        Assertions.assertEquals(Status.ATIVO, movimentacaoResponseSalvo.getStatus());
 
     }
 
