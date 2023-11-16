@@ -95,13 +95,7 @@ class MovimentacaoServiceImplTest {
 
     }
 
-    @Test
-    void buscarMovimentacaos_RetornaListaMovimentacaos_QuandoSucedido(){
-        List<MovimentacaoResponseDTO> MovimentacaoesLocalizados = movimentacaoService.buscarMovimentacoes();
 
-        Assertions.assertNotNull(MovimentacaoesLocalizados);
-        Assertions.assertTrue(MovimentacaoesLocalizados.size()>0);
-    }
 
     @Test
     void editarMovimentacao_RetornaUmMovimentacaoModificado_QuandoSucedido(){

@@ -1,6 +1,7 @@
 package br.com.docker.t2s.utils;
 
 import br.com.docker.t2s.model.UsuarioDockerT2S;
+import br.com.docker.t2s.service.dto.TokenDTO;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
@@ -13,14 +14,18 @@ public class TokenUtils {
 
     @Value("${api.security.token.secret}")
     private String secretToken;
-    public String gerarToken(UsuarioDockerT2S usuario) {
+    public TokenDTO gerarToken(UsuarioDockerT2S usuario) {
         try {
-            return JWT.create()
+            String token = JWT.create()
                     .withIssuer("DockerT2S")
                     .withSubject(usuario.getUsername())
                     .withClaim("id", usuario.getId())
-                    .withExpiresAt(DataUtils.dataHoraAtualMaisMinutos(15))
+                    .withExpiresAt(DataUtils.dataHoraAtualMaisMinutos(60))
                     .sign(criarAlgoritmoHMAC256());
+
+            return TokenDTO.builder()
+                    .token(token)
+                    .tempoExpiracaoEmMinutos(60L).build();
 
         }catch (JWTCreationException jwtException) {
             throw new RuntimeException("Erro durante a criação do token", jwtException);

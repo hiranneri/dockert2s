@@ -9,6 +9,7 @@ import br.com.docker.t2s.model.TipoMovimentacao;
 import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
 import br.com.docker.t2s.repository.MovimentacaoRepository;
+import br.com.docker.t2s.repository.OrdenacaoStrategy;
 import br.com.docker.t2s.repository.TiposMovimentacaoRepository;
 import br.com.docker.t2s.repository.dto.RelatorioAgrupadoComSumarioDTO;
 import br.com.docker.t2s.repository.dto.ResultadoRelatorioDTO;
@@ -21,10 +22,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 @Service
 @RequiredArgsConstructor
 @Log4j2
@@ -61,12 +65,6 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
                         ()-> new BadRequestException("Tipo de Movimentação não foi localizada"))
                 );
     }
-
-    @Override
-    public MovimentacaoResponseDTO buscarPorDataCriacao(LocalDateTime dataHoraCriacao)  {
-        // Será implementado em relatórios
-        return null;
-    }
     @Override
     public List<MovimentacaoResponseDTO> buscarMovimentacoes() {
         List<Movimentacao> movimentacoes = movimentacaoRepository.findAll();
@@ -78,10 +76,43 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     }
 
     @Override
-    public RelatorioAgrupadoComSumarioDTO gerarRelatoriosMovimentacoesAgrupadas() {
-        List<ResultadoRelatorioDTO> relatorioAgrupado = movimentacaoRepository.obterTotalAgrupadoPorClienteETipo();
+    public RelatorioAgrupadoComSumarioDTO gerarRelatoriosMovimentacoesAgrupadas(String campo, String ordenacao) {
+        List<String> parametrosFiltro = validarParametrosFiltro(campo, ordenacao);
+
+        campo = parametrosFiltro.get(0);
+        ordenacao = parametrosFiltro.get(1);
+        String filtrosBusca = campo.concat(" - ").concat(ordenacao);
+
+        List<ResultadoRelatorioDTO> relatorioAgrupado = new OrdenacaoStrategy(movimentacaoRepository).execute(filtrosBusca);
         List<SumarioDTO> sumariosDTO = movimentacaoRepository.obterTotalAgrupadoPorTipoMovimentacao();
         return RelatorioAgrupadoComSumarioDTO.gerarRelatorio(relatorioAgrupado, sumariosDTO);
+    }
+
+    private List<String> validarParametrosFiltro(String campo, String ordenacao){
+
+        List<String> parametros = new ArrayList<>();
+
+        final Map<String, String> CAMPOS_PERMITIDOS = Map.of(
+                "cliente", "cliente",
+                "tipoMovimentacao", "tipoMovimentacao"
+        );
+
+        final Map<String, String> ORDENACOES_PERMITADAS = Map.of(
+                "ASC", "ASC",
+                "DESC", "DESC"
+        );
+
+        if(!StringUtils.hasText(campo)) campo = "cliente";
+        if(!StringUtils.hasText(ordenacao)) ordenacao = "ASC";
+
+        campo = CAMPOS_PERMITIDOS.getOrDefault(campo, "cliente");
+        ordenacao = ORDENACOES_PERMITADAS.getOrDefault(ordenacao, "ASC");
+
+        parametros.add(campo);
+        parametros.add(ordenacao);
+
+        return parametros;
+
     }
 
     @Override

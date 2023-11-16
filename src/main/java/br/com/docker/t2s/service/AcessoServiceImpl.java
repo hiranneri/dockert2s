@@ -7,6 +7,7 @@ import br.com.docker.t2s.controller.dtos.registerUsuario.RegisterPostRequest;
 import br.com.docker.t2s.controller.dtos.registerUsuario.RegisterPostResponse;
 import br.com.docker.t2s.model.UsuarioDockerT2S;
 import br.com.docker.t2s.repository.UserRepository;
+import br.com.docker.t2s.service.dto.TokenDTO;
 import br.com.docker.t2s.service.interfaces.AcessoService;
 import br.com.docker.t2s.utils.DataUtils;
 import br.com.docker.t2s.utils.TokenUtils;
@@ -41,13 +42,13 @@ public class AcessoServiceImpl implements AcessoService {
         log.info("Usuário autenticado!");
 
         UsuarioDockerT2S usuario = (UsuarioDockerT2S) auth.getPrincipal();
-        String token = tokenUtils.gerarToken(usuario);
+        TokenDTO jwt = tokenUtils.gerarToken(usuario);
 
         return LoginPostResponse.builder()
                 .dataHora(LocalDateTime.now().format(DataUtils.PT_BR_FORMATTER))
                 .mensagem("Usuário logado com sucesso. Por favor, se atente ao tempo de expiração do token")
-                .tempoExpiracaoToken("15m")
-                .token(token).build();
+                .tempoExpiracaoTokenEmMinutos(jwt.getTempoExpiracaoEmMinutos().toString())
+                .token(jwt.getToken()).build();
     }
 
     @Override

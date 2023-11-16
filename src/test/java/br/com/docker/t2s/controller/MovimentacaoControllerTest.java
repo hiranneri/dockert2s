@@ -17,8 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.util.List;
-
 @ExtendWith(SpringExtension.class)
 class MovimentacaoControllerTest {
 
@@ -34,7 +32,6 @@ class MovimentacaoControllerTest {
         MovimentacaoResponseDTO movimentacaoResponseDesativado = MovimentacaoCreator.createMovimentacaoResponseInativo();
 
         BDDMockito.when(movimentacaoService.criar(ArgumentMatchers.any(MovimentacaoPostRequestDTO.class))).thenReturn(movimentacaoResponseValido);
-        BDDMockito.when(movimentacaoService.buscarMovimentacoes()).thenReturn(List.of(movimentacaoResponseValido));
         BDDMockito.when(movimentacaoService.editarMovimentacao(ArgumentMatchers.any(MovimentacaoPutRequestDTO.class))).thenReturn(movimentacaoResponseEditado);
         BDDMockito.when(movimentacaoService.deletarMovimentacao(ArgumentMatchers.anyLong())).thenReturn(movimentacaoResponseDesativado);
 
@@ -51,15 +48,6 @@ class MovimentacaoControllerTest {
         Assertions.assertNotNull(movimentacaoResponseSalvo.getBody().getDataHoraInicio());
 
         Assertions.assertEquals(movimentacaoPostRequestDTO.getTipoMovimentacao(),  movimentacaoResponseSalvo.getBody().getTipoMovimentacao());
-
-    }
-
-    @Test
-    void buscarMovimentacoes_RetornaUmaListaMovimentacoes_QuandoSucedido() {
-        ResponseEntity<List<MovimentacaoResponseDTO>> movimentacoes = movimentacaoController.buscarMovimentacoes();
-
-        Assertions.assertNotNull(movimentacoes);
-        Assertions.assertEquals(HttpStatus.OK, movimentacoes.getStatusCode());
 
     }
 

@@ -6,14 +6,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public interface MovimentacaoService {
 
     MovimentacaoResponseDTO criar(MovimentacaoPostRequestDTO movimentacao);
-    MovimentacaoResponseDTO buscarPorDataCriacao(LocalDateTime dataHoraCriacao);
 
     List<MovimentacaoResponseDTO> buscarMovimentacoes();
 
@@ -24,5 +22,5 @@ public interface MovimentacaoService {
 
     MovimentacaoPatchResponseDTO finalizar(MovimentacaoPatchRequestDTO movimentacaoPatchRequestDTO);
 
-    RelatorioAgrupadoComSumarioDTO gerarRelatoriosMovimentacoesAgrupadas();
+    RelatorioAgrupadoComSumarioDTO gerarRelatoriosMovimentacoesAgrupadas(String campo, String ordenacao);
 }

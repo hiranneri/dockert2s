@@ -16,8 +16,6 @@ public class MovimentacaoMapperImpl implements MovimentacaoMapper{
                 .numeroConteiner(movimentacao.getConteiner().getNumero())
                 .tipoMovimentacao(movimentacao.getTipoMovimentacao().getNome().toString())
                 .dataHoraInicio(DataUtils.convertLocalDateTimeToString(movimentacao.getDataHoraInicio()))
-                .dataHoraFim(DataUtils.convertLocalDateTimeToString(movimentacao.getDataHoraFim()))
-                .status(movimentacao.getStatus())
                 .build();
     }
 

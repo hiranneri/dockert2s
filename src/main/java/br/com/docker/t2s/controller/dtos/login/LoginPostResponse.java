@@ -9,7 +9,7 @@ public class LoginPostResponse {
 
     private String dataHora;
     private String mensagem;
-    private String tempoExpiracaoToken;
+    private String tempoExpiracaoTokenEmMinutos;
     private String token;
 
 }

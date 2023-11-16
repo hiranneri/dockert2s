@@ -12,6 +12,4 @@ public class MovimentacaoResponseDTO {
     String numeroConteiner;
     String tipoMovimentacao;
     String dataHoraInicio;
-    String dataHoraFim;
-    Status status;
 }
