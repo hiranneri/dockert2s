@@ -6,12 +6,8 @@ import br.com.docker.t2s.controller.dtos.conteiner.ConteinerResponseDTO;
 import br.com.docker.t2s.controller.dtos.mappers.conteiner.ConteinerMapper;
 import br.com.docker.t2s.exceptions.responsehandler.BadRequestException;
 import br.com.docker.t2s.model.Conteiner;
-import br.com.docker.t2s.model.enums.Status;
-import br.com.docker.t2s.model.enums.TipoCategoria;
-import br.com.docker.t2s.repository.CategoriaRepository;
 import br.com.docker.t2s.repository.ConteinerRepository;
 import br.com.docker.t2s.service.interfaces.ClienteService;
-import br.com.docker.t2s.utils.CategoriaCreator;
 import br.com.docker.t2s.utils.ClienteCreator;
 import br.com.docker.t2s.utils.ConteinerCreator;
 import org.hibernate.exception.ConstraintViolationException;
@@ -43,10 +39,6 @@ class ConteinerServiceImplTest {
     @Mock
     private ConteinerMapper conteinerMapper;
 
-    @Mock
-    private CategoriaRepository categoriaRepository;
-
-
     @BeforeEach
     void setup(){
 
@@ -65,9 +57,8 @@ class ConteinerServiceImplTest {
         BDDMockito.when(conteinerRepository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.of(conteinerAtivo));
         BDDMockito.when(conteinerRepository.findAll()).thenReturn(List.of(conteinerAtivo));
         BDDMockito.when(conteinerRepository.save(ArgumentMatchers.any(Conteiner.class))).thenReturn(conteinerAtivo);
-        BDDMockito.when(conteinerRepository.findByNumero(ArgumentMatchers.anyString())).thenReturn(Optional.of(conteinerAtivo));
+        BDDMockito.when(conteinerRepository.findByNumeroAndStatus(ArgumentMatchers.anyString(),true )).thenReturn(Optional.of(conteinerAtivo));
         BDDMockito.when(conteinerRepository.save(ArgumentMatchers.any(Conteiner.class))).thenReturn(conteinerEditado);
-        BDDMockito.when(categoriaRepository.findByNome(ArgumentMatchers.any(TipoCategoria.class))).thenReturn(Optional.of(CategoriaCreator.createCategoriaAtiva()));
 
         BDDMockito.when(conteinerRepository.save(ArgumentMatchers.any(Conteiner.class))).thenReturn(conteinerDesativado); // desativar
     }
@@ -80,7 +71,7 @@ class ConteinerServiceImplTest {
 
         Assertions.assertNotNull(conteinerResponseSalvo);
         Assertions.assertEquals(conteinerPostRequestDTO.getNumero(), Objects.requireNonNull(conteinerResponseSalvo).getNumeroConteiner());
-        Assertions.assertEquals(Status.ATIVO.toString(), Objects.requireNonNull(conteinerResponseSalvo.getStatus()));
+        Assertions.assertTrue(conteinerResponseSalvo.isStatus());
 
     }
 
@@ -99,7 +90,7 @@ class ConteinerServiceImplTest {
         Assertions.assertNotNull(conteinerResponseDTO);
         Assertions.assertNotNull(conteinerResponseDTO);
         Assertions.assertNotNull(conteinerResponseDTO.getNumeroConteiner());
-        Assertions.assertEquals(Status.ATIVO.toString(),conteinerResponseDTO.getStatus());
+        Assertions.assertTrue(conteinerResponseDTO.isStatus());
 
     }
 
@@ -110,7 +101,7 @@ class ConteinerServiceImplTest {
 
         Assertions.assertNotNull(conteinerLocalizado);
         Assertions.assertEquals(numero, Objects.requireNonNull(conteinerLocalizado.getNumeroConteiner()));
-        Assertions.assertEquals(Status.ATIVO.toString(), Objects.requireNonNull(conteinerLocalizado.getStatus()));
+        Assertions.assertTrue(conteinerLocalizado.isStatus());
 
 
     }
@@ -185,7 +176,7 @@ class ConteinerServiceImplTest {
 
     @Test
     public void buscarPeloNome_RetornaUmaExcecao_QuandoNomeconteinerInexistente(){
-        BDDMockito.when(conteinerRepository.findByNumero(ArgumentMatchers.anyString())).thenThrow(BadRequestException.class);
+        BDDMockito.when(conteinerRepository.findByNumeroAndStatus(ArgumentMatchers.anyString(),true )).thenThrow(BadRequestException.class);
 
         Assertions.assertThrows(BadRequestException.class,
                 ()->
@@ -196,7 +187,7 @@ class ConteinerServiceImplTest {
 
     @Test
     public void buscarconteinerCompleto_RetornaUmaExcecao_QuandoconteinerInexistente(){
-        BDDMockito.when(conteinerRepository.findByNumero(ArgumentMatchers.anyString())).thenReturn(Optional.empty());
+        BDDMockito.when(conteinerRepository.findByNumeroAndStatus(ArgumentMatchers.anyString(),true )).thenReturn(Optional.empty());
 
         Assertions.assertThrows(BadRequestException.class,
                 ()-> conteinerService.buscarConteinerCompletoPeloNumero(

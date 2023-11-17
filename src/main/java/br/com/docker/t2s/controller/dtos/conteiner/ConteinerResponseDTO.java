@@ -1,6 +1,5 @@
 package br.com.docker.t2s.controller.dtos.conteiner;
 
-import br.com.docker.t2s.model.enums.Status;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,6 +12,6 @@ public class ConteinerResponseDTO {
     String statusConteiner;
     String categoria;
     String nomeCliente;
-    String status;
+    boolean status;
 
 }

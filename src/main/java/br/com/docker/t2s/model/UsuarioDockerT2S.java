@@ -14,7 +14,8 @@ import java.util.Collection;
 import java.util.stream.Collectors;
 
 
-@Entity(name = "usuarios")
+@Entity
+@Table(name = "usuarios")
 @Builder
 @Data
 @AllArgsConstructor
@@ -36,6 +37,14 @@ public class UsuarioDockerT2S implements UserDetails {
 
     @Column(nullable = false)
     private String authorities;
+
+    @Column(nullable = false)
+    private boolean status;
+
+    @PrePersist
+    public void prePersist() {
+        this.status = true;
+    }
 
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Arrays.stream(authorities.split(","))

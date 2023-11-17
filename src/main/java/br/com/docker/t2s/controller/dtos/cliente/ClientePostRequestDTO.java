@@ -1,6 +1,5 @@
 package br.com.docker.t2s.controller.dtos.cliente;
 
-import br.com.docker.t2s.model.enums.Status;
 import lombok.Builder;
 import lombok.Data;
 
@@ -18,5 +17,5 @@ public class ClientePostRequestDTO {
     String nome;
 
     @Null(message = "Campo status não deve ser informado")
-    Status status;
+    boolean status;
 }

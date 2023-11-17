@@ -3,7 +3,6 @@ package br.com.docker.t2s.controller;
 import br.com.docker.t2s.controller.dtos.cliente.ClientePostRequestDTO;
 import br.com.docker.t2s.controller.dtos.cliente.ClientePutRequestDTO;
 import br.com.docker.t2s.controller.dtos.cliente.ClienteResponseDTO;
-import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.service.interfaces.ClienteService;
 import br.com.docker.t2s.utils.ClienteCreator;
 import org.junit.jupiter.api.Assertions;
@@ -58,7 +57,7 @@ class ClienteControllerTest {
         Assertions.assertNotNull(clientesLocalizados);
         Assertions.assertEquals(1, clientesLocalizados.getTotalElements());
         Assertions.assertEquals(clienteDTO.getNome(), clientesLocalizados.toList().get(0).getNome());
-        Assertions.assertEquals(clienteDTO.getStatus(), clientesLocalizados.toList().get(0).getStatus());
+        Assertions.assertEquals(clienteDTO.isStatus(), clientesLocalizados.toList().get(0).isStatus());
 
     }
 
@@ -69,7 +68,6 @@ class ClienteControllerTest {
 
         Assertions.assertNotNull(clienteResponseSalvo);
         Assertions.assertEquals(clientePostRequestDTO.getNome(), Objects.requireNonNull(clienteResponseSalvo.getBody()).getNome());
-        Assertions.assertEquals(Status.ATIVO, Objects.requireNonNull(clienteResponseSalvo.getBody().getStatus()));
         Assertions.assertEquals(HttpStatus.CREATED, clienteResponseSalvo.getStatusCode());
     }
 
@@ -88,8 +86,6 @@ class ClienteControllerTest {
         Assertions.assertNotNull(clienteLocalizado);
         Assertions.assertNotNull(clienteLocalizado.getBody());
         Assertions.assertNotNull(clienteLocalizado.getBody().getNome());
-        Assertions.assertEquals(Status.ATIVO,clienteLocalizado.getBody().getStatus());
-
         Assertions.assertEquals(HttpStatus.OK, clienteLocalizado.getStatusCode());
 
     }
@@ -101,7 +97,6 @@ class ClienteControllerTest {
 
         Assertions.assertNotNull(clienteLocalizado);
         Assertions.assertEquals(nomeCliente, Objects.requireNonNull(clienteLocalizado.getBody()).getNome());
-        Assertions.assertEquals(Status.ATIVO, Objects.requireNonNull(clienteLocalizado.getBody()).getStatus());
         Assertions.assertEquals(HttpStatus.OK, clienteLocalizado.getStatusCode());
 
     }

@@ -1,4 +1,4 @@
-package br.com.docker.t2s.repository;
+package br.com.docker.t2s.repository.strategies;
 
 import br.com.docker.t2s.repository.dto.ResultadoRelatorioDTO;
 

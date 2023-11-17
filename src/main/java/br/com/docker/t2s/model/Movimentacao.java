@@ -1,6 +1,5 @@
 package br.com.docker.t2s.model;
 
-import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.repository.dto.RelatorioMapper;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,7 +9,8 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @RelatorioMapper
-@Entity(name = "movimentacoes")
+@Entity
+@Table(name = "movimentacoes")
 @Builder
 @Data
 @AllArgsConstructor
@@ -38,8 +38,7 @@ public class Movimentacao {
     private Conteiner conteiner;
 
     @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Status status;
+    private boolean status;
 
     @PrePersist
     public void prePersist() {
@@ -47,7 +46,7 @@ public class Movimentacao {
             this.dataHoraInicio = LocalDateTime.now();
         }
         this.updatedAt = LocalDateTime.now();
-        this.status = Status.ATIVO;
+        this.status = true;
     }
 
     @PreUpdate

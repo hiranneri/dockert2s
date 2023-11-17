@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<UsuarioDockerT2S, Long> {
 
-    Optional<UsuarioDockerT2S> findByUsername(String username);
+    Optional<UsuarioDockerT2S> findByUsernameAndStatus(String username, boolean status);
 }

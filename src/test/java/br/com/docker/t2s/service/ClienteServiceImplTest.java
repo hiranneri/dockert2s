@@ -5,7 +5,6 @@ import br.com.docker.t2s.controller.dtos.cliente.ClientePutRequestDTO;
 import br.com.docker.t2s.controller.dtos.cliente.ClienteResponseDTO;
 import br.com.docker.t2s.exceptions.responsehandler.BadRequestException;
 import br.com.docker.t2s.model.Cliente;
-import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.repository.ClienteRepository;
 import br.com.docker.t2s.utils.ClienteCreator;
 import org.hibernate.exception.ConstraintViolationException;
@@ -45,8 +44,8 @@ class ClienteServiceImplTest {
         BDDMockito.when(clienteRepository.findAll()).thenReturn(List.of(clienteAtivo));
 
         BDDMockito.when(clienteRepository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.of(clienteAtivo));
-        BDDMockito.when(clienteRepository.findByNomeAndStatus(ArgumentMatchers.anyString(), eq(Status.ATIVO))).thenReturn(Optional.of(clienteAtivo));
-        BDDMockito.when(clienteRepository.findByIdAndStatus(ArgumentMatchers.anyLong(), eq(Status.ATIVO))).thenReturn(Optional.of(clienteAtivo));
+        BDDMockito.when(clienteRepository.findByNomeAndStatus(ArgumentMatchers.anyString(), eq(true))).thenReturn(Optional.of(clienteAtivo));
+        BDDMockito.when(clienteRepository.findByIdAndStatus(ArgumentMatchers.anyLong(), eq(true))).thenReturn(Optional.of(clienteAtivo));
 
         BDDMockito.when(clienteRepository.save(ArgumentMatchers.any(Cliente.class))).thenReturn(clienteDesativado); // desativar
     }
@@ -59,7 +58,7 @@ class ClienteServiceImplTest {
 
         Assertions.assertNotNull(clienteResponseSalvo);
         Assertions.assertEquals(clientePutRequestDTO.getNome(), Objects.requireNonNull(clienteResponseSalvo).getNome());
-        Assertions.assertEquals(Status.ATIVO, Objects.requireNonNull(clienteResponseSalvo.getStatus()));
+        Assertions.assertTrue(clienteResponseSalvo.isStatus());
 
     }
 
@@ -78,7 +77,6 @@ class ClienteServiceImplTest {
         Assertions.assertNotNull(clienteLocalizado);
         Assertions.assertNotNull(clienteLocalizado);
         Assertions.assertNotNull(clienteLocalizado.getNome());
-        Assertions.assertEquals(Status.ATIVO,clienteLocalizado.getStatus());
 
     }
 
@@ -89,7 +87,6 @@ class ClienteServiceImplTest {
 
         Assertions.assertNotNull(clienteLocalizado);
         Assertions.assertEquals(nomeCliente, Objects.requireNonNull(clienteLocalizado.getNome()));
-        Assertions.assertEquals(Status.ATIVO, Objects.requireNonNull(clienteLocalizado.getStatus()));
 
 
     }
@@ -120,7 +117,7 @@ class ClienteServiceImplTest {
     @Test
     public void buscarPeloIDOuLancarExcecaoNaoEncontrado_RetornaUmaExcecao_QuandoClienteInvalido(){
         Long idInexistente = 50L;
-        BDDMockito.when(clienteRepository.findByIdAndStatus(ArgumentMatchers.anyLong(), eq(Status.ATIVO))).thenThrow(BadRequestException.class);
+        BDDMockito.when(clienteRepository.findByIdAndStatus(ArgumentMatchers.anyLong(), eq(true))).thenThrow(BadRequestException.class);
 
         Assertions.assertThrows(BadRequestException.class,()->
                 clienteService.buscarPeloIDOuLancarExcecaoNaoEncontrado(idInexistente)
@@ -164,7 +161,7 @@ class ClienteServiceImplTest {
 
     @Test
     public void buscarPeloNome_RetornaUmaExcecao_QuandoNomeClienteInexistente(){
-        BDDMockito.when(clienteRepository.findByNomeAndStatus(ArgumentMatchers.anyString(),eq(Status.ATIVO))).thenThrow(BadRequestException.class);
+        BDDMockito.when(clienteRepository.findByNomeAndStatus(ArgumentMatchers.anyString(),eq(true))).thenThrow(BadRequestException.class);
 
         Assertions.assertThrows(BadRequestException.class,
                 ()->
@@ -175,7 +172,7 @@ class ClienteServiceImplTest {
 
     @Test
     public void buscarClienteCompleto_RetornaUmaExcecao_QuandoClienteInexistente(){
-        BDDMockito.when(clienteRepository.findByNomeAndStatus(ArgumentMatchers.anyString(),eq(Status.ATIVO))).thenReturn(Optional.empty());
+        BDDMockito.when(clienteRepository.findByNomeAndStatus(ArgumentMatchers.anyString(),eq(true))).thenReturn(Optional.empty());
 
         Assertions.assertThrows(BadRequestException.class,
                 ()-> clienteService.buscarClienteCompleto(

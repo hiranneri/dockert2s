@@ -1,46 +1,38 @@
 package br.com.docker.t2s.model;
 
-import br.com.docker.t2s.model.enums.Status;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
-@Entity(name="clientes")
+@Entity
+@Table(name="clientes")
 @Builder
-@Data
 @AllArgsConstructor
+@NoArgsConstructor
+@Data
 public class Cliente {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false, unique = true)
     private String nome;
 
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
     private List<Conteiner> conteiner;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
-
-    public Cliente() {
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public void setStatus(Status status) {
-        this.status = status;
-    }
+    @Column(nullable = false)
+    private boolean status;
 
     @PrePersist
     public void prePersist() {
-        this.status = Status.ATIVO;
+        this.status = true;
+    }
+
+    public boolean isStatusAtivo() {
+        return status;
     }
 
     @Override

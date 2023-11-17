@@ -6,7 +6,6 @@ import br.com.docker.t2s.controller.dtos.cliente.ClienteResponseDTO;
 import br.com.docker.t2s.controller.dtos.mappers.cliente.ClienteMapper;
 import br.com.docker.t2s.exceptions.responsehandler.BadRequestException;
 import br.com.docker.t2s.model.Cliente;
-import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.repository.ClienteRepository;
 import br.com.docker.t2s.service.interfaces.ClienteService;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +22,7 @@ import java.util.List;
 public class ClienteServiceImpl implements ClienteService {
 
     private final ClienteRepository clienteRepository;
-    private final Status statusAtivo = Status.ATIVO;
+    private final boolean statusAtivo = true;
 
     @Override
     public ClienteResponseDTO criar(ClientePostRequestDTO clienteRequestDTO) {
@@ -63,7 +62,7 @@ public class ClienteServiceImpl implements ClienteService {
 
         Cliente cliente = ClienteMapper.INSTANCE.toCliente(clienteLocalizado);
         cliente.setId(id);
-        cliente.setStatus(Status.INATIVO);
+        cliente.setStatus(false);
 
         clienteRepository.save(cliente);
 

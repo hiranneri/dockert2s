@@ -4,7 +4,6 @@ import br.com.docker.t2s.exceptions.responsehandler.BadRequestException;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.text.Normalizer;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -18,7 +17,7 @@ public enum TipoCategoria {
     @JsonProperty("categoria")
     EXPORTACAO("EXPORTAÇÃO");
 
-    private static Map<String, TipoCategoria> TIPOS_MAPA = Stream.of(TipoCategoria.values())
+    private static final Map<String, TipoCategoria> TIPOS_MAPA = Stream.of(TipoCategoria.values())
             .collect(Collectors.toMap(categoria -> categoria.valor, Function.identity()));
 
     private final String valor;

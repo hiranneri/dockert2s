@@ -3,10 +3,8 @@ package br.com.docker.t2s.utils;
 import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPostRequestDTO;
 import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPutRequestDTO;
 import br.com.docker.t2s.controller.dtos.conteiner.ConteinerResponseDTO;
-import br.com.docker.t2s.model.Categoria;
 import br.com.docker.t2s.model.Cliente;
 import br.com.docker.t2s.model.Conteiner;
-import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.model.enums.StatusConteiner;
 import br.com.docker.t2s.model.enums.TipoCategoria;
 import br.com.docker.t2s.model.enums.TipoConteiner;
@@ -19,7 +17,7 @@ public class ConteinerCreator {
                 .nomeCliente("Emirates")
                 .numeroConteiner("TEST123457")
                 .tipo("20")
-                .status(Status.ATIVO.toString())
+                .status(true)
                 .categoria("EXPORTACAO").build();
     }
 
@@ -29,7 +27,7 @@ public class ConteinerCreator {
                 .numeroConteiner("TEST999999")
                 .tipo("20")
                 .categoria("EXPORTACAO")
-                .status("ATIVO").build();
+                .status(true).build();
     }
 
     public static ConteinerResponseDTO createConteinerResponseInativo() {
@@ -38,7 +36,7 @@ public class ConteinerCreator {
                 .numeroConteiner("TEST123456")
                 .tipo("20")
                 .categoria("EXPORTACAO")
-                .status("INATIVO").build();
+                .status(false).build();
     }
 
     public static ConteinerPostRequestDTO createConteinerPostRequestValido() {
@@ -74,34 +72,34 @@ public class ConteinerCreator {
     public static Conteiner createConteinerAtivo() {
         return Conteiner.builder()
                 .id(1L)
-                .cliente(new Cliente(1L,"TSC", new ArrayList<>(), Status.ATIVO))
+                .cliente(new Cliente(1L,"TSC", new ArrayList<>(), true))
                 .numero("TEST123456")
                 .tipo(TipoConteiner.TIPO_20)
                 .statusConteiner(StatusConteiner.CHEIO)
-                .categoria(new Categoria(1L, TipoCategoria.IMPORTACAO))
-                .status(Status.ATIVO).build();
+                .categoria(TipoCategoria.IMPORTACAO)
+                .status(true).build();
     }
 
     public static Conteiner createConteinerEditadoAtivo() {
         return Conteiner.builder()
                 .id(1L)
-                .cliente(new Cliente(1L,"TSC Editado", new ArrayList<>(), Status.ATIVO))
+                .cliente(new Cliente(1L,"TSC Editado", new ArrayList<>(), true))
                 .numero("TEST9999")
                 .tipo(TipoConteiner.TIPO_20)
-                .categoria(new Categoria(1L, TipoCategoria.IMPORTACAO))
+                .categoria(TipoCategoria.IMPORTACAO)
                 .statusConteiner(StatusConteiner.CHEIO)
-                .status(Status.ATIVO).build();
+                .status(true).build();
     }
 
     public static Conteiner createConteinerInativo() {
         return Conteiner.builder()
                 .id(3L)
-                .cliente(new Cliente(2L,"TSC Inativo", new ArrayList<>(), Status.ATIVO))
+                .cliente(new Cliente(2L,"TSC Inativo", new ArrayList<>(), true))
                 .numero("TEST123456")
-                .categoria(new Categoria(1L, TipoCategoria.EXPORTACAO))
+                .categoria(TipoCategoria.EXPORTACAO)
                 .tipo(TipoConteiner.TIPO_20)
                 .statusConteiner(StatusConteiner.CHEIO)
-                .status(Status.INATIVO).build();
+                .status(false).build();
     }
 
     public static ConteinerPutRequestDTO createConteinerRequestEditado() {

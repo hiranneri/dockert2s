@@ -14,7 +14,7 @@ public enum StatusConteiner {
     CHEIO("CHEIO"),
     @JsonProperty("statusConteiner")
     VAZIO("VAZIO");
-    private static Map<String, StatusConteiner> TIPOS_MAPA = Stream.of(StatusConteiner.values())
+    private static final Map<String, StatusConteiner> TIPOS_MAPA = Stream.of(StatusConteiner.values())
             .collect(Collectors.toMap(status -> status.valor, Function.identity()));
 
     private final String valor;

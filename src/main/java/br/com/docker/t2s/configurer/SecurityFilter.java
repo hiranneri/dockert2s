@@ -40,7 +40,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             String token = recoverToken(request);
             if(token != null){
                 String username = tokenUtils.obterUsernameNoTokenValido(token);
-                UsuarioDockerT2S usuario = userRepository.findByUsername(username)
+                UsuarioDockerT2S usuario = userRepository.findByUsernameAndStatus(username,true)
                         .orElseThrow(()-> new UnauthorizedException("Token inválido"));
 
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(

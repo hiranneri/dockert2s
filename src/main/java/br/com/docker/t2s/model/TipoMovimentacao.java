@@ -7,9 +7,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
-@Entity(name = "tiposmovimentacao")
+@Entity
+@Table(name = "tiposmovimentacao")
 @Builder
 @Data
 @AllArgsConstructor
@@ -26,6 +28,14 @@ public class TipoMovimentacao {
 
     @OneToMany(mappedBy = "tipoMovimentacao", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Movimentacao> movimentacao;
+
+    @Column(nullable = false)
+    private boolean status;
+
+    @PrePersist
+    public void prePersist() {
+        this.status = true;
+    }
 
     @Override
     public String toString() {

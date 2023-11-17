@@ -6,10 +6,9 @@ import br.com.docker.t2s.exceptions.responsehandler.BadRequestException;
 import br.com.docker.t2s.model.Conteiner;
 import br.com.docker.t2s.model.Movimentacao;
 import br.com.docker.t2s.model.TipoMovimentacao;
-import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
 import br.com.docker.t2s.repository.MovimentacaoRepository;
-import br.com.docker.t2s.repository.OrdenacaoStrategy;
+import br.com.docker.t2s.repository.strategies.OrdenacaoStrategy;
 import br.com.docker.t2s.repository.TiposMovimentacaoRepository;
 import br.com.docker.t2s.repository.dto.RelatorioAgrupadoComSumarioDTO;
 import br.com.docker.t2s.repository.dto.ResultadoRelatorioDTO;
@@ -43,7 +42,8 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
         TipoMovimentacao tipoMovimentacao = pesquisarTipoMovimentacao(movimentacaoRequest.getTipoMovimentacao());
         Conteiner conteiner = conteinerService.buscarConteinerCompletoPeloNumero(movimentacaoRequest.getNumeroConteiner());
 
-        boolean movimentacaoLocalizada = movimentacaoRepository.findByTipoMovimentacaoAndConteiner(tipoMovimentacao, conteiner).isPresent();
+        boolean movimentacaoLocalizada = movimentacaoRepository.findByTipoMovimentacaoAndConteinerAndStatus(
+                tipoMovimentacao, conteiner, true).isPresent();
         if(movimentacaoLocalizada) {
             throw new BadRequestException("Já existe uma movimentação com o mesmo TIPO_MOVIMENTACAO para o mesmo CONTEINER.");
         }
@@ -60,7 +60,7 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 
     private TipoMovimentacao pesquisarTipoMovimentacao(String nomeTipo) {
         NomeMovimentacao nomeMovimentacao = NomeMovimentacao.valueOf(nomeTipo);
-        return tiposMovimentacaoRepository.findByNome(nomeMovimentacao)
+        return tiposMovimentacaoRepository.findByNomeAndStatus(nomeMovimentacao, true)
                 .orElseThrow((
                         ()-> new BadRequestException("Tipo de Movimentação não foi localizada"))
                 );
@@ -134,7 +134,7 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
         NomeMovimentacao nomeMovimentacao = NomeMovimentacao.valueOf(movimentacaoPostRequestDTO.getTipoMovimentacao());
 
         Conteiner conteiner = conteinerService.buscarConteinerCompletoPeloNumero(movimentacaoPostRequestDTO.getNumeroConteiner());
-        TipoMovimentacao tipoMovimentacao = tiposMovimentacaoRepository.findByNome(nomeMovimentacao)
+        TipoMovimentacao tipoMovimentacao = tiposMovimentacaoRepository.findByNomeAndStatus(nomeMovimentacao, true)
                 .orElseThrow(()-> new BadRequestException("Tipo de Movimentação não localizada"));
 
         Movimentacao movimentacao = new Movimentacao();
@@ -142,14 +142,14 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
         movimentacao.setDataHoraInicio(dataHoraInicio);
         movimentacao.setConteiner(conteiner);
         movimentacao.setTipoMovimentacao(tipoMovimentacao);
-        movimentacao.setStatus(Status.ATIVO);
+        movimentacao.setStatus(true);
 
         return MovimentacaoMapper.INSTANCE.toMovimentacaoResponse(movimentacaoRepository.save(movimentacao));
     }
     @Override
     public MovimentacaoResponseDTO deletarMovimentacao(Long id) {
         Movimentacao movimentacaoLocalizada = pesquisarPorIdOuLancarExcecao(id);
-        movimentacaoLocalizada.setStatus(Status.INATIVO);
+        movimentacaoLocalizada.setStatus(false);
         return MovimentacaoMapper.INSTANCE.toMovimentacaoResponse(movimentacaoRepository.save(movimentacaoLocalizada));
     }
 
@@ -169,7 +169,7 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     }
 
     private Movimentacao buscarMovimentacaoPorTipoMovimentacaoConteiner(Conteiner conteiner, TipoMovimentacao tipoMovimentacao)  {
-        return movimentacaoRepository.findByTipoMovimentacaoAndConteiner(tipoMovimentacao, conteiner)
+        return movimentacaoRepository.findByTipoMovimentacaoAndConteinerAndStatus(tipoMovimentacao, conteiner, true)
                 .orElseThrow(()-> new BadRequestException("Movimentação não foi localizada"));
 
     }

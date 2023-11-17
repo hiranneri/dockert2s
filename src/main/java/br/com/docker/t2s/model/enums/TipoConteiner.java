@@ -16,7 +16,7 @@ public enum TipoConteiner {
     @JsonProperty("tipo")
     TIPO_40("40");
 
-    private static Map<String, TipoConteiner> TIPOS_MAPA = Stream.of(TipoConteiner.values())
+    private static final Map<String, TipoConteiner> TIPOS_MAPA = Stream.of(TipoConteiner.values())
             .collect(Collectors.toMap(tipo -> tipo.valor, Function.identity()));
 
     private final String valor;

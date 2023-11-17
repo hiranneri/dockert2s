@@ -7,7 +7,6 @@ import br.com.docker.t2s.controller.dtos.mappers.movimentacao.MovimentacaoMapper
 import br.com.docker.t2s.exceptions.responsehandler.BadRequestException;
 import br.com.docker.t2s.model.Movimentacao;
 import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
-import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.repository.MovimentacaoRepository;
 import br.com.docker.t2s.repository.TiposMovimentacaoRepository;
 import br.com.docker.t2s.utils.ConteinerCreator;
@@ -23,7 +22,6 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.BDDMockito;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDateTime;
@@ -33,7 +31,6 @@ import java.util.Objects;
 import java.util.Optional;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 class MovimentacaoServiceImplTest {
@@ -70,9 +67,9 @@ class MovimentacaoServiceImplTest {
         BDDMockito.when(movimentacaoRepository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.of(movimentacaoAtiva));
         BDDMockito.when(movimentacaoRepository.findAll()).thenReturn(List.of(movimentacaoAtiva));
         BDDMockito.when(movimentacaoRepository.save(ArgumentMatchers.any(Movimentacao.class))).thenReturn(movimentacaoAtiva);
-        BDDMockito.when(movimentacaoRepository.findByDataHoraInicio(ArgumentMatchers.any(LocalDateTime.class))).thenReturn(Optional.of(movimentacaoAtiva));
+        BDDMockito.when(movimentacaoRepository.findByDataHoraInicioAndStatus(ArgumentMatchers.any(LocalDateTime.class), true)).thenReturn(Optional.of(movimentacaoAtiva));
         BDDMockito.when(movimentacaoRepository.save(ArgumentMatchers.any(Movimentacao.class))).thenReturn(movimentacaoEditado);
-        BDDMockito.when(tiposMovimentacaoRepository.findByNome(ArgumentMatchers.any(NomeMovimentacao.class)))
+        BDDMockito.when(tiposMovimentacaoRepository.findByNomeAndStatus(ArgumentMatchers.any(NomeMovimentacao.class), true))
                 .thenReturn(TiposMovimentacaoCreator.createTiposMovimentacao());
         BDDMockito.when(movimentacaoRepository.findById(movimentacaoRequestEditado.getId()))
                 .thenReturn(Optional.of(MovimentacaoCreator.createMovimentacaoEditada()));

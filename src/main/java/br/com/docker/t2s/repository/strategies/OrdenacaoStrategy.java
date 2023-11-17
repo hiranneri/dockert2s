@@ -1,6 +1,8 @@
-package br.com.docker.t2s.repository;
+package br.com.docker.t2s.repository.strategies;
 
+import br.com.docker.t2s.repository.MovimentacaoRepository;
 import br.com.docker.t2s.repository.dto.ResultadoRelatorioDTO;
+import br.com.docker.t2s.repository.strategies.*;
 
 import java.util.HashMap;
 import java.util.List;

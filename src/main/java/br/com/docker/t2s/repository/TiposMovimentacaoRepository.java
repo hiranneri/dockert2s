@@ -10,5 +10,5 @@ import java.util.Optional;
 @Repository
 public interface TiposMovimentacaoRepository extends JpaRepository<TipoMovimentacao, Long> {
 
-    Optional<TipoMovimentacao> findByNome(NomeMovimentacao nomeMovimentacao);
+    Optional<TipoMovimentacao> findByNomeAndStatus(NomeMovimentacao nomeMovimentacao, boolean status);
 }

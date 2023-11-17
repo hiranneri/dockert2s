@@ -88,12 +88,12 @@ public class MovimentacaoCreator {
                 .id(1L)
                 .dataHoraInicio(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
-                .tipoMovimentacao(new TipoMovimentacao(1L, NomeMovimentacao.EMBARQUE, new ArrayList<>()))
+                .tipoMovimentacao(new TipoMovimentacao(1L, NomeMovimentacao.EMBARQUE, new ArrayList<>(), true))
                 .conteiner(
                         new Conteiner(
                                 1L,"", TipoConteiner.TIPO_20, StatusConteiner.CHEIO,
-                                new Categoria(1L, TipoCategoria.EXPORTACAO), new Cliente(),
-                                new ArrayList<>(List.of(Movimentacao.builder().build())),Status.ATIVO))
+                                TipoCategoria.EXPORTACAO, new Cliente(),
+                                new ArrayList<>(List.of(Movimentacao.builder().build())),true))
                 .build();
 
     }
@@ -103,15 +103,20 @@ public class MovimentacaoCreator {
                 .id(1L)
                 .dataHoraInicio(LocalDateTime.now().plusDays(1))
                 .updatedAt(LocalDateTime.now())
-                .tipoMovimentacao(new TipoMovimentacao(1L, NomeMovimentacao.EMBARQUE, new ArrayList<>(
-                        List.of(MovimentacaoCreator.createMovimentacao())
-                )))
+                .tipoMovimentacao(
+                        new TipoMovimentacao(
+                                1L,
+                                NomeMovimentacao.EMBARQUE,
+                                new ArrayList<>(List.of(MovimentacaoCreator.createMovimentacao())),
+                                true
+                        )
+                )
                 .conteiner(
                         new Conteiner(
                                 1L,"", TipoConteiner.TIPO_20, StatusConteiner.CHEIO,
-                                new Categoria(1L, TipoCategoria.EXPORTACAO), new Cliente(),
-                                new ArrayList<>(List.of(Movimentacao.builder().build())),Status.ATIVO))
-                .status(Status.ATIVO)
+                                TipoCategoria.EXPORTACAO, new Cliente(),
+                                new ArrayList<>(List.of(Movimentacao.builder().build())),true))
+                .status(true)
                 .build();
     }
 

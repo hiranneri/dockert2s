@@ -16,8 +16,10 @@ import java.util.Optional;
 @Repository
 public interface MovimentacaoRepository extends JpaRepository<Movimentacao, Long> {
 
-    Optional<Movimentacao> findByDataHoraInicio(LocalDateTime dataHoraInicio);
-    Optional<Movimentacao> findByTipoMovimentacaoAndConteiner(TipoMovimentacao tipoMovimentacao, Conteiner conteiner);
+    Optional<Movimentacao> findByDataHoraInicioAndStatus(LocalDateTime dataHoraInicio, boolean status);
+    Optional<Movimentacao> findByTipoMovimentacaoAndConteinerAndStatus(TipoMovimentacao tipoMovimentacao,
+                                                                       Conteiner conteiner,
+                                                                       boolean status);
 
     // ***************************************************
     // Relatórios
@@ -27,7 +29,7 @@ public interface MovimentacaoRepository extends JpaRepository<Movimentacao, Long
             "inner join movimentacoes m on ti.id = m.tipomovimentacao_id \n" +
             "inner join conteineres co on m.conteiner_id  = co.id  \n" +
             "inner join clientes c on co.cliente_id = c.id\n" +
-            "WHERE m.status = 'ATIVO'\n" +
+            "WHERE m.status = 1\n" +
             "GROUP BY c.nome, ti.id \n";
 
     @Query(value = QUERY_PADRAO +"ORDER BY c.nome ASC", nativeQuery = true)
@@ -46,6 +48,7 @@ public interface MovimentacaoRepository extends JpaRepository<Movimentacao, Long
             "from conteineres co\n" +
             "inner join categorias ca \n" +
             "on ca.id = co.categoria_id\n" +
+            "WHERE status = 1" +
             "GROUP by ca.id ;", nativeQuery = true)
     List<SumarioDTO> obterTotalAgrupadoPorTipoMovimentacao();
 

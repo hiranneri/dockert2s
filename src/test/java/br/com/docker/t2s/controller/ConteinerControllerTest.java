@@ -3,7 +3,6 @@ package br.com.docker.t2s.controller;
 import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPostRequestDTO;
 import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPutRequestDTO;
 import br.com.docker.t2s.controller.dtos.conteiner.ConteinerResponseDTO;
-import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.service.interfaces.ConteinerService;
 import br.com.docker.t2s.utils.ConteinerCreator;
 import org.junit.jupiter.api.Assertions;

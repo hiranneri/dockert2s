@@ -4,7 +4,6 @@ import br.com.docker.t2s.controller.dtos.cliente.ClientePostRequestDTO;
 import br.com.docker.t2s.controller.dtos.cliente.ClientePutRequestDTO;
 import br.com.docker.t2s.controller.dtos.cliente.ClienteResponseDTO;
 import br.com.docker.t2s.model.Cliente;
-import br.com.docker.t2s.model.enums.Status;
 
 import java.util.ArrayList;
 
@@ -15,20 +14,20 @@ public class ClienteCreator {
                 .id(1L)
                 .nome("TSC")
                 .conteiner(new ArrayList<>())
-                .status(Status.ATIVO).build();
+                .status(true).build();
     }
 
     public static Cliente createClienteInativo(){
         return Cliente.builder()
                 .nome("TSC")
-                .status(Status.INATIVO).build();
+                .status(false).build();
     }
 
     public static ClientePostRequestDTO createClienteJaExistente(){
         return ClientePostRequestDTO.builder()
                 .id(1L)
                 .nome("TSC")
-                .status(Status.ATIVO).build();
+                .status(true).build();
     }
 
     public static ClientePostRequestDTO createClientePostRequestValido() {
@@ -71,14 +70,14 @@ public class ClienteCreator {
     public static ClienteResponseDTO createClienteResponseAtivo(){
         return ClienteResponseDTO.builder()
                 .nome("TSC")
-                .status(Status.ATIVO)
+                .status(true)
                 .build();
     }
 
     public static ClienteResponseDTO createClienteResponseInativo(){
         return ClienteResponseDTO.builder()
                 .nome("TSC")
-                .status(Status.INATIVO)
+                .status(false)
                 .build();
     }
 
@@ -86,13 +85,13 @@ public class ClienteCreator {
     public static ClienteResponseDTO createClienteResponseEditadoAtivo() {
         return ClienteResponseDTO.builder()
                 .nome("TSC Editado")
-                .status(Status.ATIVO).build();
+                .status(true).build();
     }
 
     public static Cliente createClienteEditadoAtivo() {
         return Cliente.builder()
                 .nome("TSC Editado")
-                .status(Status.ATIVO).build();
+                .status(true).build();
     }
 
 

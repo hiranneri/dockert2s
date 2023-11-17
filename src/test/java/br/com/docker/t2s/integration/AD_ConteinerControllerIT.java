@@ -5,8 +5,6 @@ import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPostRequestDTO;
 import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPutRequestDTO;
 import br.com.docker.t2s.model.Cliente;
 import br.com.docker.t2s.model.Conteiner;
-import br.com.docker.t2s.model.enums.Status;
-import br.com.docker.t2s.utils.ClienteCreator;
 import br.com.docker.t2s.utils.ConteinerCreator;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
@@ -32,7 +30,7 @@ public class AD_ConteinerControllerIT extends AB_AbstractTestIntegrationIT {
     private final Long ID_Conteiner = 1L;
 
     ConteinerPostRequestDTO conteinerASerSalvo = ConteinerCreator.createConteinerPostRequestValido();
-    Cliente emirates = new Cliente(null, "Emirates", null, null);
+    Cliente emirates = new Cliente(null, "Emirates", null, true);
 
     @Test
     @DisplayName("Create a client")
@@ -88,7 +86,7 @@ public class AD_ConteinerControllerIT extends AB_AbstractTestIntegrationIT {
                                 .header("authorization", "Bearer "+ tokenAcesso)
                 ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.numeroConteiner").value(conteinerASerEditado.getNumero()))
-                .andExpect(jsonPath("$.status").value("ATIVO"));
+                .andExpect(jsonPath("$.status").value(true));
 
     }
 

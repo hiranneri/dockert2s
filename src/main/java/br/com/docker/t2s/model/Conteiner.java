@@ -1,7 +1,7 @@
 package br.com.docker.t2s.model;
 
-import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.model.enums.StatusConteiner;
+import br.com.docker.t2s.model.enums.TipoCategoria;
 import br.com.docker.t2s.model.enums.TipoConteiner;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity(name = "conteineres")
+@Entity
+@Table(name = "conteineres")
 @Data
 @Builder
 @AllArgsConstructor
@@ -33,9 +34,9 @@ public class Conteiner {
     @Column(nullable = false)
     private StatusConteiner statusConteiner;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "categoria_id")
-    private Categoria categoria;
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private TipoCategoria categoria;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cliente_id")
@@ -44,12 +45,12 @@ public class Conteiner {
     @OneToMany(mappedBy = "conteiner", fetch = FetchType.LAZY)
     private List<Movimentacao> movimentacao;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
+    @Column(nullable = false)
+    private boolean status;
 
     @PrePersist
     public void prePersist() {
-        this.status = Status.ATIVO;
+        this.status = true;
     }
 
     @Override

@@ -5,14 +5,11 @@ import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPutRequestDTO;
 import br.com.docker.t2s.controller.dtos.conteiner.ConteinerResponseDTO;
 import br.com.docker.t2s.controller.dtos.mappers.conteiner.ConteinerMapper;
 import br.com.docker.t2s.exceptions.responsehandler.BadRequestException;
-import br.com.docker.t2s.model.Categoria;
 import br.com.docker.t2s.model.Cliente;
 import br.com.docker.t2s.model.Conteiner;
-import br.com.docker.t2s.model.enums.Status;
 import br.com.docker.t2s.model.enums.StatusConteiner;
 import br.com.docker.t2s.model.enums.TipoCategoria;
 import br.com.docker.t2s.model.enums.TipoConteiner;
-import br.com.docker.t2s.repository.CategoriaRepository;
 import br.com.docker.t2s.repository.ConteinerRepository;
 import br.com.docker.t2s.service.interfaces.ClienteService;
 import br.com.docker.t2s.service.interfaces.ConteinerService;
@@ -33,15 +30,14 @@ public class ConteinerServiceImpl implements ConteinerService {
 
     private final ConteinerRepository conteinerRepository;
     private final ClienteService clienteService;
-    private final CategoriaRepository categoriaRepository;
 
     @Override
     public ConteinerResponseDTO criar(ConteinerPostRequestDTO conteinerRequestDTO) {
         Conteiner conteiner = ConteinerMapper.INSTANCE.toConteiner(conteinerRequestDTO);
-        Categoria categoria = pesquisarCategoria(conteinerRequestDTO.getCategoria());
+        TipoCategoria tipoCategoria = pesquisarCategoria(conteinerRequestDTO.getCategoria());
         Cliente cliente = clienteService.buscarClienteCompleto(conteinerRequestDTO.getNomeCliente());
 
-        conteiner.setCategoria(categoria);
+        conteiner.setCategoria(tipoCategoria);
         conteiner.setCliente(cliente);
 
         Conteiner conteinerSalvo = conteinerRepository.save(conteiner);
@@ -52,27 +48,25 @@ public class ConteinerServiceImpl implements ConteinerService {
         return conteinerResponse;
     }
 
-    private Categoria pesquisarCategoria(String nome) {
-        TipoCategoria tipoCategoriaInformada = TipoCategoria.paraTipoCategoria(nome);
-        return categoriaRepository.findByNome(tipoCategoriaInformada)
-                .orElseThrow(()-> new BadRequestException("Categoria não localizada"));
+    private TipoCategoria pesquisarCategoria(String nome) {
+        return TipoCategoria.paraTipoCategoria(nome);
     }
 
     @Override
     public ConteinerResponseDTO editar(ConteinerPutRequestDTO conteinerInformado) {
 
         Cliente clienteLocalizado = clienteService.buscarClienteCompleto(conteinerInformado.getNomeCliente());
-        Categoria categoriaLocalizada = pesquisarCategoria(conteinerInformado.getCategoria());
+        TipoCategoria tipoCategoria = pesquisarCategoria(conteinerInformado.getCategoria());
         buscarPeloIDOuLancarExcecaoNaoEncontrado(conteinerInformado.getId());
 
         Conteiner conteinerASerEditado = Conteiner.builder()
                 .id(conteinerInformado.getId())
-                .categoria(categoriaLocalizada)
+                .categoria(tipoCategoria)
                 .cliente(clienteLocalizado)
                 .numero(conteinerInformado.getNumero())
                 .tipo(TipoConteiner.fromRequest(conteinerInformado.getTipo()))
                 .statusConteiner(StatusConteiner.valueOf(conteinerInformado.getStatus()))
-                .status(Status.ATIVO)
+                .status(true)
                 .build();
 
 
@@ -90,7 +84,7 @@ public class ConteinerServiceImpl implements ConteinerService {
         Conteiner conteinerLocalizado = pesquisarConteinerCompleto(id);
 
         conteinerLocalizado.setId(id);
-        conteinerLocalizado.setStatus(Status.INATIVO);
+        conteinerLocalizado.setStatus(false);
 
         return ConteinerMapper.INSTANCE.toConteinerResponse(conteinerRepository.save(conteinerLocalizado));
     }
@@ -101,7 +95,7 @@ public class ConteinerServiceImpl implements ConteinerService {
 
     @Override
     public ConteinerResponseDTO buscarPeloNumero(String numero) {
-        Conteiner conteinerLocalizado = conteinerRepository.findByNumero(numero).orElseThrow(()->
+        Conteiner conteinerLocalizado = conteinerRepository.findByNumeroAndStatus(numero,true ).orElseThrow(()->
                 new BadRequestException("Conteiner não foi localizado"));
         return ConteinerMapper.INSTANCE.toConteinerResponse(conteinerLocalizado);
     }
@@ -135,6 +129,6 @@ public class ConteinerServiceImpl implements ConteinerService {
 
     @Override
     public Conteiner buscarConteinerCompletoPeloNumero(String numero) {
-        return conteinerRepository.findByNumero(numero).orElseThrow(()-> new BadRequestException("Conteiner não foi localizado"));
+        return conteinerRepository.findByNumeroAndStatus(numero,true ).orElseThrow(()-> new BadRequestException("Conteiner não foi localizado"));
     }
 }
