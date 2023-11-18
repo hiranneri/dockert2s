@@ -1,7 +1,7 @@
 
 # dockert2s
 
-Esse projeto é um desafio de criar uma API que faça o gerenciamento dos cadastros de clientes, contêineres e movimentação. Foi desenvolvido em Java usando o Framework Spring Boot junto com JPA persistindo os dados no banco MySQL.
+Esse projeto é um desafio de criar uma API que faz o gerenciamento de clientes, contêineres e movimentação. Foi desenvolvido em Java usando o Framework Spring Boot junto com JPA persistindo os dados no banco MySQL.
 Neste projeto é utilizado o Spring Security que gerencia as autenticações e permissões nas rotas disponíveis. Com o usuário autenticado é gerado um token JWT que deve ser utilizado nos headers das requisições de forma Bearer Authentication.
 
 ## Rodando localmente
@@ -12,10 +12,10 @@ Clone o projeto
   git clone https://github.com/hiranneri/dockert2s.git
 ```
 
-Entre no diretório do projeto
+Entre no diretório resources do projeto
 
 ```bash
-  cd dockert2s
+  cd dockert2s/src/main/java/resources
 ```
 
 Crie os containers com o docker compose
@@ -23,7 +23,6 @@ Crie os containers com o docker compose
 ```bash
   docker compose up -d
 ```
-
 
 ## Requisitos
 - Java 11
@@ -57,7 +56,7 @@ A escolha do framework para o desenvolvimento deste projeto foi fundamentada em 
 
 O projeto segue o padrão Model-Controller, onde a camada Model abstrai os conceitos de banco de dados, enquanto a camada Controller recebe as requisições e encaminha os dados para tratamento e validação na camada Service. Após a validação, os dados são persistidos ou consultados no banco de dados por meio da camada Repository.
 
-Para garantir a segurança da API, o projeto faz uso do Spring Security, que gerencia a autenticação e autorização. Após a autenticação bem-sucedida de um usuário cadastrado, um Bearer Token (JWT) é gerado e incluído no corpo da resposta da URL de login, válido por 15 minutos.
+Para garantir a segurança da API, o projeto faz uso do Spring Security, que gerencia a autenticação e autorização. Após a autenticação bem-sucedida de um usuário cadastrado, um Bearer Token (JWT) é gerado e incluído no corpo da resposta da URL de login, válido por 60 minutos.
 
 Dada a natureza do negócio, que não requer operações de escrita/leitura massivas, e a necessidade de auditoria por meio de relatórios, optou-se por utilizar um banco de dados relacional, o MySQL, adequado aos objetivos da API.
 
