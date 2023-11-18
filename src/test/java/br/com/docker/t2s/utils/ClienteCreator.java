@@ -25,14 +25,12 @@ public class ClienteCreator {
 
     public static ClientePostRequestDTO createClienteJaExistente(){
         return ClientePostRequestDTO.builder()
-                .id(1L)
-                .nome("TSC")
-                .status(true).build();
+                .nome("TSC").build();
     }
 
     public static ClientePostRequestDTO createClientePostRequestValido() {
         return ClientePostRequestDTO.builder()
-                .nome("TSC Movimentacao 1").build();
+                .nome("TSC").build();
     }
 
     public static ClientePostRequestDTO createClienteRequestValido2() {
@@ -70,14 +68,14 @@ public class ClienteCreator {
     public static ClienteResponseDTO createClienteResponseAtivo(){
         return ClienteResponseDTO.builder()
                 .nome("TSC")
-                .status(true)
+                .status("Ativo")
                 .build();
     }
 
     public static ClienteResponseDTO createClienteResponseInativo(){
         return ClienteResponseDTO.builder()
                 .nome("TSC")
-                .status(false)
+                .status("Inativo")
                 .build();
     }
 
@@ -85,7 +83,7 @@ public class ClienteCreator {
     public static ClienteResponseDTO createClienteResponseEditadoAtivo() {
         return ClienteResponseDTO.builder()
                 .nome("TSC Editado")
-                .status(true).build();
+                .status("Ativo").build();
     }
 
     public static Cliente createClienteEditadoAtivo() {

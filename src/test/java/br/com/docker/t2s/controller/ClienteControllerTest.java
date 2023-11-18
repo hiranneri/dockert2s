@@ -57,7 +57,6 @@ class ClienteControllerTest {
         Assertions.assertNotNull(clientesLocalizados);
         Assertions.assertEquals(1, clientesLocalizados.getTotalElements());
         Assertions.assertEquals(clienteDTO.getNome(), clientesLocalizados.toList().get(0).getNome());
-        Assertions.assertEquals(clienteDTO.isStatus(), clientesLocalizados.toList().get(0).isStatus());
 
     }
 

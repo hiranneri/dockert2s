@@ -36,28 +36,24 @@ class ConteinerServiceImplTest {
     @Mock
     private ClienteService clienteService;
 
-    @Mock
-    private ConteinerMapper conteinerMapper;
-
     @BeforeEach
     void setup(){
 
         Conteiner conteinerAtivo = ConteinerCreator.createConteinerAtivo();
         Conteiner conteinerEditado = ConteinerCreator.createConteinerEditadoAtivo();
         Conteiner conteinerDesativado = ConteinerCreator.createConteinerInativo();
-        ConteinerResponseDTO conteinerResponseDTO = ConteinerCreator.createConteinerResponseAtivo();
+
 
         List<Conteiner> conteiners = new ArrayList<>();
         conteiners.add(conteinerAtivo);
 
         BDDMockito.when(conteinerRepository.findAll()).thenReturn(conteiners);
-        BDDMockito.when(conteinerMapper.toConteinerResponse(ArgumentMatchers.any(Conteiner.class))).thenReturn(conteinerResponseDTO);
         BDDMockito.when(clienteService.buscarClienteCompleto(ArgumentMatchers.anyString())).thenReturn(ClienteCreator.createClienteAtivo());
 
         BDDMockito.when(conteinerRepository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.of(conteinerAtivo));
         BDDMockito.when(conteinerRepository.findAll()).thenReturn(List.of(conteinerAtivo));
         BDDMockito.when(conteinerRepository.save(ArgumentMatchers.any(Conteiner.class))).thenReturn(conteinerAtivo);
-        BDDMockito.when(conteinerRepository.findByNumeroAndStatus(ArgumentMatchers.anyString(),true )).thenReturn(Optional.of(conteinerAtivo));
+        BDDMockito.when(conteinerRepository.findByNumeroAndStatus(ArgumentMatchers.anyString(),ArgumentMatchers.anyBoolean())).thenReturn(Optional.of(conteinerAtivo));
         BDDMockito.when(conteinerRepository.save(ArgumentMatchers.any(Conteiner.class))).thenReturn(conteinerEditado);
 
         BDDMockito.when(conteinerRepository.save(ArgumentMatchers.any(Conteiner.class))).thenReturn(conteinerDesativado); // desativar
@@ -65,13 +61,14 @@ class ConteinerServiceImplTest {
 
     @Test
     void criarconteiner_PersisteERetornaUmconteiner_QuandoSucedido(){
+        BDDMockito.when(conteinerRepository.save(ArgumentMatchers.any(Conteiner.class))).thenReturn(ConteinerCreator.createConteinerAtivo());
 
-        ConteinerPostRequestDTO conteinerPostRequestDTO = ConteinerCreator.createConteinerPostRequestValido();
+        ConteinerPostRequestDTO conteinerPostRequestDTO = ConteinerCreator.createConteinerPostRequestValido2();
         ConteinerResponseDTO conteinerResponseSalvo = conteinerService.criar(conteinerPostRequestDTO);
 
         Assertions.assertNotNull(conteinerResponseSalvo);
         Assertions.assertEquals(conteinerPostRequestDTO.getNumero(), Objects.requireNonNull(conteinerResponseSalvo).getNumeroConteiner());
-        Assertions.assertTrue(conteinerResponseSalvo.isStatus());
+        Assertions.assertEquals("Ativo", conteinerResponseSalvo.getStatus());
 
     }
 
@@ -85,23 +82,22 @@ class ConteinerServiceImplTest {
 
     @Test
     void buscarClientPeloId_RetornaUmconteiner_QuandoSucedido(){
-        ConteinerResponseDTO conteinerResponseDTO = conteinerService.buscarPeloId(1L);
+        ConteinerResponseDTO conteinerLocalizado = conteinerService.buscarPeloId(1L);
 
-        Assertions.assertNotNull(conteinerResponseDTO);
-        Assertions.assertNotNull(conteinerResponseDTO);
-        Assertions.assertNotNull(conteinerResponseDTO.getNumeroConteiner());
-        Assertions.assertTrue(conteinerResponseDTO.isStatus());
+        Assertions.assertNotNull(conteinerLocalizado);
+        Assertions.assertNotNull(conteinerLocalizado.getNumeroConteiner());
+        Assertions.assertEquals("Ativo", conteinerLocalizado.getStatus());
 
     }
 
     @Test
-    void buscarconteinerPeloNome_RetornaUmconteiner_QuandoSucedido(){
-        String numero = ConteinerCreator.createConteinerPostRequestValido().getNumero();
+    void buscarconteinerPeloNome_RetornaUmconteiner_QuandoSucedido2(){
+        String numero = ConteinerCreator.createConteinerPostRequestValido2().getNumero();
         ConteinerResponseDTO conteinerLocalizado = conteinerService.buscarPeloNumero(numero);
 
         Assertions.assertNotNull(conteinerLocalizado);
         Assertions.assertEquals(numero, Objects.requireNonNull(conteinerLocalizado.getNumeroConteiner()));
-        Assertions.assertTrue(conteinerLocalizado.isStatus());
+        Assertions.assertEquals("Ativo", conteinerLocalizado.getStatus());
 
 
     }
@@ -176,7 +172,7 @@ class ConteinerServiceImplTest {
 
     @Test
     public void buscarPeloNome_RetornaUmaExcecao_QuandoNomeconteinerInexistente(){
-        BDDMockito.when(conteinerRepository.findByNumeroAndStatus(ArgumentMatchers.anyString(),true )).thenThrow(BadRequestException.class);
+        BDDMockito.when(conteinerRepository.findByNumeroAndStatus(ArgumentMatchers.anyString(),ArgumentMatchers.anyBoolean() )).thenThrow(BadRequestException.class);
 
         Assertions.assertThrows(BadRequestException.class,
                 ()->
@@ -187,7 +183,7 @@ class ConteinerServiceImplTest {
 
     @Test
     public void buscarconteinerCompleto_RetornaUmaExcecao_QuandoconteinerInexistente(){
-        BDDMockito.when(conteinerRepository.findByNumeroAndStatus(ArgumentMatchers.anyString(),true )).thenReturn(Optional.empty());
+        BDDMockito.when(conteinerRepository.findByNumeroAndStatus(ArgumentMatchers.anyString(),ArgumentMatchers.anyBoolean() )).thenReturn(Optional.empty());
 
         Assertions.assertThrows(BadRequestException.class,
                 ()-> conteinerService.buscarConteinerCompletoPeloNumero(

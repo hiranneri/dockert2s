@@ -15,9 +15,9 @@ public class ConteinerCreator {
     public static ConteinerResponseDTO createConteinerResponseAtivo() {
         return ConteinerResponseDTO.builder()
                 .nomeCliente("Emirates")
-                .numeroConteiner("TEST123457")
+                .numeroConteiner("TEST123458")
                 .tipo("20")
-                .status(true)
+                .status("Ativo")
                 .categoria("EXPORTACAO").build();
     }
 
@@ -27,7 +27,7 @@ public class ConteinerCreator {
                 .numeroConteiner("TEST999999")
                 .tipo("20")
                 .categoria("EXPORTACAO")
-                .status(true).build();
+                .status("Ativo").build();
     }
 
     public static ConteinerResponseDTO createConteinerResponseInativo() {
@@ -36,13 +36,23 @@ public class ConteinerCreator {
                 .numeroConteiner("TEST123456")
                 .tipo("20")
                 .categoria("EXPORTACAO")
-                .status(false).build();
+                .status("Ativo").build();
     }
 
     public static ConteinerPostRequestDTO createConteinerPostRequestValido() {
         return ConteinerPostRequestDTO.builder()
                 .nomeCliente("Emirates")
                 .numero("TEST123458")
+                .tipo("20")
+                .categoria("EXPORTAÇÃO")
+                .status("CHEIO")
+                .build();
+    }
+
+    public static ConteinerPostRequestDTO createConteinerPostRequestValido2() {
+        return ConteinerPostRequestDTO.builder()
+                .nomeCliente("Emirates")
+                .numero("TEST123456")
                 .tipo("20")
                 .categoria("EXPORTAÇÃO")
                 .status("CHEIO")

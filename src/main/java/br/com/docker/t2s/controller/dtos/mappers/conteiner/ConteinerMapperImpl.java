@@ -8,7 +8,7 @@ import br.com.docker.t2s.model.enums.TipoConteiner;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-public class ConteinerMapperImpl implements ConteinerMapper {
+public class ConteinerMapperImpl extends ConteinerMapper {
 
     @Override
     public Conteiner toConteiner(ConteinerPostRequestDTO conteinerPostRequestDTO) {
@@ -37,7 +37,7 @@ public class ConteinerMapperImpl implements ConteinerMapper {
                 .tipo(conteiner.getTipo().toString())
                 .categoria(conteiner.getCategoria().toString())
                 .statusConteiner(conteiner.getStatusConteiner().toString())
-                .status(conteiner.isStatus())
+                .status(converterStatus(conteiner.isStatus()))
                 .build();
     }
 }

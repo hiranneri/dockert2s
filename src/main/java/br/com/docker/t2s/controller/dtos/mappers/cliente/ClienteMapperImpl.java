@@ -5,7 +5,7 @@ import br.com.docker.t2s.controller.dtos.cliente.ClientePutRequestDTO;
 import br.com.docker.t2s.controller.dtos.cliente.ClienteResponseDTO;
 import br.com.docker.t2s.model.Cliente;
 
-public class ClienteMapperImpl implements ClienteMapper{
+public class ClienteMapperImpl extends ClienteMapper{
     @Override
     public Cliente toCliente(ClientePostRequestDTO clienteRequestDTO) {
         if ( clienteRequestDTO == null ) {
@@ -39,7 +39,7 @@ public class ClienteMapperImpl implements ClienteMapper{
 
         return ClienteResponseDTO.builder()
                 .nome(cliente.getNome())
-                .status(cliente.isStatusAtivo())
+                .status(converterStatus(cliente.isStatusAtivo()))
                 .build();
     }
 

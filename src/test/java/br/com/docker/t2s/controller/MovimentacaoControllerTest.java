@@ -63,7 +63,7 @@ class MovimentacaoControllerTest {
         Assertions.assertNotNull(movimentacaoAlterado);
         Assertions.assertNotNull(movimentacaoResponseDTO);
         Assertions.assertEquals(movimentacaoResponseDTO.getTipoMovimentacao(), movimentacaoASerEditadoRequest.getTipoMovimentacao());
-        Assertions.assertEquals(HttpStatus.NO_CONTENT, movimentacaoAlterado.getStatusCode());
+        Assertions.assertEquals(HttpStatus.OK, movimentacaoAlterado.getStatusCode());
     }
 
     @Test

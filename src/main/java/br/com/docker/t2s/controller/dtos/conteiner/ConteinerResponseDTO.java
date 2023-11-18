@@ -12,6 +12,6 @@ public class ConteinerResponseDTO {
     String statusConteiner;
     String categoria;
     String nomeCliente;
-    boolean status;
+    String status;
 
 }

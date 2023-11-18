@@ -28,6 +28,14 @@ public class MovimentacaoCreator {
                 .build();
     }
 
+    public static MovimentacaoPostRequestDTO createMovimentacaoRequestValido3() {
+        return MovimentacaoPostRequestDTO.builder()
+                .cliente("TSC")
+                .numeroConteiner("TEST123458")
+                .tipoMovimentacao("EMBARQUE")
+                .build();
+    }
+
     public static MovimentacaoResponseDTO createMovimentacaoResponseAtivo() {
         return MovimentacaoResponseDTO.builder()
                 .cliente("TSC")

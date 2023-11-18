@@ -58,7 +58,7 @@ class ClienteServiceImplTest {
 
         Assertions.assertNotNull(clienteResponseSalvo);
         Assertions.assertEquals(clientePutRequestDTO.getNome(), Objects.requireNonNull(clienteResponseSalvo).getNome());
-        Assertions.assertTrue(clienteResponseSalvo.isStatus());
+        Assertions.assertEquals("Ativo",clienteResponseSalvo.getStatus());
 
     }
 

@@ -26,8 +26,8 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public ClienteResponseDTO criar(ClientePostRequestDTO clienteRequestDTO) {
-        Cliente cliente = ClienteMapper.INSTANCE.toCliente(clienteRequestDTO);
-        return ClienteMapper.INSTANCE.toClienteResponse(clienteRepository.save(cliente));
+        Cliente cliente = ClienteMapper.criarClienteMapper().toCliente(clienteRequestDTO);
+        return ClienteMapper.criarClienteMapper().toClienteResponse(clienteRepository.save(cliente));
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     public ClienteResponseDTO buscarPeloIDOuLancarExcecaoNaoEncontrado(Long id) {
-        return ClienteMapper.INSTANCE.toClienteResponse(clienteRepository.findByIdAndStatus(id, statusAtivo)
+        return ClienteMapper.criarClienteMapper().toClienteResponse(clienteRepository.findByIdAndStatus(id, statusAtivo)
                 .orElseThrow(() -> new BadRequestException("Cliente não encontrado")));
     }
 
@@ -44,9 +44,9 @@ public class ClienteServiceImpl implements ClienteService {
     public ClienteResponseDTO editar(ClientePutRequestDTO clientePutRequestDTO) {
         buscarPeloIDOuLancarExcecaoNaoEncontrado(clientePutRequestDTO.getId());
 
-        Cliente cliente = ClienteMapper.INSTANCE.toCliente(clientePutRequestDTO);
+        Cliente cliente = ClienteMapper.criarClienteMapper().toCliente(clientePutRequestDTO);
 
-        return ClienteMapper.INSTANCE.toClienteResponse(clienteRepository.save(cliente));
+        return ClienteMapper.criarClienteMapper().toClienteResponse(clienteRepository.save(cliente));
 
     }
 
@@ -60,18 +60,18 @@ public class ClienteServiceImpl implements ClienteService {
     public ClienteResponseDTO desativar(Long id) {
         ClienteResponseDTO clienteLocalizado = buscarPeloIDOuLancarExcecaoNaoEncontrado(id);
 
-        Cliente cliente = ClienteMapper.INSTANCE.toCliente(clienteLocalizado);
+        Cliente cliente = ClienteMapper.criarClienteMapper().toCliente(clienteLocalizado);
         cliente.setId(id);
         cliente.setStatus(false);
 
         clienteRepository.save(cliente);
 
-        return ClienteMapper.INSTANCE.toClienteResponse(cliente);
+        return ClienteMapper.criarClienteMapper().toClienteResponse(cliente);
     }
 
     @Override
     public ClienteResponseDTO buscarPeloNome(String nome) {
-        return ClienteMapper.INSTANCE.toClienteResponse(clienteRepository.findByNomeAndStatus(nome,statusAtivo)
+        return ClienteMapper.criarClienteMapper().toClienteResponse(clienteRepository.findByNomeAndStatus(nome,statusAtivo)
                 .orElseThrow(() -> new BadRequestException("Cliente não encontrado")));
     }
 
@@ -86,7 +86,7 @@ public class ClienteServiceImpl implements ClienteService {
         List<ClienteResponseDTO> clientesResponse = new ArrayList<>();
 
         for(Cliente cliente: clientesLocalizados){
-            ClienteResponseDTO clienteResponse = ClienteMapper.INSTANCE.toClienteResponse(cliente);
+            ClienteResponseDTO clienteResponse = ClienteMapper.criarClienteMapper().toClienteResponse(cliente);
             clientesResponse.add(clienteResponse);
         }
         return clientesResponse;
@@ -98,7 +98,7 @@ public class ClienteServiceImpl implements ClienteService {
         List<ClienteResponseDTO> clientesResponse = new ArrayList<>();
 
         for(Cliente cliente: clientesLocalizados){
-            ClienteResponseDTO clienteResponse = ClienteMapper.INSTANCE.toClienteResponse(cliente);
+            ClienteResponseDTO clienteResponse = ClienteMapper.criarClienteMapper().toClienteResponse(cliente);
             clientesResponse.add(clienteResponse);
         }
 

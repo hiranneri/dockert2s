@@ -6,11 +6,24 @@ import br.com.docker.t2s.controller.dtos.cliente.ClienteResponseDTO;
 import br.com.docker.t2s.model.Cliente;
 import org.mapstruct.factory.Mappers;
 
-public interface ClienteMapper {
+public abstract class ClienteMapper {
 
-    ClienteMapper INSTANCE = Mappers.getMapper(ClienteMapper.class);
-    Cliente toCliente(ClientePostRequestDTO clientePostRequestDTO);
-    Cliente toCliente(ClientePutRequestDTO clientePutRequestDTO);
-    ClienteResponseDTO toClienteResponse(Cliente cliente);
-    Cliente toCliente(ClienteResponseDTO cliente);
+    public static ClienteMapper INSTANCE = Mappers.getMapper(ClienteMapper.class);
+    abstract Cliente toCliente(ClientePostRequestDTO clientePostRequestDTO);
+    abstract Cliente toCliente(ClientePutRequestDTO clientePutRequestDTO);
+    abstract ClienteResponseDTO toClienteResponse(Cliente cliente);
+    abstract Cliente toCliente(ClienteResponseDTO cliente);
+
+    String converterStatus(boolean status){
+        if(status){
+            return "Ativo";
+        }else {
+            return "Inativo";
+        }
+    }
+
+    public static ClienteMapperImpl criarClienteMapper(){
+        return new ClienteMapperImpl();
+    }
+
 }

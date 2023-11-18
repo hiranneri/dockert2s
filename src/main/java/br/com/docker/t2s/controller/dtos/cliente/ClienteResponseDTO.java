@@ -11,7 +11,7 @@ import java.util.Objects;
 public class ClienteResponseDTO {
 
     private String nome;
-    private boolean status;
+    private String status;
 
 
 }

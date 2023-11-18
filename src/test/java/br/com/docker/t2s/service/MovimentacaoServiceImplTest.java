@@ -1,9 +1,9 @@
 package br.com.docker.t2s.service;
 
+import br.com.docker.t2s.controller.dtos.mappers.movimentacao.MovimentacaoMapper;
 import br.com.docker.t2s.controller.dtos.movimentacao.MovimentacaoPostRequestDTO;
 import br.com.docker.t2s.controller.dtos.movimentacao.MovimentacaoPutRequestDTO;
 import br.com.docker.t2s.controller.dtos.movimentacao.MovimentacaoResponseDTO;
-import br.com.docker.t2s.controller.dtos.mappers.movimentacao.MovimentacaoMapper;
 import br.com.docker.t2s.exceptions.responsehandler.BadRequestException;
 import br.com.docker.t2s.model.Movimentacao;
 import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
@@ -27,10 +27,7 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @ExtendWith(SpringExtension.class)
 class MovimentacaoServiceImplTest {
@@ -67,9 +64,9 @@ class MovimentacaoServiceImplTest {
         BDDMockito.when(movimentacaoRepository.findById(ArgumentMatchers.anyLong())).thenReturn(Optional.of(movimentacaoAtiva));
         BDDMockito.when(movimentacaoRepository.findAll()).thenReturn(List.of(movimentacaoAtiva));
         BDDMockito.when(movimentacaoRepository.save(ArgumentMatchers.any(Movimentacao.class))).thenReturn(movimentacaoAtiva);
-        BDDMockito.when(movimentacaoRepository.findByDataHoraInicioAndStatus(ArgumentMatchers.any(LocalDateTime.class), true)).thenReturn(Optional.of(movimentacaoAtiva));
+        BDDMockito.when(movimentacaoRepository.findByDataHoraInicioAndStatus(ArgumentMatchers.any(LocalDateTime.class), ArgumentMatchers.anyBoolean())).thenReturn(Optional.of(movimentacaoAtiva));
         BDDMockito.when(movimentacaoRepository.save(ArgumentMatchers.any(Movimentacao.class))).thenReturn(movimentacaoEditado);
-        BDDMockito.when(tiposMovimentacaoRepository.findByNomeAndStatus(ArgumentMatchers.any(NomeMovimentacao.class), true))
+        BDDMockito.when(tiposMovimentacaoRepository.findByNomeAndStatus(ArgumentMatchers.any(NomeMovimentacao.class), ArgumentMatchers.anyBoolean()))
                 .thenReturn(TiposMovimentacaoCreator.createTiposMovimentacao());
         BDDMockito.when(movimentacaoRepository.findById(movimentacaoRequestEditado.getId()))
                 .thenReturn(Optional.of(MovimentacaoCreator.createMovimentacaoEditada()));
@@ -82,16 +79,14 @@ class MovimentacaoServiceImplTest {
     @Test
     void criarMovimentacao_PersisteERetornaUmMovimentacao_QuandoSucedido(){
 
-        MovimentacaoPostRequestDTO movimentacaoPostRequestDTO = MovimentacaoCreator.createMovimentacaoRequestValido();
+        MovimentacaoPostRequestDTO movimentacaoPostRequestDTO = MovimentacaoCreator.createMovimentacaoRequestValido3();
         MovimentacaoResponseDTO movimentacaoResponseSalvo = movimentacaoService.criar(movimentacaoPostRequestDTO);
         movimentacaoRequestEditado = MovimentacaoCreator.createMovimentacaoRequestEditado();
 
         Assertions.assertNotNull(movimentacaoResponseSalvo);
-        Assertions.assertEquals(movimentacaoPostRequestDTO.getTipoMovimentacao(), Objects.requireNonNull(movimentacaoResponseSalvo).getTipoMovimentacao());
+        Assertions.assertEquals(movimentacaoPostRequestDTO.getTipoMovimentacao(), movimentacaoResponseSalvo.getTipoMovimentacao());
 
     }
-
-
 
     @Test
     void editarMovimentacao_RetornaUmMovimentacaoModificado_QuandoSucedido(){

@@ -33,7 +33,7 @@ public class ConteinerServiceImpl implements ConteinerService {
 
     @Override
     public ConteinerResponseDTO criar(ConteinerPostRequestDTO conteinerRequestDTO) {
-        Conteiner conteiner = ConteinerMapper.INSTANCE.toConteiner(conteinerRequestDTO);
+        Conteiner conteiner = ConteinerMapper.criarConteinerMapper().toConteiner(conteinerRequestDTO);
         TipoCategoria tipoCategoria = pesquisarCategoria(conteinerRequestDTO.getCategoria());
         Cliente cliente = clienteService.buscarClienteCompleto(conteinerRequestDTO.getNomeCliente());
 
@@ -42,7 +42,7 @@ public class ConteinerServiceImpl implements ConteinerService {
 
         Conteiner conteinerSalvo = conteinerRepository.save(conteiner);
 
-        ConteinerResponseDTO conteinerResponse = ConteinerMapper.INSTANCE.toConteinerResponse(conteinerSalvo);
+        ConteinerResponseDTO conteinerResponse = ConteinerMapper.criarConteinerMapper().toConteinerResponse(conteinerSalvo);
         conteinerResponse.setCategoria(conteinerRequestDTO.getCategoria());
 
         return conteinerResponse;
@@ -70,7 +70,7 @@ public class ConteinerServiceImpl implements ConteinerService {
                 .build();
 
 
-        return ConteinerMapper.INSTANCE.toConteinerResponse(conteinerRepository.save(conteinerASerEditado));
+        return ConteinerMapper.criarConteinerMapper().toConteinerResponse(conteinerRepository.save(conteinerASerEditado));
     }
 
     private Conteiner buscarPeloIDOuLancarExcecaoNaoEncontrado(Long id){
@@ -86,7 +86,7 @@ public class ConteinerServiceImpl implements ConteinerService {
         conteinerLocalizado.setId(id);
         conteinerLocalizado.setStatus(false);
 
-        return ConteinerMapper.INSTANCE.toConteinerResponse(conteinerRepository.save(conteinerLocalizado));
+        return ConteinerMapper.criarConteinerMapper().toConteinerResponse(conteinerRepository.save(conteinerLocalizado));
     }
 
     private Conteiner pesquisarConteinerCompleto(Long id){
@@ -97,12 +97,12 @@ public class ConteinerServiceImpl implements ConteinerService {
     public ConteinerResponseDTO buscarPeloNumero(String numero) {
         Conteiner conteinerLocalizado = conteinerRepository.findByNumeroAndStatus(numero,true ).orElseThrow(()->
                 new BadRequestException("Conteiner não foi localizado"));
-        return ConteinerMapper.INSTANCE.toConteinerResponse(conteinerLocalizado);
+        return ConteinerMapper.criarConteinerMapper().toConteinerResponse(conteinerLocalizado);
     }
 
     @Override
     public ConteinerResponseDTO buscarPeloId(Long id) {
-        return ConteinerMapper.INSTANCE.toConteinerResponse(buscarPeloIDOuLancarExcecaoNaoEncontrado(id));
+        return ConteinerMapper.criarConteinerMapper().toConteinerResponse(buscarPeloIDOuLancarExcecaoNaoEncontrado(id));
     }
 
     @Override
@@ -111,7 +111,7 @@ public class ConteinerServiceImpl implements ConteinerService {
         List<ConteinerResponseDTO> conteineresResponse = new ArrayList<>();
 
         for(Conteiner conteiner: conteineres){
-            conteineresResponse.add(ConteinerMapper.INSTANCE.toConteinerResponse(conteiner));
+            conteineresResponse.add(ConteinerMapper.criarConteinerMapper().toConteinerResponse(conteiner));
         }
         return conteineresResponse;
     }
@@ -121,7 +121,7 @@ public class ConteinerServiceImpl implements ConteinerService {
         List<ConteinerResponseDTO> conteineresResponse = new ArrayList<>();
 
         for(Conteiner conteiner: conteineresLocalizados){
-            conteineresResponse.add(ConteinerMapper.INSTANCE.toConteinerResponse(conteiner));
+            conteineresResponse.add(ConteinerMapper.criarConteinerMapper().toConteinerResponse(conteiner));
         }
 
         return new PageImpl<>(conteineresResponse);

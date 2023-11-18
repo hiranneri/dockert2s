@@ -44,12 +44,12 @@ public interface MovimentacaoRepository extends JpaRepository<Movimentacao, Long
     @Query(value = QUERY_PADRAO +"ORDER BY tipoMovimentacao DESC", nativeQuery = true)
     List<ResultadoRelatorioDTO> obterTotalAgrupadoPorClienteETipoOrdenadoPorTipoMovimentacaoDESC();
 
-    @Query(value = "SELECT nome as nomeCategoria, COUNT(ca.id) as totalCategoria\n" +
-            "from conteineres co\n" +
-            "inner join categorias ca \n" +
-            "on ca.id = co.categoria_id\n" +
-            "WHERE status = 1" +
-            "GROUP by ca.id ;", nativeQuery = true)
+    @Query(value = "SELECT categoria as nomeCategoria, COUNT(c.id) as totalCategoria " +
+            "from movimentacoes m\n" +
+            "inner join conteineres c \n" +
+            "on m.conteiner_id = c.id \n" +
+            "WHERE m.status = 1\n" +
+            "GROUP by c.id;", nativeQuery = true)
     List<SumarioDTO> obterTotalAgrupadoPorTipoMovimentacao();
 
 

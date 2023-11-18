@@ -7,7 +7,7 @@ import java.util.List;
 
 public class OrdenacaoPorTipoMovimentacaoASC implements OrdenacaoQueryStrategy {
 
-    private MovimentacaoRepository movimentacaoRepository;
+    private final MovimentacaoRepository movimentacaoRepository;
 
     public OrdenacaoPorTipoMovimentacaoASC(MovimentacaoRepository movimentacaoRepository) {
         this.movimentacaoRepository = movimentacaoRepository;
