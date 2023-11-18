@@ -24,7 +24,7 @@
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
         <jib-maven-plugin.version>3.4.0</jib-maven-plugin.version>
         <docker.distroless.image>gcr.io/distroless/java:11</docker.distroless.image>
-        <docker.repo.url>registry.hub.docker.com/hiranneri</docker.repo.url>
+        <docker.repo.url>hiranneri</docker.repo.url>
         <docker.repo.project>dockert2s</docker.repo.project>
         <docker.image.name>${docker.repo.url}/${docker.repo.project}</docker.image.name>
     </properties>

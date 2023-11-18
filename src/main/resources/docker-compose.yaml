@@ -11,10 +11,8 @@ services:
     image: mysql
     command: --innodb-use-native-aio=0
     container_name: dockert2s-mysql
-    restart: always
     ports:
       - "3306:3306"
-    tty: true
     volumes:
       - "dockert2s-mysql-volume:/var/lib/mysql"
     environment:
@@ -25,7 +23,7 @@ services:
     mem_limit: 512m
 
   dockert2s:
-    image: registry.hub.docker.com/hiranneri0/dockert2s:1.0-SNAPSHOT
+    image: hiranneri/dockert2s:latest
     container_name: dockert2s
     ports:
       - "8080:8080"
