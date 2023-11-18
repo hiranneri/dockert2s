@@ -4,14 +4,14 @@ import br.com.docker.t2s.IntegrationTest;
 import br.com.docker.t2s.controller.dtos.cliente.ClientePutRequestDTO;
 import br.com.docker.t2s.model.Cliente;
 import lombok.extern.log4j.Log4j2;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -22,9 +22,18 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Log4j2
 @ContextConfiguration(initializers = TestContainerConfig.class)
 @TestMethodOrder(MethodOrderer.MethodName.class)
-public class AC_ClienteControllerIT extends AB_AbstractTestIntegrationIT {
+public class AC_ClienteControllerIT extends TestIntegrationIT {
 
+    @Autowired
+    protected MockMvc mockMvc;
+    protected static ObjectMapper objectMapper = new ObjectMapper();
     private final Long ID_CLIENTE = 1L;
+    static Cliente emirates;
+
+    @BeforeAll
+    static void setUp(){
+        emirates = Cliente.builder().nome("MSC").build();
+    }
 
     @Test
     @DisplayName("Create a client")
@@ -37,9 +46,9 @@ public class AC_ClienteControllerIT extends AB_AbstractTestIntegrationIT {
                 post("/clientes")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(emirates))
-                        .header("authorization", "Bearer "+ tokenAcesso)
+                        .header(obterHeaderComToken().get(0), obterHeaderComToken().get(1))
         ).andExpect(status().isCreated())
-                .andExpect(jsonPath("$.status").value("ATIVO"))
+                .andExpect(jsonPath("$.status").value("Ativo"))
                 .andExpect(jsonPath("$.nome").value(emirates.getNome()));
 
     }
@@ -49,10 +58,10 @@ public class AC_ClienteControllerIT extends AB_AbstractTestIntegrationIT {
 
         mockMvc.perform(
                         get("/clientes/" + ID_CLIENTE)
-                                .header("authorization", "Bearer "+ tokenAcesso)
+                                .header(obterHeaderComToken().get(0), obterHeaderComToken().get(1))
                 ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.nome").isNotEmpty())
-                .andExpect(jsonPath("$.status").value("ATIVO"));
+                .andExpect(jsonPath("$.status").value("Ativo"));
     }
 
     @Test
@@ -66,10 +75,10 @@ public class AC_ClienteControllerIT extends AB_AbstractTestIntegrationIT {
                         put("/clientes/"+stc.getId())
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(stc))
-                                .header("authorization", "Bearer "+ tokenAcesso)
+                                .header(obterHeaderComToken().get(0), obterHeaderComToken().get(1))
                 ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.nome").value(stc.getNome()))
-                .andExpect(jsonPath("$.status").value("ATIVO"));
+                .andExpect(jsonPath("$.status").value("Ativo"));
 
     }
 
@@ -81,7 +90,7 @@ public class AC_ClienteControllerIT extends AB_AbstractTestIntegrationIT {
 
         mockMvc.perform(
                         delete("/clientes/"+clienteASerExcluido.getId())
-                                .header("authorization", "Bearer "+ tokenAcesso)
+                                .header(obterHeaderComToken().get(0), obterHeaderComToken().get(1))
                 )
                 .andExpect(status().isNoContent())
                 .andExpect(content().string(""));
@@ -90,14 +99,13 @@ public class AC_ClienteControllerIT extends AB_AbstractTestIntegrationIT {
     @Test
     @DisplayName("Try to create a client without name")
     void AF_CriarClienteSemNomeDeveRetornar403() throws Exception {
-
-        Cliente emiratesSemNome = new Cliente();
+        Cliente clienteSemNome = Cliente.builder().build();
 
         mockMvc.perform(
                         post("/clientes")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(emiratesSemNome))
-                                .header("authorization", "Bearer "+ tokenAcesso)
+                                .content(objectMapper.writeValueAsString(clienteSemNome))
+                                .header(obterHeaderComToken().get(0), obterHeaderComToken().get(1))
                 ).andExpect(status().is4xxClientError());
     }
 

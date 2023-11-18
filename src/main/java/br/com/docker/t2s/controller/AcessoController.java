@@ -5,6 +5,7 @@ import br.com.docker.t2s.controller.dtos.login.LoginPostResponse;
 import br.com.docker.t2s.controller.dtos.registerUsuario.RegisterPostRequest;
 import br.com.docker.t2s.controller.dtos.registerUsuario.RegisterPostResponse;
 import br.com.docker.t2s.service.interfaces.AcessoService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@Tag(name = "Acesso")
 public class AcessoController {
 
     private final AcessoService acessoService;

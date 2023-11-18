@@ -2,6 +2,7 @@ package br.com.docker.t2s.integration;
 
 import br.com.docker.t2s.IntegrationTest;
 import br.com.docker.t2s.controller.dtos.login.LoginPostRequest;
+import br.com.docker.t2s.utils.UsuarioCreator;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
@@ -22,29 +24,27 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-/**
- * É executada a partir da AC_*IT.java
- */
+
 @SpringBootTest
 @IntegrationTest
 @AutoConfigureMockMvc
 @Log4j2
 @ContextConfiguration(initializers = TestContainerConfig.class)
 @TestMethodOrder(MethodOrderer.MethodName.class)
-public abstract class AB_AbstractTestIntegrationIT {
+
+public class AB_LoginIT {
 
     @Autowired
     protected MockMvc mockMvc;
-    protected static String tokenAcesso = "";
     protected static ObjectMapper objectMapper = new ObjectMapper();
 
+
     @Test
-    @DisplayName("Log in to generate a token")
-    public void AA_Login() throws Exception {
-        // teste secret
+    @DisplayName("Login para gerar o token de acesso")
+    public void AA_RealizaLoginParaGerarToken_QuandoSucedido() throws Exception {
         LoginPostRequest usuarioNovo = LoginPostRequest.builder()
-                .username("admin")
-                .senha("teste").build();
+                .username(UsuarioCreator.createUsuario().getUsername())
+                .senha(UsuarioCreator.createUsuario().getPassword()).build();
 
         ResultActions result = mockMvc.perform(
                         post("/auth/login")
@@ -54,8 +54,7 @@ public abstract class AB_AbstractTestIntegrationIT {
                 .andExpect(jsonPath("$.token").isNotEmpty());
 
         String responseBody = result.andReturn().getResponse().getContentAsString();
-        tokenAcesso = extrairDadoDesejadoResponseBody(responseBody,regexToken);
-
+        ConfigToken.token = extrairDadoDesejadoResponseBody(responseBody,regexToken);
     }
 
 }

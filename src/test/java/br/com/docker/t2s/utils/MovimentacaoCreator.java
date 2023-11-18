@@ -76,8 +76,8 @@ public class MovimentacaoCreator {
     public static MovimentacaoPutRequestDTO createMovimentacaoASerFinalizadaValida() {
         return MovimentacaoPutRequestDTO.builder()
                 .cliente("TSC")
-                .numeroConteiner("TEST123458")
-                .categoria("IMPORTAÇÃO")
+                .numeroConteiner(ConteinerCreator.createConteinerMovimentacaoValido().getNumero())
+                .categoria(ConteinerCreator.createConteinerMovimentacaoValido().getCategoria())
                 .tipoMovimentacao("GATE_IN")
                 .build();
     }

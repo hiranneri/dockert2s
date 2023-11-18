@@ -4,6 +4,8 @@ import br.com.docker.t2s.controller.dtos.cliente.ClientePostRequestDTO;
 import br.com.docker.t2s.controller.dtos.cliente.ClientePutRequestDTO;
 import br.com.docker.t2s.controller.dtos.cliente.ClienteResponseDTO;
 import br.com.docker.t2s.service.interfaces.ClienteService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +21,8 @@ import java.util.List;
 @RestController
 @RequestMapping("clientes")
 @RequiredArgsConstructor
+@Tag(name = "Clientes")
+@SecurityRequirement(name = "Bearer Authentication")
 public class ClienteController {
 
     private final ClienteService clienteService;

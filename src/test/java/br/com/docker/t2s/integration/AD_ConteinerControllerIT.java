@@ -11,10 +11,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.web.servlet.MockMvc;
+import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -25,8 +28,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @Log4j2
 @ContextConfiguration(initializers = TestContainerConfig.class)
 @TestMethodOrder(MethodOrderer.MethodName.class)
-public class AD_ConteinerControllerIT extends AB_AbstractTestIntegrationIT {
+public class AD_ConteinerControllerIT extends TestIntegrationIT {
 
+    @Autowired
+    protected MockMvc mockMvc;
+    protected static ObjectMapper objectMapper = new ObjectMapper();
     private final Long ID_Conteiner = 1L;
 
     ConteinerPostRequestDTO conteinerASerSalvo = ConteinerCreator.createConteinerPostRequestValido();
@@ -35,14 +41,13 @@ public class AD_ConteinerControllerIT extends AB_AbstractTestIntegrationIT {
     @Test
     @DisplayName("Create a client")
     void AB_CriarClienteDeveRetornarClienteSalvoComStatusAtivo() throws Exception {
-
         mockMvc.perform(
                 post("/clientes")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(emirates))
-                        .header("authorization", "Bearer "+ tokenAcesso)
+                        .header(obterHeaderComToken().get(0), obterHeaderComToken().get(1))
         ).andExpect(status().isCreated())
-        .andExpect(jsonPath("$.status").value("ATIVO"))
+        .andExpect(jsonPath("$.status").value("Ativo"))
         .andExpect(jsonPath("$.nome").value(emirates.getNome()));
 
     }
@@ -55,9 +60,9 @@ public class AD_ConteinerControllerIT extends AB_AbstractTestIntegrationIT {
                 post("/conteiners")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(conteinerASerSalvo))
-                        .header("authorization", "Bearer "+ tokenAcesso)
+                        .header(obterHeaderComToken().get(0), obterHeaderComToken().get(1))
         ).andExpect(status().isCreated())
-                .andExpect(jsonPath("$.status").value("ATIVO"))
+                .andExpect(jsonPath("$.status").value("Ativo"))
                 .andExpect(jsonPath("$.numeroConteiner").value(conteinerASerSalvo.getNumero()));
 
     }
@@ -67,10 +72,10 @@ public class AD_ConteinerControllerIT extends AB_AbstractTestIntegrationIT {
 
         mockMvc.perform(
                         get("/conteiners/" + ID_Conteiner)
-                                .header("authorization", "Bearer "+ tokenAcesso)
+                                .header(obterHeaderComToken().get(0), obterHeaderComToken().get(1))
                 ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.numeroConteiner").isNotEmpty())
-                .andExpect(jsonPath("$.status").value("ATIVO"));
+                .andExpect(jsonPath("$.status").value("Ativo"));
     }
 
     @Test
@@ -83,10 +88,10 @@ public class AD_ConteinerControllerIT extends AB_AbstractTestIntegrationIT {
                         put("/conteiners/"+ID_Conteiner)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(conteinerASerEditado))
-                                .header("authorization", "Bearer "+ tokenAcesso)
+                                .header(obterHeaderComToken().get(0), obterHeaderComToken().get(1))
                 ).andExpect(status().isOk())
                 .andExpect(jsonPath("$.numeroConteiner").value(conteinerASerEditado.getNumero()))
-                .andExpect(jsonPath("$.status").value(true));
+                .andExpect(jsonPath("$.status").value("Ativo"));
 
     }
 
@@ -98,7 +103,7 @@ public class AD_ConteinerControllerIT extends AB_AbstractTestIntegrationIT {
 
         mockMvc.perform(
                         delete("/conteiners/"+conteinerASerExcluido.getId())
-                                .header("authorization", "Bearer "+ tokenAcesso)
+                                .header(obterHeaderComToken().get(0), obterHeaderComToken().get(1))
                 )
                 .andExpect(status().isNoContent())
                 .andExpect(content().string(""));
@@ -114,7 +119,7 @@ public class AD_ConteinerControllerIT extends AB_AbstractTestIntegrationIT {
                         post("/conteiners")
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(conteinerSemNumero))
-                                .header("authorization", "Bearer "+ tokenAcesso)
+                                .header(obterHeaderComToken().get(0),obterHeaderComToken().get(1))
                 ).andExpect(status().is4xxClientError());
     }
 

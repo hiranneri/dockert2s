@@ -2,6 +2,8 @@ package br.com.docker.t2s.controller;
 
 import br.com.docker.t2s.controller.dtos.movimentacao.*;
 import br.com.docker.t2s.service.interfaces.MovimentacaoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +18,8 @@ import java.util.List;
 @RestController
 @RequestMapping("movimentacoes")
 @RequiredArgsConstructor
+@Tag(name = "Movimentações")
+@SecurityRequirement(name = "Bearer Authentication")
 public class MovimentacaoController {
 
     private final MovimentacaoService movimentacaoService;
@@ -55,6 +59,12 @@ public class MovimentacaoController {
     public ResponseEntity<Void> excluirMovimentacao(@PathVariable Long id){
         movimentacaoService.deletarMovimentacao(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @Transactional(rollbackOn = Exception.class)
+    @PostMapping("/tipos")
+    public ResponseEntity<List<TipoMovimentacaoResponseDTO>> criarTiposMovimentacao(@RequestBody @Valid TipoMovimentacaoListWrapper tiposDTO) {
+        return new ResponseEntity<>(movimentacaoService.criarTiposMovimentacao(tiposDTO), HttpStatus.CREATED);
     }
 
 }

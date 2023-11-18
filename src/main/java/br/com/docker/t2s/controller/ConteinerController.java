@@ -4,6 +4,8 @@ import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPostRequestDTO;
 import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPutRequestDTO;
 import br.com.docker.t2s.controller.dtos.conteiner.ConteinerResponseDTO;
 import br.com.docker.t2s.service.interfaces.ConteinerService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +20,8 @@ import java.util.List;
 @RestController
 @RequestMapping("conteiners")
 @RequiredArgsConstructor
+@Tag(name = "Conteineres")
+@SecurityRequirement(name = "Bearer Authentication")
 public class ConteinerController {
 
     private final ConteinerService conteinerService;

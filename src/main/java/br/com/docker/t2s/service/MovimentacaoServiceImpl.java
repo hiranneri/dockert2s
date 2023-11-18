@@ -88,6 +88,15 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
         return RelatorioAgrupadoComSumarioDTO.gerarRelatorio(relatorioAgrupado, sumariosDTO);
     }
 
+    @Override
+    public List<TipoMovimentacaoResponseDTO> criarTiposMovimentacao(TipoMovimentacaoListWrapper tipos) {
+        List<TipoMovimentacao> tiposMovimentacao = MovimentacaoMapper.INSTANCE.toTiposMovimentacao(tipos.getTipos());
+
+        List<TipoMovimentacao> tiposCadastrados = tiposMovimentacaoRepository.saveAll(tiposMovimentacao);
+
+        return MovimentacaoMapper.INSTANCE.toTiposMovimentacaoResponse(tiposCadastrados);
+    }
+
     private List<String> validarParametrosFiltro(String campo, String ordenacao){
 
         List<String> parametros = new ArrayList<>();

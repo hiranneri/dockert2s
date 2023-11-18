@@ -10,4 +10,5 @@ public class MovimentacaoPatchResponseDTO {
     private String dataHoraFim;
     private String tipoMovimentacao;
     private String numeroConteiner;
+    private String status;
 }

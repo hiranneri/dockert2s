@@ -2,6 +2,7 @@ package br.com.docker.t2s.integration;
 
 import br.com.docker.t2s.IntegrationTest;
 import br.com.docker.t2s.controller.dtos.registerUsuario.RegisterPostRequest;
+import br.com.docker.t2s.utils.UsuarioCreator;
 import lombok.extern.log4j.Log4j2;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
@@ -35,12 +36,7 @@ public class AA_CadastroUsuarioIT {
     @Test
     @DisplayName("Create a login to do requests")
     public void AA_Cadastro() throws Exception {
-        // teste secret
-        RegisterPostRequest usuarioNovo = RegisterPostRequest.builder()
-                .name("teste")
-                .username("teste")
-                .password("secret")
-                .roles("ROLE_USER").build();
+        RegisterPostRequest usuarioNovo = UsuarioCreator.createUsuario();
 
         mockMvc.perform(
                         post("/auth/register")

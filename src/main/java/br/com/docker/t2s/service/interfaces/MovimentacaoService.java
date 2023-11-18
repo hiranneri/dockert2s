@@ -23,4 +23,6 @@ public interface MovimentacaoService {
     MovimentacaoPatchResponseDTO finalizar(MovimentacaoPatchRequestDTO movimentacaoPatchRequestDTO);
 
     RelatorioAgrupadoComSumarioDTO gerarRelatoriosMovimentacoesAgrupadas(String campo, String ordenacao);
+
+    List<TipoMovimentacaoResponseDTO> criarTiposMovimentacao(TipoMovimentacaoListWrapper tipos);
 }
