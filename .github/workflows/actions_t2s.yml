@@ -2,7 +2,7 @@ name: dockert2s-ci
 on:
   push:
     branches:
-      - main
+      - prod
   pull_request:
     branches:
       - main
