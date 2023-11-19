@@ -5,8 +5,6 @@ import br.com.docker.t2s.service.interfaces.MovimentacaoService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,11 +37,6 @@ public class MovimentacaoController {
     @GetMapping
     public ResponseEntity<List<MovimentacaoResponseDTO>> buscarMovimentacoes(){
         return ResponseEntity.ok(movimentacaoService.buscarMovimentacoes());
-    }
-
-    @GetMapping("/all")
-    public ResponseEntity<Page<MovimentacaoResponseDTO>> buscarMovimentacoes(Pageable pageable){
-        return ResponseEntity.ok(movimentacaoService.buscarMovimentacoes(pageable));
     }
 
     @Transactional(rollbackOn = Exception.class)

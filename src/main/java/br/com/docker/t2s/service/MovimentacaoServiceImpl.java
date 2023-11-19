@@ -8,17 +8,16 @@ import br.com.docker.t2s.model.Movimentacao;
 import br.com.docker.t2s.model.TipoMovimentacao;
 import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
 import br.com.docker.t2s.repository.MovimentacaoRepository;
-import br.com.docker.t2s.repository.strategies.OrdenacaoStrategy;
 import br.com.docker.t2s.repository.TiposMovimentacaoRepository;
 import br.com.docker.t2s.repository.dto.RelatorioAgrupadoComSumarioDTO;
 import br.com.docker.t2s.repository.dto.ResultadoRelatorioDTO;
 import br.com.docker.t2s.repository.dto.SumarioDTO;
+import br.com.docker.t2s.repository.strategies.OrdenacaoStrategy;
 import br.com.docker.t2s.service.interfaces.ConteinerService;
 import br.com.docker.t2s.service.interfaces.MovimentacaoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -67,9 +66,10 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     }
     @Override
     public List<MovimentacaoResponseDTO> buscarMovimentacoes() {
-        List<Movimentacao> movimentacoes = movimentacaoRepository.findAll();
+        List<Movimentacao> movimentacoesCadastradas = movimentacaoRepository.findAllByStatus(true);
+
         List<MovimentacaoResponseDTO> movimentacoesResponse = new ArrayList<>();
-        for(Movimentacao movimentacao: movimentacoes){
+        for(Movimentacao movimentacao: movimentacoesCadastradas){
             movimentacoesResponse.add(MovimentacaoMapper.INSTANCE.toMovimentacaoResponse(movimentacao));
         }
         return movimentacoesResponse;
@@ -125,16 +125,9 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
     }
 
     @Override
+    @Deprecated
     public Page<MovimentacaoResponseDTO> buscarMovimentacoes(Pageable pageable) {
-        List<Movimentacao> movimentacoesLocalizadas = movimentacaoRepository.findAll(pageable).getContent();
-        List<MovimentacaoResponseDTO> movimentacoesResponse = new ArrayList<>();
-
-        for(Movimentacao movimentacao: movimentacoesLocalizadas){
-            MovimentacaoResponseDTO movimentacaoResponseDTO = MovimentacaoMapper.INSTANCE.toMovimentacaoResponse(movimentacao);
-            movimentacoesResponse.add(movimentacaoResponseDTO);
-        }
-
-        return new PageImpl<>(movimentacoesResponse);
+        return null;
     }
 
     @Override

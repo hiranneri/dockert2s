@@ -109,4 +109,15 @@ public class AC_ClienteControllerIT extends TestIntegrationIT {
                 ).andExpect(status().is4xxClientError());
     }
 
+    @Test
+    @DisplayName("Try to search a dropped client")
+    void AF_PesquisarClienteExcluidoDeveRetornar403() throws Exception {
+
+        mockMvc.perform(
+                get("/clientes" + ID_CLIENTE)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header(obterHeaderComToken().get(0), obterHeaderComToken().get(1))
+        ).andExpect(status().is4xxClientError());
+    }
+
 }

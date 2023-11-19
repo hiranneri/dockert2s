@@ -16,6 +16,8 @@ import java.util.Optional;
 @Repository
 public interface MovimentacaoRepository extends JpaRepository<Movimentacao, Long> {
 
+
+    List<Movimentacao> findAllByStatus(boolean status);
     Optional<Movimentacao> findByDataHoraInicioAndStatus(LocalDateTime dataHoraInicio, boolean status);
     Optional<Movimentacao> findByTipoMovimentacaoAndConteinerAndStatus(TipoMovimentacao tipoMovimentacao,
                                                                        Conteiner conteiner,
