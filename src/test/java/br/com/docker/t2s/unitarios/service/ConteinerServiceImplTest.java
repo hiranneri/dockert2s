@@ -1,4 +1,4 @@
-package br.com.docker.t2s.service;
+package br.com.docker.t2s.unitarios.service;
 
 import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPostRequestDTO;
 import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPutRequestDTO;
@@ -7,6 +7,7 @@ import br.com.docker.t2s.controller.dtos.mappers.conteiner.ConteinerMapper;
 import br.com.docker.t2s.exceptions.responsehandler.BadRequestException;
 import br.com.docker.t2s.model.Conteiner;
 import br.com.docker.t2s.repository.ConteinerRepository;
+import br.com.docker.t2s.service.ConteinerServiceImpl;
 import br.com.docker.t2s.service.interfaces.ClienteService;
 import br.com.docker.t2s.utils.ClienteCreator;
 import br.com.docker.t2s.utils.ConteinerCreator;

@@ -1,5 +1,6 @@
-package br.com.docker.t2s.controller;
+package br.com.docker.t2s.unitarios.controller;
 
+import br.com.docker.t2s.controller.ClienteController;
 import br.com.docker.t2s.controller.dtos.cliente.ClientePostRequestDTO;
 import br.com.docker.t2s.controller.dtos.cliente.ClientePutRequestDTO;
 import br.com.docker.t2s.controller.dtos.cliente.ClienteResponseDTO;

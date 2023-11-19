@@ -1,5 +1,6 @@
-package br.com.docker.t2s.controller;
+package br.com.docker.t2s.unitarios.controller;
 
+import br.com.docker.t2s.controller.ConteinerController;
 import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPostRequestDTO;
 import br.com.docker.t2s.controller.dtos.conteiner.ConteinerPutRequestDTO;
 import br.com.docker.t2s.controller.dtos.conteiner.ConteinerResponseDTO;

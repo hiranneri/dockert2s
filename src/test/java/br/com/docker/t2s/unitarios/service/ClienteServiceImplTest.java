@@ -1,4 +1,4 @@
-package br.com.docker.t2s.service;
+package br.com.docker.t2s.unitarios.service;
 
 import br.com.docker.t2s.controller.dtos.cliente.ClientePostRequestDTO;
 import br.com.docker.t2s.controller.dtos.cliente.ClientePutRequestDTO;
@@ -6,6 +6,7 @@ import br.com.docker.t2s.controller.dtos.cliente.ClienteResponseDTO;
 import br.com.docker.t2s.exceptions.responsehandler.BadRequestException;
 import br.com.docker.t2s.model.Cliente;
 import br.com.docker.t2s.repository.ClienteRepository;
+import br.com.docker.t2s.service.ClienteServiceImpl;
 import br.com.docker.t2s.utils.ClienteCreator;
 import org.hibernate.exception.ConstraintViolationException;
 import org.junit.jupiter.api.Assertions;

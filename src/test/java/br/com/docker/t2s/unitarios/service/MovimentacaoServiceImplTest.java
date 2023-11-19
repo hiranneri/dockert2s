@@ -1,4 +1,4 @@
-package br.com.docker.t2s.service;
+package br.com.docker.t2s.unitarios.service;
 
 import br.com.docker.t2s.controller.dtos.mappers.movimentacao.MovimentacaoMapper;
 import br.com.docker.t2s.controller.dtos.movimentacao.MovimentacaoPostRequestDTO;
@@ -9,6 +9,8 @@ import br.com.docker.t2s.model.Movimentacao;
 import br.com.docker.t2s.model.enums.movimentacao.NomeMovimentacao;
 import br.com.docker.t2s.repository.MovimentacaoRepository;
 import br.com.docker.t2s.repository.TiposMovimentacaoRepository;
+import br.com.docker.t2s.service.ConteinerServiceImpl;
+import br.com.docker.t2s.service.MovimentacaoServiceImpl;
 import br.com.docker.t2s.utils.ConteinerCreator;
 import br.com.docker.t2s.utils.MovimentacaoCreator;
 import br.com.docker.t2s.utils.TiposMovimentacaoCreator;
