@@ -1,6 +1,7 @@
 
-# dockert2s
-image:https://img.shields.io/github/actions/workflow/status/hiranneri/dockert2s/actions_t2s.yml[GitHub Workflow Status (with event)]
+# dockert2s 
+
+![Badge CI](https://img.shields.io/github/actions/workflow/status/hiranneri/dockert2s/actions_t2s.yml)
 
 Esse projeto é um desafio de criar uma API que faz o gerenciamento de clientes, contêineres e movimentação. Foi desenvolvido em Java usando o Framework Spring Boot junto com JPA persistindo os dados no banco MySQL.
 Neste projeto é utilizado o Spring Security que gerencia as autenticações e permissões nas rotas disponíveis. Com o usuário autenticado é gerado um token JWT que deve ser utilizado nos headers das requisições de forma Bearer Authentication.
@@ -70,4 +71,4 @@ Para os testes de integração que envolvem operações de escrita e leitura no 
 Durante o desenvolvimento foi entendido que, para evitarmos duplicação de “movimentações”, criamos a regra que não será possível ter mais de uma movimentação usando o mesmo tipo para o mesmo conteiner.
 
 ### Modelo de Entidade e Relacionamento
-![MER](https://github.com/hiranneri/dockert2s/blob/main/src/main/java/resources/images/MER.png)
+![MER](https://github.com/hiranneri/dockert2s/blob/main/src/main/resources/images/MER.png)
