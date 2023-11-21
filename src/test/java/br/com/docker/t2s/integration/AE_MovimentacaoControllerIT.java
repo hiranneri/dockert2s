@@ -74,7 +74,7 @@ public class AE_MovimentacaoControllerIT extends TestIntegrationIT {
 
     @Test
     @DisplayName("Criar os tipos de movimentacao")
-    public void AD_CadastrarTiposMovimentacao() throws Exception {
+    public void AD_CadastrarTiposMovimentacao_JaCriados_DeveRetornar4XX() throws Exception {
         TipoMovimentacaoListWrapper tiposMovimentacao = TipoMovimentacaoCreator.createTiposMovimentacao();
 
         mockMvc.perform(
@@ -82,7 +82,7 @@ public class AE_MovimentacaoControllerIT extends TestIntegrationIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(tiposMovimentacao))
                         .header(obterHeaderComToken().get(0), obterHeaderComToken().get(1))
-        ).andExpect(status().isCreated());
+        ).andExpect(status().is4xxClientError());
     }
 
     @Test
