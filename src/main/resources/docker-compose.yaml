@@ -31,9 +31,13 @@ services:
       <<: *database-variables
     networks:
       - dockert2s-network
-
-    mem_limit: 512m
     depends_on: [banco]
+    deploy:
+      resources:
+        limits:
+          memory: 500M
+        reservations:
+          memory: 500M
 
 networks:
   dockert2s-network:
