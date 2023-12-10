@@ -4,10 +4,10 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://dockert2s-pg.cruj38qir0pp.us-east-1.rds.amazonaws.com:5432/dockert2s
-    username: postgres
-    password: secretpg
-    driver-class-name: org.postgresql.Driver
+    url: ${URL_CONEXAO_BANCO_PROD}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+    driver-class-name: ${DRIVER_CLASS_NAME}
 
   jpa:
     properties:
@@ -29,12 +29,6 @@ spring:
   application:
     name: dockert2s
 
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: DEBUG
-
 management:
   endpoints:
     web:
@@ -48,4 +42,4 @@ info:
 api:
   security:
     token:
-      secret: ${JWT_SECRET:my-secret-t2s}
+      secret: ${JWT_SECRET}

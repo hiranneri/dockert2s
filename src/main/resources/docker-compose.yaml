@@ -1,9 +1,9 @@
-version: '2.4'
+version: '3.8'
 x-database-variables: &database-variables
-  SPRING_DATASOURCE_URL: jdbc:postgresql://dockert2s-pg.cruj38qir0pp.us-east-1.rds.amazonaws.com:5432/dockert2s
-  SPRING_DATASOURCE_USERNAME: postgres
-  SPRING_DATASOURCE_PASSWORD: secretpg
-  SPRING_DATASOURCE_DRIVER_CLASS_NAME: org.postgresql.Driver
+  SPRING_DATASOURCE_URL: ${URL_CONEXAO_BANCO_PROD}
+  SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+  SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+  SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${DRIVER_CLASS_NAME}
   SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
 
 services:
