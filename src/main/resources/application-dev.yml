@@ -7,7 +7,7 @@ spring:
   datasource:
       url: jdbc:postgresql://172.20.0.2:5432/dockert2s
       username: postgres
-      password: secretpg
+      password: ${DEV_SPRING_DATASOURCE_PASSWORD}
       driver-class-name: org.postgresql.Driver
 
   jpa:

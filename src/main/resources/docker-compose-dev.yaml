@@ -1,8 +1,8 @@
-version: '3.8'
+version: '2.8'
 x-database-variables: &database-variables
   SPRING_DATASOURCE_URL: jdbc:postgresql://dockert2s-pg:5432/dockert2s
   POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: secretpg
+  POSTGRES_PASSWORD: ${DEV_SPRING_DATASOURCE_PASSWORD}
 
 services:
   banco:
@@ -16,7 +16,6 @@ services:
       <<: *database-variables
     networks:
       - dockert2s-network
-
 
   prometheus:
     image: prom/prometheus:latest
