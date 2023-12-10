@@ -18,19 +18,21 @@
 #instalar docker compose
     sudo apt install docker-compose -y
 
+# instalar o git
+  sudo apt-get install git -y
+  git config --global --add safe.directory /home/ubuntu/workspace/dockert2s
+
 #mudar para o usuário root
     sudo su
 
 #criar a pasta do projeto
-    mkdir ~/workspace
-    cd ~/workspace
+    cd /home/ubuntu/ || exit
+    mkdir workspace
+    cd workspace || exit
 
 #clonar o projeto do github
     git clone https://github.com/hiranneri/dockert2s.git
-    cd DockerT2S
-    git checkout master
-    git pull
-    cd src/main/resources/
+    cd dockert2s/src/main/resources/ || exit
 
 #executar o arquivo docker-compose
-    docker compose up -f docker-compose.yaml -d
+    docker compose up --force-recreate -d
