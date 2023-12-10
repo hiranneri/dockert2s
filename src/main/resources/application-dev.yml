@@ -1,13 +1,14 @@
+# application-dev.yml
 server:
   error:
     include-stacktrace: never
 
 spring:
   datasource:
-    url: jdbc:postgresql://dockert2s-pg.cruj38qir0pp.us-east-1.rds.amazonaws.com:5432/dockert2s
-    username: postgres
-    password: secretpg
-    driver-class-name: org.postgresql.Driver
+      url: jdbc:postgresql://172.20.0.2:5432/dockert2s
+      username: postgres
+      password: secretpg
+      driver-class-name: org.postgresql.Driver
 
   jpa:
     properties:
