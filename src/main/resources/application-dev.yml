@@ -1,15 +1,19 @@
+# application-dev.yml
 server:
   error:
     include-stacktrace: never
 
 spring:
   datasource:
-    url: ${URL_CONEXAO_BANCO_PROD}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
-    driver-class-name: ${DRIVER_CLASS_NAME}
+      url: jdbc:postgresql://172.20.0.2:5432/dockert2s
+      username: postgres
+      password: secretpg
+      driver-class-name: org.postgresql.Driver
 
   jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
     defer-datasource-initialization: true
     generate-ddl: true
     hibernate:
@@ -26,6 +30,12 @@ spring:
   application:
     name: dockert2s
 
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+
 management:
   endpoints:
     web:
@@ -39,4 +49,4 @@ info:
 api:
   security:
     token:
-      secret: ${JWT_SECRET}
+      secret: ${JWT_SECRET:my-secret-t2s}

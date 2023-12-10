@@ -49,7 +49,7 @@ Como executar os testes de integração:
 Para os testes de integração, apenas execute o comando abaixo:
 
 ```bash
-mvn test -P integration-tests
+mvn clean verify package -Pintegration-tests -Dspring.profiles.active=qa
 ```
 O comando acima irá buildar o projeto e executar os testes configurados para o profile integration-tests
 
