@@ -40,3 +40,24 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+# Local terraform directories
+.terraform/
+
+# State files
+*.tfstate
+.tfstate.
+
+# Crash log files
+*.log
+
+# Sensitive data
+*.tfvars
+
+#terraform
+terraform-provider-aws_v5.30.0_x5
+.terraform.lock.hcl
+terraform.tfstate.backup
+
+# SQL
+src/main/resources/data.sql

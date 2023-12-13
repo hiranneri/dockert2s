@@ -42,10 +42,13 @@ public class SecurityConfig {
                 .cors().configurationSource(request -> new CorsConfiguration().applyPermitDefaultValues())
                 .and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and().authorizeRequests(authorize -> authorize
-                    .antMatchers(HttpMethod.POST, "/auth/**").permitAll()
-                    .antMatchers(HttpMethod.GET,PATHS_SWAGGER).permitAll()
-                    .anyRequest().authenticated()
+                .and().authorizeRequests(authorize -> {
+                    authorize
+                        .antMatchers(HttpMethod.POST, "/auth/**").permitAll()
+                        .antMatchers(HttpMethod.GET,PATHS_SWAGGER).permitAll()
+                        .antMatchers(HttpMethod.GET,"/actuator/**").permitAll()
+                        .anyRequest().authenticated();
+                }
                 )
                 .addFilterAfter(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();

@@ -1,21 +1,22 @@
 version: '3.8'
 x-database-variables: &database-variables
-  SPRING_DATASOURCE_URL: ${URL_CONEXAO_BANCO_PROD}
-  SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
-  SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
-  SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${DRIVER_CLASS_NAME}
-  SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
+  SPRING_DATASOURCE_URL: jdbc:postgresql://dockert2s-pg:5432/dockert2s
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: ${env.DEV_SPRING_DATASOURCE_PASSWORD}
 
 services:
-  dockert2s:
-    image: hiranneri/dockert2s:latest
-    container_name: dockert2s
+  banco:
+    image: postgres:15.4-alpine
+    container_name: dockert2s-pg
     ports:
-      - "8080:8080"
+      - "5432:5432"
+    volumes:
+      - "dockert2s-pg-volume:/var/lib/postgresql/data"
     environment:
       <<: *database-variables
     networks:
       - dockert2s-network
+
 
   prometheus:
     image: prom/prometheus:latest
@@ -26,18 +27,16 @@ services:
       - "--config.file=/etc/prometheus/prometheus.yml"
     ports:
       - "9090:9090"
-    depends_on: [dockert2s]
 
   grafana:
     image: grafana/grafana:latest
     container_name: dockert2s-grafana
     ports:
       - "3000:3000"
-    depends_on: [dockert2s]
 
 networks:
   dockert2s-network:
     driver: bridge
 
 volumes:
-  dockert2s-mysql-volume:
+  dockert2s-pg-volume:
