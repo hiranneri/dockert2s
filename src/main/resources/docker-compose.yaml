@@ -8,20 +8,16 @@ x-database-variables: &database-variables
 
 services:
   banco:
-    image: mysql
-    command: --innodb-use-native-aio=0
-    container_name: dockert2s-mysql
+    image: postgres:15.4-alpine
+    container_name: dockert2s-pg
     ports:
-      - "3306:3306"
+      - "5432:5432"
     volumes:
-      - "dockert2s-mysql-volume:/var/lib/mysql"
+      - "dockert2s-pg-volume:/var/lib/postgresql/data"
     environment:
-      - MYSQL_DATABASE=dockert2s
-      - MYSQL_ROOT_PASSWORD=secret
+      <<: *database-variables
     networks:
       - dockert2s-network
-    mem_limit: 512m
-
   prometheus:
     image: prom/prometheus:latest
     container_name: dockert2s-prometheus
