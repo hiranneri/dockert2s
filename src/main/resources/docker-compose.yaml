@@ -56,4 +56,4 @@ networks:
     driver: bridge
 
 volumes:
-  dockert2s-mysql-volume:
+  dockert2s-pg-volume:
