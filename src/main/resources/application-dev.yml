@@ -1,0 +1,52 @@
+# application-dev.yml
+server:
+  error:
+    include-stacktrace: never
+
+spring:
+  datasource:
+      url: jdbc:postgresql://172.20.0.2:5432/dockert2s
+      username: postgres
+      password: ${DEV_SPRING_DATASOURCE_PASSWORD}
+      driver-class-name: org.postgresql.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    defer-datasource-initialization: true
+    generate-ddl: true
+    hibernate:
+      ddl-auto: update
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+  sql:
+    init:
+      mode: always # Spring Boot >=v2.5.0
+
+  application:
+    name: dockert2s
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,health,metrics,prometheus
+
+info:
+  app: DockerT2S - API de Gerenciamento de Conteineres
+  github: https://github.com/hiranneri/dockert2s
+
+api:
+  security:
+    token:
+      secret: ${JWT_SECRET:my-secret-t2s}

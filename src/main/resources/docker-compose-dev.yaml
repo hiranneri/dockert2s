@@ -1,0 +1,42 @@
+version: '3.8'
+x-database-variables: &database-variables
+  SPRING_DATASOURCE_URL: jdbc:postgresql://dockert2s-pg:5432/dockert2s
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: secretpg
+
+services:
+  banco:
+    image: postgres:15.4-alpine
+    container_name: dockert2s-pg
+    ports:
+      - "5432:5432"
+    volumes:
+      - "dockert2s-pg-volume:/var/lib/postgresql/data"
+    environment:
+      <<: *database-variables
+    networks:
+      - dockert2s-network
+
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: dockert2s-prometheus
+    volumes:
+      - "./prometheus.yml:/etc/prometheus/prometheus.yml"
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: dockert2s-grafana
+    ports:
+      - "3000:3000"
+
+networks:
+  dockert2s-network:
+    driver: bridge
+
+volumes:
+  dockert2s-pg-volume:
