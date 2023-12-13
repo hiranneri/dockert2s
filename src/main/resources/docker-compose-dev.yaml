@@ -3,7 +3,7 @@ x-database-variables: &database-variables
   SPRING_DATASOURCE_URL: jdbc:postgresql://dockert2s-pg:5432/dockert2s
   POSTGRES_USER: postgres
   POSTGRES_PASSWORD: ${env.DEV_SPRING_DATASOURCE_PASSWORD}
-
+  
 services:
   banco:
     image: postgres:15.4-alpine
