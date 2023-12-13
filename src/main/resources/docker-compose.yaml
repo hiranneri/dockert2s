@@ -1,10 +1,10 @@
-version: '2.4'
+version: '3.8'
 x-database-variables: &database-variables
-  SPRING_DATASOURCE_URL: jdbc:mysql://dockert2s-mysql:3306/dockert2s?useSSL=false&createDatabaseIfNotExist=true&allowPublicKeyRetrieval=true
-  SPRING_DATASOURCE_USERNAME: root
-  SPRING_DATASOURCE_PASSWORD: secret
-  SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
-  SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.MySQL8Dialect
+  SPRING_DATASOURCE_URL: ${URL_CONEXAO_BANCO_PROD}
+  SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+  SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+  SPRING_DATASOURCE_DRIVER_CLASS_NAME: ${DRIVER_CLASS_NAME}
+  SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
 
 services:
   banco:
