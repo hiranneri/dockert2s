@@ -7,17 +7,7 @@ x-database-variables: &database-variables
   SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
 
 services:
-  banco:
-    image: postgres:15.4-alpine
-    container_name: dockert2s-pg
-    ports:
-      - "5432:5432"
-    volumes:
-      - "dockert2s-pg-volume:/var/lib/postgresql/data"
-    environment:
-      <<: *database-variables
-    networks:
-      - dockert2s-network
+
   prometheus:
     image: prom/prometheus:latest
     container_name: dockert2s-prometheus
@@ -27,12 +17,14 @@ services:
       - "--config.file=/etc/prometheus/prometheus.yml"
     ports:
       - "9090:9090"
+    depends_on: [dockert2s]
 
   grafana:
     image: grafana/grafana:latest
     container_name: dockert2s-grafana
     ports:
       - "3000:3000"
+    depends_on: [dockert2s]
 
   dockert2s:
     image: hiranneri/dockert2s:latest
@@ -43,7 +35,6 @@ services:
       <<: *database-variables
     networks:
       - dockert2s-network
-    depends_on: [banco]
     deploy:
       resources:
         limits:
