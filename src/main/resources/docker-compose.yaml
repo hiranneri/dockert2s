@@ -50,6 +50,3 @@ services:
 networks:
   dockert2s-network:
     driver: bridge
-
-volumes:
-  dockert2s-pg-volume:

@@ -6,14 +6,15 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
-import org.springframework.beans.factory.annotation.Value;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class TokenUtils {
 
-    @Value("${api.security.token.secret}")
-    private String secretToken;
+    private final Dotenv DOT_ENV = Dotenv.configure().load();
+    private final String SECRET_TOKEN = DOT_ENV.get("JWT_SECRET");
+
     public TokenDTO gerarToken(UsuarioDockerT2S usuario) {
         try {
             String token = JWT.create()
@@ -34,7 +35,10 @@ public class TokenUtils {
     }
 
     private Algorithm criarAlgoritmoHMAC256() {
-        return Algorithm.HMAC256(secretToken);
+        if(SECRET_TOKEN == null) {
+            return null;
+        }
+        return Algorithm.HMAC256(SECRET_TOKEN);
     }
 
     /**
