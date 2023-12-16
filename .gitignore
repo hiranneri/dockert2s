@@ -63,4 +63,5 @@ terraform.tfstate.backup
 src/main/resources/data.sql
 
 #env
-.env
+!.env
+src/main/resources/.env
