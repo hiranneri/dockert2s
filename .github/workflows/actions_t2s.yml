@@ -30,4 +30,4 @@ jobs:
 
       - name: Build and Push image to DockerHub
         id: docker_build
-        run: mvn jib:build
+        run: mvn jib:dockerBuild && mvn jib:build
