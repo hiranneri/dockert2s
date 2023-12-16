@@ -7,7 +7,6 @@ x-database-variables: &database-variables
   SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT: org.hibernate.dialect.PostgreSQLDialect
 
 services:
-
   prometheus:
     image: prom/prometheus:latest
     container_name: dockert2s-prometheus
@@ -30,7 +29,7 @@ services:
     image: hiranneri/dockert2s:latest
     container_name: dockert2s
     ports:
-      - "8080:8080"
+      - "80:8080"
     environment:
       <<: *database-variables
     networks:
@@ -41,6 +40,12 @@ services:
           memory: 500M
         reservations:
           memory: 500M
+
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 180 --services dockert2s
 
 networks:
   dockert2s-network:
