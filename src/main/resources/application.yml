@@ -17,6 +17,7 @@ spring:
     generate-ddl: true
     hibernate:
       ddl-auto: update
+      dialect: org.hibernate.dialect.PostgreSQLDialect
 
   mvc:
     pathmatch:

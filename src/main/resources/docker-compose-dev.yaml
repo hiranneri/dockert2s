@@ -1,15 +1,15 @@
-version: '2.8'
+version: '3.8'
 x-database-variables: &database-variables
   SPRING_DATASOURCE_URL: jdbc:postgresql://dockert2s-pg:5432/dockert2s
   POSTGRES_USER: postgres
-  POSTGRES_PASSWORD: ${DEV_SPRING_DATASOURCE_PASSWORD}
+  POSTGRES_PASSWORD: ${env.DEV_SPRING_DATASOURCE_PASSWORD}
 
 services:
   banco:
     image: postgres:15.4-alpine
     container_name: dockert2s-pg
     ports:
-      - "5434:5432"
+      - "5432:5432"
     volumes:
       - "dockert2s-pg-volume:/var/lib/postgresql/data"
     environment:
