@@ -37,15 +37,17 @@ services:
     deploy:
       resources:
         limits:
-          memory: 500M
+          memory: 1000M
         reservations:
           memory: 500M
 
   watchtower:
     image: containrrr/watchtower
+    container_name: dockert2s-watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --interval 180 --services dockert2s
+    depends_on: [dockert2s]
 
 networks:
   dockert2s-network:

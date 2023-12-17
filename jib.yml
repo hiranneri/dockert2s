@@ -1,0 +1,12 @@
+exclude:
+  - target/classes
+  - target/test-classes
+  - target/surefire-reports
+  - src/main/resources/terraform
+  - .git
+  - .github
+  - .idea
+  - src/main/resources/images
+
+files:
+  - .env

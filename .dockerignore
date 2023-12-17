@@ -1,5 +1,5 @@
-terraform
+src/main/resources/terraform
 .git
 .github
 .idea
-images
+src/main/resources/images
