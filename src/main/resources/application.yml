@@ -35,6 +35,10 @@ management:
     web:
       exposure:
         include: info,health,metrics,prometheus
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
 
 info:
   app: DockerT2S - API de Gerenciamento de Conteineres

@@ -4,7 +4,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://172.20.0.2:5432/dockert2s
+    url: jdbc:postgresql://172.22.0.2:5432/dockert2s
     username: postgres
     password: secretpg
     driver-class-name: org.postgresql.Driver
