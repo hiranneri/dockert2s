@@ -3,19 +3,15 @@ pipeline {
     stages {
         stage('Run tests with Maven') {
             steps {
-                echo 'Executando os testes'
+                sh 'mvn clean verify package -Pintegration-tests -Dspring.profiles.active=qa'
             }
-        }
+        }        
 
-        stage('Login to Docker Hub') {
+        stage('Login, Build and Push image to DockerHub') {
             steps {
-                echo 'Logando no Docker Hub'
-            }
-        }
-
-        stage('Build and Push image to DockerHub') {
-            steps {
-                echo 'Buildando imagem e Enviando para o DockerHub'
+                docker.withRegistry('https://registry.hub.docker.com','dockerhub') {
+	                sh 'mvn jib:dockerBuild && mvn jib:build'
+                }
             }
             
         }
