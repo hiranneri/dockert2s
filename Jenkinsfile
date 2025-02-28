@@ -9,11 +9,12 @@ pipeline {
 
         stage('Login, Build and Push image to DockerHub') {
             steps {
-                docker.withRegistry('https://registry.hub.docker.com','dockerhub') {
-	                sh 'mvn jib:dockerBuild && mvn jib:build'
-                }
-            }
-            
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com','dockerhub') {
+	                    sh 'mvn jib:dockerBuild && mvn jib:build'
+                    }
+                }                
+            }            
         }
     }
 }
